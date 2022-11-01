@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.post-cont {
+  margin-top: 5em;
+  display: flex;
+  position: relative;
+  width: 9em;
+  /* line-height: 2em; */
+  /* margin-right: 0 !important; */
+}
+
+.product-img {
+  position: absolute;
+  margin: auto;
+  left: -1.2em;
+  bottom: 6em;
+  right: 0;
+  width: 7em;
+  cursor: pointer;
+}
+
+.promos {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 1em;
+  top: 1.4em;
+  left: 5.5em;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 800;
+  color: #000000;
+}
+
+.product-bg {
+  background: #ffffff;
+  box-shadow: 0px 30px 60px rgba(57, 57, 57, 0.1);
+  border-radius: 30px;
+  padding: 5em 1em 1em;
+}
+
+.product-name {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 0.8em;
+  text-align: center;
+  color: #000000;
+  cursor: pointer;
+}
+
+.product-price {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.7em;
+  text-align: center;
+  color: #6a4029;
+}
+
+@media only screen and (max-width: 576px) {
+  .promos {
+    position: relative;
+    background: #ffffff;
+    border-radius: 1em;
+    left: 16em;
+    bottom: 20.5em;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 800;
+    color: #000000;
+    width: 2em;
+  }
+}
