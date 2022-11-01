@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styles from "../styles/CardProduct.module.css";
-import menu from "../assets/Home/image 2.png";
 import withNavigate from "../helpers/withNavigate";
 import withLocation from "../helpers/withLocation";
 import withSearchParams from "../helpers/withSearchParams";
@@ -17,12 +16,9 @@ class CardProduct extends Component {
               this.props.navigate("/productdetails");
             }}
             className={`${styles["product-img"]} rounded-circle col-md col col-sm col-lg`}
-            src={menu}
+            src={`http://localhost:8080/${this.props.image}`}
             alt=""
           />
-          <div
-            className={`${styles["promos"]} col-md-3 col col-sm col-lg`}
-          ></div>
           <div
             className={`${styles["product-bg"]} col-md-9 col col-sm col-lg-10`}
           >

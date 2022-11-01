@@ -105,8 +105,7 @@ export default class Profile extends Component {
                       />
                       <div className={`${styles["under-input"]}`}></div>
                     </p>
-                  </div>
-                  <div className={`${styles["flex-column"]}`}>
+
                     <p
                       className={`${styles["font-format"]} ${styles["margins"]}`}
                     >
@@ -134,7 +133,7 @@ export default class Profile extends Component {
                     <p
                       className={`${styles["font-format"]} ${styles["margins"]}`}
                     >
-                      Display Name :<p></p>
+                      Display Name :
                       <input
                         type="text"
                         className={`${styles["input"]}`}
@@ -145,7 +144,7 @@ export default class Profile extends Component {
                     <p
                       className={`${styles["font-format"]} ${styles["margins"]}`}
                     >
-                      First Name :<p></p>
+                      First Name :
                       <input
                         type="text"
                         className={`${styles["input"]}`}
@@ -156,7 +155,7 @@ export default class Profile extends Component {
                     <p
                       className={`${styles["font-format"]} ${styles["margins"]}`}
                     >
-                      Last Name : <p></p>
+                      Last Name :
                       <input
                         type="text"
                         className={`${styles["input"]}`}
@@ -164,12 +163,15 @@ export default class Profile extends Component {
                       />
                       <div className={`${styles["under-input"]}`}></div>
                     </p>
+                    <p
+                      className={`${styles["font-format"]} ${styles["margins"]}`}
+                    >
+                      DD/MM/YY
+                      <input type="text" className={`${styles["input"]}`} />
+                      <div className={`${styles["under-input"]}`}></div>
+                    </p>
                   </div>
-                  <p className="font-format margins">DD/MM/YY</p>
-                  <div className={`${styles["flex-column"]}`}>
-                    <input type="text" className={`${styles["input"]}`} />
-                    <div className={`${styles["under-input"]}`}></div>
-                  </div>
+                  <div className={`${styles["flex-column"]}`}></div>
                 </div>
                 <div>
                   <div
@@ -184,8 +186,6 @@ export default class Profile extends Component {
                       />
                       Male
                     </label>
-                  </div>
-                  <div>
                     <label htmlFor="Female">
                       <input
                         type="radio"

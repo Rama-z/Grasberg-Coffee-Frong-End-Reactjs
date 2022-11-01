@@ -73,6 +73,27 @@ class Product extends Component {
         console.log(err);
       });
   };
+
+  promoChanges = async () => {
+    axios
+      .get(`http://localhost:8080/api/v1/promos/?codes=&menu=`)
+      .then((res) => {
+        const promo = res.data.result;
+        let codes = "";
+        promo.map((item) => {
+          return (codes = item);
+        });
+        // console.log(res);
+        // console.log(res.data.codes);
+        console.log(promo);
+        console.log(codes.image);
+        // console.log(promo.data);
+        this.setState({ promo });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   render() {
     TabTitle("Grasberg Menu");
     return (
@@ -85,7 +106,10 @@ class Product extends Component {
                 className={`${styles["border-end"]} col-md-4 col-sm col col-lg-3`}
               >
                 <div className="col-md text-center">
-                  <div className={`${styles["promo-t"]} col-md mt-3 mb-2`}>
+                  <div
+                    className={`${styles["promo-t"]} col-md mt-3 mb-2`}
+                    onClick={this.promoChanges}
+                  >
                     Promo Today
                   </div>
                   <div className={`${styles["promo-t2"]} col-md mb-3`}>
@@ -93,7 +117,17 @@ class Product extends Component {
                   </div>
                 </div>
                 <div className="row">
-                  <CardPromo />
+                  {this.state.promo.map((item, idx) => {
+                    return (
+                      <CardPromo
+                        menu={item.codes}
+                        discount={item.discount}
+                        key={idx}
+                        id={item.id}
+                        image={item.image}
+                      />
+                    );
+                  })}
                 </div>
                 <div className={`${styles["apply"]} col-md text-center my-5`}>
                   Apply Coupon
