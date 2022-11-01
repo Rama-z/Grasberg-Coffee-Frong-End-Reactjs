@@ -106,7 +106,7 @@ const SignUp = () => {
                 <p className={`${styles["dont"]}`}>Already have an account?</p>
                 <div className={`${styles["space"]}`}></div>
               </div>
-              <Link to={"/login"}>
+              <Link to={"/auth"}>
                 <p
                   className={`${styles["remove"]} ${styles["coklat"]} ${styles["btn"]}`}
                 >
