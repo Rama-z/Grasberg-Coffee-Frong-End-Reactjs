@@ -52,7 +52,7 @@ class Home extends Component {
                   made by love just for you. Start your day with us for a bigger
                   smile!
                 </div>
-                <div className={`${styles["get"]} col-md my-5`}>
+                <div className={`${styles["get"]} col col-md col-sm my-5`}>
                   Get Started
                 </div>
               </div>
@@ -63,11 +63,11 @@ class Home extends Component {
             className={`${styles["my-5"]} ${styles["blacks"]} container`}
           >
             <div
-              className={`${styles["first-border"]} ${styles["position"]} row`}
+              className={`${styles["first-border"]} ${styles["position"]} ${styles["staff-margin1"]} row`}
             >
-              <div className="col-md col">
+              <div className="col-md col mt-3">
                 <div className="row">
-                  <div className="col-md col-2 col-lg col-sm">
+                  <div className="col-md col col-lg col-sm">
                     <img
                       src={human1}
                       alt=""
@@ -84,7 +84,7 @@ class Home extends Component {
               </div>
               <div className="col-md col">
                 <div className="row">
-                  <div className="col-md col-2 col-lg col-sm">
+                  <div className="col-md col col-lg col-sm">
                     <img
                       src={human2}
                       alt=""
@@ -95,13 +95,13 @@ class Home extends Component {
                     className={`${styles["staff-margin1"]} col-md col col-sm col-lg`}
                   >
                     <div className={`${styles["fw-bold"]}`}>30+</div>
-                    <div className={`${styles["staff"]}`}>Stores</div>
+                    <div className={`${styles["staff2"]}`}>Stores</div>
                   </div>
                 </div>
               </div>
               <div className="col-md col">
                 <div className="row">
-                  <div className="col-md col-2 col-lg col-sm">
+                  <div className="col-md col col-lg col-sm">
                     <img
                       src={human3}
                       alt=""
@@ -112,7 +112,7 @@ class Home extends Component {
                     className={`${styles["staff-margin1"]} col-md col col-sm col-lg`}
                   >
                     <div className={`${styles["fw-bold"]}`}>800+</div>
-                    <div className={`${styles["staff"]}`}>Customers</div>
+                    <div className={`${styles["staff3"]}`}>Customers</div>
                   </div>
                 </div>
               </div>
@@ -174,7 +174,7 @@ class Home extends Component {
             </div>
           </div>
           <div className={`${styles["blacks"]} container text-center`}>
-            <div className="row">
+            <div className={`${styles["menu-over"]} row`}>
               <div
                 className={`${styles["border-c"]} ${styles["menu-tag"]} col-md col col-lg col-sm mt-5`}
               >
@@ -222,7 +222,7 @@ class Home extends Component {
                 </div>
               </div>
               <div
-                className={`${styles["border-c"]} ${styles["menu-tag"]} col-md mt-5`}
+                className={`${styles["border-e"]} ${styles["menu-tag"]} col-md mt-5`}
               >
                 <img
                   className={`${styles["position-p"]} ${styles["circular"]}`}
@@ -376,9 +376,9 @@ class Home extends Component {
               great pleasure.
             </div>
           </div>
-          <div className={`${styles["blacks"]} container   my-5`}>
+          <div className={`${styles["blacks"]} container my-5`}>
             <div className="row">
-              <section className={`${styles["border-e"]} col-md col-sm col`}>
+              <section className={`${styles["border-h"]} col-md col-sm col`}>
                 <div className="row my-4">
                   <div className="col-md-2 col-sm-2 col-2">
                     <img src={home9} alt="" />
@@ -459,13 +459,25 @@ class Home extends Component {
                     className={`${styles["bullet-on"]} col-md-1 col-sm-1`}
                   ></div>
                   <div className="col-md-1 col-sm-1">
-                    <img src={elipse174} alt="" />
+                    <img
+                      src={elipse174}
+                      alt=""
+                      className={`${styles["elipse"]}`}
+                    />
                   </div>
                   <div className="col-md-1 col-sm-1 me-n1">
-                    <img src={elipse174} alt="" />
+                    <img
+                      src={elipse174}
+                      alt=""
+                      className={`${styles["elipse"]}`}
+                    />
                   </div>
                   <div className="col-md-1 col-sm-1">
-                    <img src={elipse174} alt="" />
+                    <img
+                      src={elipse174}
+                      alt=""
+                      className={`${styles["elipse"]}`}
+                    />
                   </div>
                 </div>
               </div>

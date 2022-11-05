@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 // import axios from "axios";
 // import { useNavigate } from "react-router-dom";
-
+import profil from "../assets/profile.png";
 export default class Profile extends Component {
   render() {
     return (
@@ -25,7 +25,7 @@ export default class Profile extends Component {
                 <div className={`${styles["flex-row"]}`}>
                   <img
                     className={`${styles["circular"]}`}
-                    src="./assets/profile.png"
+                    src={profil}
                     alt=""
                   />
                 </div>
@@ -59,7 +59,7 @@ export default class Profile extends Component {
                   <p
                     className={`${styles["log"]}`}
                     onClick={() => {
-                      localStorage.removeItem("token");
+                      localStorage.removeItem("user-info");
                     }}
                   >
                     Log out

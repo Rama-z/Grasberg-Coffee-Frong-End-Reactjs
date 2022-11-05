@@ -25,7 +25,6 @@
   font-weight: 700;
   font-size: 17px;
   padding: 1em;
-  margin-left: -1.2em;
   color: #ffffff;
   background: #6a4029;
   border-radius: 20px;
@@ -84,13 +83,14 @@
   color: #4f5665;
 }
 
-.fvrt {
+.fvrt2:hover {
   font-family: "Rubik";
   font-style: normal;
   font-weight: 700;
   font-size: 0.9em;
   color: #6a4029;
   cursor: pointer;
+  text-decoration: underline;
 }
 
 .fvrt2 {
@@ -103,10 +103,10 @@
 }
 
 .underline {
+  display: none;
   border: 0.1em solid #6a4029;
   background-color: #6a4029;
   box-shadow: 0px 6px 20px rgba(106, 64, 41, 0.67);
-  /* display: none; */
 }
 
 .promos {
@@ -215,6 +215,35 @@
   margin-bottom: 4em;
 }
 
+.menu-toggle {
+  position: relative;
+  bottom: 1.73em;
+  left: 1em;
+  display: flex;
+  flex-direction: column;
+  height: 20px;
+  justify-content: space-around;
+  display: none;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  background-color: #4f5665;
+  border-radius: 3px;
+  transition: all 0.5s;
+}
+
+.menu-toggle input {
+  position: absolute;
+  width: 29px;
+  height: 28px;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 11;
+}
+
 @media only screen and (max-width: 768px) {
   .promos {
     position: relative;
@@ -227,5 +256,25 @@
     font-weight: 800;
     color: #000000;
     width: 2em;
+  }
+
+  .fvrt2 {
+    display: none;
+    font-family: "Rubik";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.9em;
+    color: #9f9f9f;
+    cursor: pointer;
+  }
+
+  .menu-toggle {
+    position: relative;
+    display: flex;
+    top: 2em;
+  }
+  .gapping {
+    gap: 2em;
+    margin: 2em;
   }
 }

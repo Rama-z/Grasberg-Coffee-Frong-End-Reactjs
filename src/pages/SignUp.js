@@ -65,7 +65,6 @@ const SignUp = () => {
               <input
                 type="password"
                 name=""
-                id=""
                 className={`${styles["input-box"]} ${styles["input"]}`}
                 placeholder="Enter your password"
                 onChange={(e) =>
@@ -76,7 +75,6 @@ const SignUp = () => {
               <input
                 type="text"
                 name=""
-                id=""
                 className={`${styles["input-box"]} ${styles["input"]}`}
                 placeholder="Enter your password"
                 onChange={(e) =>

@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+.drop-nav2 {
+  align-items: center;
+  display: flex;
+  justify-content: right;
+}
+.gap-nav {
+  gap: 2em;
+}
+.login {
+  color: #0b132a;
+  font-family: "Rubik";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.login:hover {
+  color: #0b132a;
+  font-family: "Rubik";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+}
+.signup {
+  background-color: #ffba33;
+  border: 2px solid #ffba33;
+  border-radius: 50px;
+  color: #6a4029;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  padding: 0.5em 1em;
+}
+.signup:hover {
+  background-color: #ffba33;
+  border: 2px solid #ffba33;
+  border-radius: 50px;
+  color: #6a4029;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 750;
+  padding: 0.55em 1.05em;
+}
+@media only screen and (max-width: 576px) {
+  .visited {
+    display: none;
+  }
+  .login {
+    display: none;
+  }
+  .signup {
+    display: none;
+  }
+  .drop-nav2 {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    /* margin-top: 1em; */
+    padding: 0;
+  }
+}

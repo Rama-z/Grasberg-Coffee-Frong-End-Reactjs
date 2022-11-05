@@ -9,7 +9,9 @@ import NavGuest from "./NavGuest";
 
 export default class Header extends Component {
   render() {
-    const token = localStorage.getItem("token");
+    const token = JSON.parse(localStorage.getItem("user-info"))
+      ? JSON.parse(localStorage.getItem("user-info")).token
+      : "";
     return (
       <>
         <header
@@ -18,10 +20,15 @@ export default class Header extends Component {
           <article
             className={`col col-sm col-lg-3 col-md-3 ${styles["drop-nav3"]} ${styles["gap-nav1"]}`}
           >
-            <img src={imageCoba} alt="coffee" className="" />
-            <div>Grasberg Coffee</div>
+            <img src={imageCoba} alt="coffee" />
+            <div className={`${styles["grasberg"]}`}>Grasberg Coffee</div>
           </article>
-          <div className={`${styles["dropbtn"]}`}>Menu</div>
+          <div className={`${styles["menu-toggle"]}`}>
+            <input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
           <nav
             className={`col col-sm-8 col-lg-6 col-md-6 ${styles["drop-nav"]} ${styles["gap-nav"]} ${styles["mid"]} ${styles["dropdown-content"]}`}
           >
@@ -32,11 +39,25 @@ export default class Header extends Component {
               <p className={`${styles["visited"]}`}>Product</p>
             </Link>
             <Link to={"/payment"}>
-              <p className={`${styles["visited"]}`}>Your Chart</p>
+              <p className={`${styles["visited"]}`}>Your Cart</p>
             </Link>
             <Link to={"/history"}>
               <p className={`${styles["visited"]}`}>History</p>
             </Link>
+            {!token ? (
+              <Link to={"/auth"}>
+                <p className={`${styles["login"]}`}>Login</p>
+              </Link>
+            ) : (
+              ""
+            )}
+            {!token ? (
+              <Link to={"/signup"}>
+                <p className={`${styles["signup"]}`}>Sign Up</p>
+              </Link>
+            ) : (
+              ""
+            )}
           </nav>
           {token ? <NavLogin /> : <NavGuest />}
         </header>

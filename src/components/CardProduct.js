@@ -7,13 +7,13 @@ import PropTypes from "prop-types";
 
 class CardProduct extends Component {
   render() {
-    console.log(this.props.menu);
+    // console.log(this.props.menu);
     return (
       <>
         <section className={`${styles["post-cont"]}`}>
           <img
             onClick={() => {
-              this.props.navigate("/productdetails");
+              this.props.navigate(`/product/${this.props.id}`);
             }}
             className={`${styles["product-img"]} rounded-circle col-md col col-sm col-lg`}
             src={`http://localhost:8080/${this.props.image}`}
@@ -24,7 +24,7 @@ class CardProduct extends Component {
           >
             <div
               onClick={() => {
-                this.props.navigate("/productdetails");
+                this.props.navigate("/product/:id");
               }}
               className={`${styles["product-name"]} col-md col col-sm col-lg`}
             >

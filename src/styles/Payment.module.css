@@ -242,8 +242,11 @@
   border: 2px solid #000000;
 }
 
-@media only screen and (max-width: 428px) {
+@media only screen and (max-width: 526px) {
   /* .background-payment{
-      
+  
   } */
+  .address {
+    margin-top: 5em;
+  }
 }

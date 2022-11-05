@@ -13,6 +13,8 @@ import ForgotPWD from "./pages/ForgotPWD";
 import App from "./App";
 import TryLogin from "./pages/TryLogin";
 import LoginError from "./pages/LoginError";
+import PrivateElement from "./components/PrivateElement";
+import Counter from "./pages/Counter";
 // import Protected from "./utils/Protected";
 // import Error from "./pages/Error";
 
@@ -23,13 +25,21 @@ const router = createBrowserRouter([
   { path: "/signup", element: <Signup /> },
   { path: "/profile", element: <Profile /> },
   { path: "/product", element: <Product /> },
-  { path: "/history", element: <History /> },
+  {
+    path: "/history",
+    element: (
+      <PrivateElement allowedRoles={["admin", "user"]}>
+        <History />
+      </PrivateElement>
+    ),
+  },
   { path: "/payment", element: <Payment /> },
-  { path: "/productdetails", element: <ProductDetails /> },
+  { path: "/product/:id", element: <ProductDetails /> },
   { path: "/forgotpwd", element: <ForgotPWD /> },
   { path: "/app", element: <App /> },
   { path: "/trylogin", element: <TryLogin /> },
   { path: "/loginerror", element: <LoginError /> },
+  { path: "/counter", element: <Counter /> },
 ]);
 
 export default router;

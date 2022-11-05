@@ -1,11 +1,11 @@
 import React, { Component } from "react";
+import { createSearchParams } from "react-router-dom";
 import styles from "../styles/Product.module.css";
 import CardProduct from "../components/CardProduct";
 import CardPromo from "../components/CardPromo";
 import Header from "../components/HeaderHome";
 import Footer from "../components/Footer";
 import TabTitle from "../utils/WebDinamis";
-// import { createSearchParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
 import withNavigate from "../helpers/withNavigate";
@@ -18,12 +18,22 @@ class Product extends Component {
     this.state = {
       product: [],
       promo: [],
+      underline: "",
+      search: "",
+      filter: "",
+      order_by: "",
+      order_in: "",
+      page: "",
+      limit: "",
     };
   }
+  slide() {}
   favoriteClick = () => {
+    // const url = process.env.REACT_APP_BACKEND_HOST;
+    // console.log(url);
     axios
       .get(
-        `http://localhost:8080/api/v1/products/?search=&filter=&order_by=transactions&order_in=asc&page=1&limit=15`
+        `http://localhost:8080/api/v1/products/?search=&filter=&order_by=transactions&order_in=&page=&limit=`
       )
       .then((res) => {
         console.log(res.data);
@@ -34,12 +44,17 @@ class Product extends Component {
         console.log(err);
       });
   };
+  componentDidMount() {
+    this.favoriteClick();
+    this.promoChanges();
+  }
   coffeeClick = async () => {
     axios
       .get(
         `http://localhost:8080/api/v1/products/?search=&filter=1&order_by=&order_in=&page=1&limit=15`
       )
       .then((res) => {
+        console.log(res.data);
         const product = res.data.result;
         this.setState({ product });
       })
@@ -53,6 +68,7 @@ class Product extends Component {
         `http://localhost:8080/api/v1/products/?search=&filter=2&order_by=&order_in=&page=1&limit=15`
       )
       .then((res) => {
+        console.log(res.data);
         const product = res.data.result;
         this.setState({ product });
       })
@@ -66,6 +82,7 @@ class Product extends Component {
         `http://localhost:8080/api/v1/products/?search=&filter=3&order_by=&order_in=&page=1&limit=15`
       )
       .then((res) => {
+        console.log(res.data);
         const product = res.data.result;
         this.setState({ product });
       })
@@ -79,14 +96,14 @@ class Product extends Component {
       .get(`http://localhost:8080/api/v1/promos/?codes=&menu=`)
       .then((res) => {
         const promo = res.data.result;
-        let codes = "";
-        promo.map((item) => {
-          return (codes = item);
-        });
+        // let codes = "";
+        // promo.map((item) => {
+        //   return (codes = item);
+        // });
         // console.log(res);
         // console.log(res.data.codes);
-        console.log(promo);
-        console.log(codes.image);
+        // console.log(promo);
+        // console.log(codes.image);
         // console.log(promo.data);
         this.setState({ promo });
       })
@@ -95,7 +112,11 @@ class Product extends Component {
       });
   };
   render() {
+    const { setSearchParams } = this.props;
     TabTitle("Grasberg Menu");
+    // console.log(this.props.location);
+    console.log(this.props.searchParams);
+
     return (
       <>
         <Header />
@@ -116,7 +137,7 @@ class Product extends Component {
                     Coupons will be updated every weeks. Check them out!
                   </div>
                 </div>
-                <div className="row">
+                <div className={`${styles["gapping"]}`}>
                   {this.state.promo.map((item, idx) => {
                     return (
                       <CardPromo
@@ -143,26 +164,59 @@ class Product extends Component {
                 </div>
               </div>
               <div className={`${styles["post-right"]} col-md col-sm`}>
+                <div className={`${styles["menu-toggle"]}`}>
+                  <input type="checkbox" />
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
                 <div className="row mt-3 ms-3 text-center">
-                  <div className={`${styles["fvrt"]} col-md-3 col-sm`}>
-                    <div onClick={this.favoriteClick}>Favorite & Promo</div>
-                    <div className={`${styles["underline"]}`}></div>
+                  <div
+                    className={`${styles["fvrt2"]} col-md-3 col-sm`}
+                    onClick={() => {
+                      const url = createSearchParams({
+                        search: "",
+                        orderBy: "transactions",
+                      });
+                      setSearchParams(url);
+                      this.favoriteClick();
+                    }}
+                  >
+                    Favorite & Promo
                   </div>
                   <div
                     className={`${styles["fvrt2"]} col-md-2 col-sm`}
-                    onClick={this.coffeeClick}
+                    onClick={() => {
+                      const url = createSearchParams({
+                        filter: "1",
+                      });
+                      setSearchParams(url);
+                      this.coffeeClick();
+                    }}
                   >
                     Coffee
                   </div>
                   <div
                     className={`${styles["fvrt2"]} col-md-2 col-sm`}
-                    onClick={this.nonCoffeeClick}
+                    onClick={() => {
+                      const url = createSearchParams({
+                        filter: "2",
+                      });
+                      setSearchParams(url);
+                      this.nonCoffeeClick();
+                    }}
                   >
                     Non Coffee
                   </div>
                   <div
                     className={`${styles["fvrt2"]} col-md-2 col-sm`}
-                    onClick={this.foodsClick}
+                    onClick={() => {
+                      const url = createSearchParams({
+                        filter: "3",
+                      });
+                      setSearchParams(url);
+                      this.foodsClick();
+                    }}
                   >
                     Foods
                   </div>
@@ -170,9 +224,7 @@ class Product extends Component {
                     Add-on
                   </div>
                 </div>
-                <div
-                  className={`${styles["card-product"]} d-flex justify-content-center`}
-                >
+                <div className={`${styles["card-product"]} ms-5 mt-2`}>
                   {this.state.product.map((item, idx) => {
                     return (
                       <CardProduct

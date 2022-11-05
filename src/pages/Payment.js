@@ -20,22 +20,19 @@ class Payment extends Component {
     TabTitle("Payment");
     return (
       <>
-        {/* <!-- Start Navbar --> */}
         <Header />
-        {/* <!-- End Navbar --> */}
         <main>
           <div className={`container-fluid ${styles["background-payment"]}`}>
             <div className={`container ${styles["title-payment"]}`}>
               <h3>
                 Checkout your <br></br> item now!
               </h3>
-              <div className="row d-flex justify-content-between gap-5">
+              <div className="row d-flex justify-content-between">
                 <div
                   className={`${styles["content-left-payment"]} col-md-5 col-sm-12 bg-white rounded-5`}
                 >
                   <div className={styles["box-left"]}>
                     <p>Order Summary</p>
-                    {/* payment 1 */}
                     <div className={styles["payment-content"]}>
                       <img
                         src={payment_image_1}
@@ -52,7 +49,6 @@ class Payment extends Component {
                         <p>IDR 24.0</p>
                       </div>
                     </div>
-                    {/* payment 2 */}
                     <div className={styles["payment-content"]}>
                       <img
                         src={payment_image_2}
@@ -69,7 +65,6 @@ class Payment extends Component {
                         <p>IDR 24.0</p>
                       </div>
                     </div>
-                    {/* subtotal */}
                     <hr className="mx-5 my-4"></hr>
                     <div className={styles["total-payment"]}>
                       <div className={styles["total-payment-left"]}>
@@ -89,10 +84,9 @@ class Payment extends Component {
                     </div>
                   </div>
                 </div>
-
                 <div className="col-md-5 col-sm-12 d-flex flex-column mb-5">
                   <div className="row d-flex flex-column">
-                    <div className="col-12">
+                    <div className={`${styles["adress"]} col-12`}>
                       <div className={styles["address-detail"]}>
                         <h2>Address</h2>
                         <p>edit</p>
@@ -197,10 +191,7 @@ class Payment extends Component {
             </div>
           </div>
         </main>
-
-        {/* <!-- Start Navbar --> */}
         <Footer />
-        {/* <!-- End Navbar --> */}
       </>
     );
   }

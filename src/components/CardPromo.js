@@ -7,7 +7,7 @@ export default class CardPromo extends Component {
     return (
       <>
         <div className={`${styles["border-a"]} row mt-4`}>
-          <div className="col-md-3 col col-lg-3 col-sm">
+          <div className="col-md col col-lg-3 col-sm">
             <img
               className={`${styles["promo-img"]}`}
               src={`http://localhost:8080/${this.props.image}`}

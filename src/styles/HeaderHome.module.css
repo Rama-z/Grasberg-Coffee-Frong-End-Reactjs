@@ -9,6 +9,43 @@ p {
   margin-bottom: 0;
 }
 
+.grasberg {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  color: #0b132a;
+}
+
+.menu-toggle {
+  position: relative;
+  bottom: 1.73em;
+  left: 1em;
+  display: flex;
+  flex-direction: column;
+  height: 20px;
+  justify-content: space-around;
+  display: none;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  background-color: #4f5665;
+  border-radius: 3px;
+  transition: all 0.5s;
+}
+
+.menu-toggle input {
+  position: absolute;
+  width: 29px;
+  height: 28px;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 11;
+}
+
 .disp-none {
   display: flex;
 }
@@ -23,6 +60,13 @@ p {
 
 .gap-nav1 {
   gap: 1em;
+}
+
+.bar {
+  height: 3px;
+  width: 100%;
+  background-color: blue;
+  border-radius: 10px;
 }
 
 .drop-nav {
@@ -53,23 +97,29 @@ p {
   font-weight: 400;
   color: #4f5665;
 }
-/* 
-.login {
-  font-family: "Rubik";
-  font-style: normal;
-  font-weight: 500;
-  color: #0b132a;
-} */
 
-.signup {
+.visited:hover {
   font-family: "Rubik";
   font-style: normal;
   font-weight: 700;
+  font-size: 16px;
   color: #6a4029;
-  border: 2px solid #ffba33;
-  border-radius: 50px;
-  background-color: #ffba33;
-  padding: 0.5em;
+}
+
+.login {
+  display: none;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  color: #4f5665;
+}
+
+.signup {
+  display: none;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  color: #4f5665;
 }
 
 .header {
@@ -103,15 +153,6 @@ p {
   font-style: normal;
   font-weight: 400;
   color: #4f5665;
-}
-
-.login {
-  position: relative;
-  top: 0.5em;
-  font-family: "Rubik";
-  font-style: normal;
-  font-weight: 500;
-  color: #0b132a;
 }
 
 .img-home {
@@ -503,16 +544,6 @@ p {
     max-width: 30em;
   }
 
-  .login {
-    position: relative;
-    top: 0.5em;
-    left: 6em;
-    font-family: "Rubik";
-    font-style: normal;
-    font-weight: 500;
-    color: #0b132a;
-  }
-
   .position-p {
     position: relative;
     top: 0.1em;
@@ -644,6 +675,25 @@ p {
     padding: 0;
   }
 
+  .menu-toggle {
+    display: flex;
+  }
+
+  .visited {
+    display: block;
+    font-family: "Rubik";
+    font-style: normal;
+    font-weight: 400;
+    color: #4f5665;
+  }
+
+  .bar {
+    height: 3px;
+    width: 100%;
+    background-color: blue;
+    border-radius: 10px;
+  }
+
   .welcome {
     justify-content: center;
     text-align: center;
@@ -662,13 +712,7 @@ p {
   }
 
   .login {
-    position: relative;
-    top: 0.5em;
-    left: 6em;
-    font-family: "Rubik";
-    font-style: normal;
-    font-weight: 500;
-    color: #0b132a;
+    display: block;
   }
 
   .position-p {
@@ -726,8 +770,7 @@ p {
   }
 
   .signup {
-    position: relative;
-    left: 5em;
+    display: block;
   }
 
   .drop-nav2 {

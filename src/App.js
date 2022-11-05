@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import withSearchParams from "./helpers/withSearchParams";
+import { createSearchParams } from "react-router-dom";
 // import styles from "../styles/Product.module.css";
 // import CardProduct from "../components/CardProduct";
 // import CardPromo from "../components/CardPromo";
@@ -89,6 +91,7 @@ class App extends Component {
       number1: 0,
       number2: 0,
       result: 0,
+      coba: "",
     };
   }
 
@@ -109,29 +112,48 @@ class App extends Component {
   };
 
   render() {
+    const { setSearchParams } = this.props;
     return (
-      <div className="Calculator">
-        <input
-          onChange={this.handleOnChange}
-          name="number1"
-          type="text"
-          value={this.state.number1}
-        />
-        {" + "}
-        <input
-          onChange={this.handleOnChange}
-          name="number2"
-          type="text"
-          value={this.state.number2}
-        />
-        <p>
-          <button onClick={this.handleResult}>=</button>
-        </p>
+      <>
+        <div className="Calculator">
+          <input
+            onChange={this.handleOnChange}
+            name="number1"
+            type="text"
+            value={this.state.number1}
+          />
+          {" + "}
+          <input
+            onChange={this.handleOnChange}
+            name="number2"
+            type="text"
+            value={this.state.number2}
+          />
+          <p>
+            <button onClick={this.handleResult}>=</button>
+          </p>
 
-        <p className="result">{this.state.result}</p>
-      </div>
+          <p className="result">{this.state.result}</p>
+        </div>
+        <div
+          onClick={() => {
+            const url = createSearchParams({ kocak: "asd" });
+            setSearchParams(url);
+          }}
+        >
+          active
+        </div>
+        <div
+          onClick={() => {
+            const url = createSearchParams({});
+            setSearchParams(url);
+          }}
+        >
+          reset
+        </div>
+      </>
     );
   }
 }
 
-export default App;
+export default withSearchParams(App);

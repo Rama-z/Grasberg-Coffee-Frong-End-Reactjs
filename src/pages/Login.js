@@ -16,12 +16,14 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
+  // const [userInfo, setUserInfo] = useState({});
   const [values, setValues] = useState({
     email: "",
     pass: "",
     showPass: false,
   });
   TabTitle("Login");
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
@@ -30,13 +32,14 @@ const Login = () => {
         pass: values.pass,
       })
       .then((res) => {
-        console.log(e);
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.data);
-        console.log(res.data.data.token);
-        console.log(res.data.msg);
-        localStorage.setItem("token", res.data.data.token);
+        // console.log(process.env.REACT_APP_BACKEND_HOST);
+        // console.log(e);
+        // console.log(res);
+        // console.log(res.data);
+        // console.log(res.data.data);
+        // console.log(res.data.data.token);
+        // console.log(res.data.msg);
+        localStorage.setItem("user-info", JSON.stringify(res.data.data));
         navigate("/");
       })
       .catch((err) => console.error(err.response.data));
