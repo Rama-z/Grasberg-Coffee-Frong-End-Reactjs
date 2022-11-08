@@ -39,10 +39,13 @@ class ProductDetails extends Component {
   render() {
     // const { params } = this.props;
     // console.log(params);
+    const role = JSON.parse(localStorage.getItem("user-info"))
+      ? JSON.parse(localStorage.getItem("user-info")).role
+      : "";
     return (
       <>
         <Header />
-        <main className="row d-flex justify-content-center align-content-center flex-column flex-md-row">
+        <main className="row d-flex justify-content-center align-content-center flex-column flex-md-row mb-5">
           <section className="col-6 col-sm-12 col-lg-6 col-md-6 text-center">
             <nav className="text-start">
               <section className="text-start align-items-start fs-5">
@@ -124,7 +127,11 @@ class ProductDetails extends Component {
               Add to Cart
             </span>{" "}
             <br />
-            <span className={styles.staff}>Ask a Staff</span>
+            {role === "admin" ? (
+              <span className={styles.staff}>Edit Product</span>
+            ) : (
+              <span className={styles.staff}>Ask a Staff</span>
+            )}
           </article>
           <section
             className={`${styles.choose_checkout} row justify-content-between flex-md-column flex-lg-row`}
@@ -145,7 +152,7 @@ class ProductDetails extends Component {
                   alt="prod_cold_brew"
                 />
                 <section className="d-flex flex-column justify-content-center">
-                  <h5 className="fw-bold fs-4">COLD BREW</h5>
+                  <h5 className="fw-bold fs-4">{this.state.product.menu}</h5>
                   <span>x1 (Large)</span>
                   <span>x1 (Regular)</span>
                 </section>

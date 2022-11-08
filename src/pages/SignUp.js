@@ -22,7 +22,7 @@ const SignUp = () => {
     pass: "",
     gender: "",
     adress: "",
-    phone_number: "",
+    phone: "",
   });
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,13 +33,14 @@ const SignUp = () => {
         username: "user1",
         gender: "male",
         adress: "adress",
-        phone_number: values.phone_number,
+        phone: values.phone,
       })
       .then((res) => {
-        localStorage.setItem("token", res.data.data.token);
-        navigate("/");
+        console.log(values.pass);
+        console.log(res.data.result);
+        navigate("/auth");
       })
-      .catch((err) => console.error(err.response.data));
+      .catch((err) => console.error(err.response));
   };
   TabTitle("Sign Up");
   return (
@@ -67,9 +68,7 @@ const SignUp = () => {
                 name=""
                 className={`${styles["input-box"]} ${styles["input"]}`}
                 placeholder="Enter your password"
-                onChange={(e) =>
-                  setValues({ ...values, password: e.target.value })
-                }
+                onChange={(e) => setValues({ ...values, pass: e.target.value })}
               />
               <p className={`${styles["email"]}`}>Phone Number :</p>
               <input
@@ -78,7 +77,7 @@ const SignUp = () => {
                 className={`${styles["input-box"]} ${styles["input"]}`}
                 placeholder="Enter your password"
                 onChange={(e) =>
-                  setValues({ ...values, phone_number: e.target.value })
+                  setValues({ ...values, phone: e.target.value })
                 }
               />
               <p

@@ -15,6 +15,11 @@ import TryLogin from "./pages/TryLogin";
 import LoginError from "./pages/LoginError";
 import PrivateElement from "./components/PrivateElement";
 import Counter from "./pages/Counter";
+import EditProduct from "./pages/EditProduct";
+import EditPromo from "./pages/EditPromo";
+import AddPromo from "./pages/AddPromo";
+import AddProduct from "./pages/AddProduct";
+import DetailsProduct from "./pages/DetailsProduct";
 // import Protected from "./utils/Protected";
 // import Error from "./pages/Error";
 
@@ -35,11 +40,16 @@ const router = createBrowserRouter([
   },
   { path: "/payment", element: <Payment /> },
   { path: "/product/:id", element: <ProductDetails /> },
+  { path: "/products/:id", element: <DetailsProduct /> },
   { path: "/forgotpwd", element: <ForgotPWD /> },
   { path: "/app", element: <App /> },
   { path: "/trylogin", element: <TryLogin /> },
   { path: "/loginerror", element: <LoginError /> },
   { path: "/counter", element: <Counter /> },
+  { path: "/editProduct", element: <EditProduct /> },
+  { path: "/editPromo", element: <EditPromo /> },
+  { path: "/addPromo", element: <AddPromo /> },
+  { path: "/addProduct", element: <AddProduct /> },
 ]);
 
 export default router;

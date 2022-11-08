@@ -40,6 +40,7 @@ const Login = () => {
         // console.log(res.data.data.token);
         // console.log(res.data.msg);
         localStorage.setItem("user-info", JSON.stringify(res.data.data));
+        localStorage.setItem("token", JSON.stringify(res.data.data.token));
         navigate("/");
       })
       .catch((err) => console.error(err.response.data));

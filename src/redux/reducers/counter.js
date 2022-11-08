@@ -6,28 +6,28 @@ import actionStrings from "../actions/actionStrings";
 
 const initialState = {
   // bekerja sebagai sefault value
-  counter: 0,
+  number: 0,
 };
 
 const counterReducer = (prevState = initialState, action) => {
   // Melakukan pengkondisian utnuk masing masing action
-  // if(action.type = actionStrings.counterUp)
+  // if(action.type = actionStrings.numberUp)
   switch (action.type) {
-    case actionStrings.counterUp:
-      // const newCounter = prevState.counter + 1;
+    case actionStrings.numberUp:
+      // const newnumber = prevState.number + 1;
       return {
         ...prevState,
-        counter: prevState.counter + 1,
+        number: prevState.number + 1,
       };
-    case actionStrings.counterDown:
+    case actionStrings.numberDown:
       return {
         ...prevState,
-        counter: prevState.counter - 1,
+        number: prevState.number === 0 ? 0 : prevState.number - 1,
       };
-    case actionStrings.counterReset:
+    case actionStrings.numberReset:
       return {
         ...prevState,
-        counter: initialState.counter,
+        number: initialState.number,
       };
     default:
       return prevState;

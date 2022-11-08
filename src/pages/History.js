@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import styles from "../styles/History.module.css";
-import Card from "../components/CardHistory";
 import Header from "../components/HeaderHome";
 import Footer from "../components/Footer";
 import TabTitle from "../utils/WebDinamis";
 import axios from "axios";
+import { Fragment } from "react";
+import CardHistory from "../components/CardHistory";
 
 export default class History extends Component {
   constructor() {
@@ -14,13 +15,18 @@ export default class History extends Component {
       });
   }
   getHistory = () => {
+    let config = {
+      headers: {
+        "x-access-token": JSON.parse(localStorage.getItem("user-info")).token,
+      },
+    };
     axios
       .get(
-        `http://localhost:8080/api/v1/transactions/sort/?search=&filter=&order_by=&order_in&page=4&limit=4`
+        `http://localhost:8080/api/v1/transactions/history?page=1&limit=10`,
+        config
       )
       .then((res) => {
-        console.log(res.data);
-        const product = res.data.result;
+        const product = res.data.result.data;
         this.setState({ product });
       })
       .catch((err) => {
@@ -28,12 +34,13 @@ export default class History extends Component {
       });
   };
   componentDidMount() {
+    console.log(JSON.parse(localStorage.getItem("user-info")).token);
     this.getHistory();
   }
   render() {
     TabTitle("User History");
     return (
-      <>
+      <Fragment>
         <Header />
         <main className={`${styles["hist-bck"]} py-5`}>
           <section>
@@ -45,15 +52,23 @@ export default class History extends Component {
             </div>
           </section>
           <section className={`${styles["list-product"]} container col-lg-9`}>
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+            {this.state.product.map((item, idx) => {
+              return (
+                <CardHistory
+                  menu={item.menu}
+                  discount={item.discount}
+                  price={item.total}
+                  key={idx}
+                  id={item.id}
+                  image={item.image}
+                  status={item.status}
+                />
+              );
+            })}
           </section>
         </main>
         <Footer />
-      </>
+      </Fragment>
     );
   }
 }

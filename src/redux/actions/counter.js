@@ -22,4 +22,10 @@ const counterReset = () => {
   };
 };
 
-export default { counterUp, counterDown, counterReset };
+const counterActions = {
+  counterUp,
+  counterDown,
+  counterReset,
+};
+
+export default counterActions;

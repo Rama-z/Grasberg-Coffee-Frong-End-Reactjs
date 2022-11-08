@@ -11,6 +11,9 @@ import axios from "axios";
 import withNavigate from "../helpers/withNavigate";
 import withLocation from "../helpers/withLocation";
 import withSearchParams from "../helpers/withSearchParams";
+import { getFavorite } from "../utils/product";
+import productActions from "../redux/actions/product";
+import { connect } from "react-redux";
 
 class Product extends Component {
   constructor() {
@@ -31,12 +34,9 @@ class Product extends Component {
   favoriteClick = () => {
     // const url = process.env.REACT_APP_BACKEND_HOST;
     // console.log(url);
-    axios
-      .get(
-        `http://localhost:8080/api/v1/products/?search=&filter=&order_by=transactions&order_in=&page=&limit=`
-      )
+    // this.props.dispatch(productActions.getFavoriteAction());
+    getFavorite()
       .then((res) => {
-        console.log(res.data);
         const product = res.data.result;
         this.setState({ product });
       })
@@ -46,12 +46,13 @@ class Product extends Component {
   };
   componentDidMount() {
     this.favoriteClick();
+    // this.props.dispatch(productActions.getFavoriteAction());
     this.promoChanges();
   }
   coffeeClick = async () => {
     axios
       .get(
-        `http://localhost:8080/api/v1/products/?search=&filter=1&order_by=&order_in=&page=1&limit=15`
+        `${process.env.REACT_APP_BACKEND_HOST}products/?search=&filter=1&order_by=&order_in=&page=1&limit=15`
       )
       .then((res) => {
         console.log(res.data);
@@ -65,7 +66,7 @@ class Product extends Component {
   nonCoffeeClick = async () => {
     axios
       .get(
-        `http://localhost:8080/api/v1/products/?search=&filter=2&order_by=&order_in=&page=1&limit=15`
+        `${process.env.REACT_APP_BACKEND_HOST}products/?search=&filter=2&order_by=&order_in=&page=1&limit=15`
       )
       .then((res) => {
         console.log(res.data);
@@ -79,7 +80,7 @@ class Product extends Component {
   foodsClick = async () => {
     axios
       .get(
-        `http://localhost:8080/api/v1/products/?search=&filter=3&order_by=&order_in=&page=1&limit=15`
+        `${process.env.REACT_APP_BACKEND_HOST}products/?search=&filter=3&order_by=&order_in=&page=&limit=`
       )
       .then((res) => {
         console.log(res.data);
@@ -93,18 +94,9 @@ class Product extends Component {
 
   promoChanges = async () => {
     axios
-      .get(`http://localhost:8080/api/v1/promos/?codes=&menu=`)
+      .get(`${process.env.REACT_APP_BACKEND_HOST}promos/?codes=&menu=`)
       .then((res) => {
         const promo = res.data.result;
-        // let codes = "";
-        // promo.map((item) => {
-        //   return (codes = item);
-        // });
-        // console.log(res);
-        // console.log(res.data.codes);
-        // console.log(promo);
-        // console.log(codes.image);
-        // console.log(promo.data);
         this.setState({ promo });
       })
       .catch((err) => {
@@ -114,9 +106,10 @@ class Product extends Component {
   render() {
     const { setSearchParams } = this.props;
     TabTitle("Grasberg Menu");
-    // console.log(this.props.location);
     console.log(this.props.searchParams);
-
+    const role = JSON.parse(localStorage.getItem("user-info"))
+      ? JSON.parse(localStorage.getItem("user-info")).role
+      : "";
     return (
       <>
         <Header />
@@ -153,7 +146,7 @@ class Product extends Component {
                 <div className={`${styles["apply"]} col-md text-center my-5`}>
                   Apply Coupon
                 </div>
-                <div className={`${styles["terms"]} col-md mt-5`}>
+                <div className={`${styles["terms"]} col-md mt-5 mb-5`}>
                   <div>
                     <strong>Terms and Condition</strong>
                   </div>
@@ -162,6 +155,28 @@ class Product extends Component {
                   <div>3. Buy 1 get 1 only for new user</div>
                   <div>4. Should make member card to apply coupon</div>
                 </div>
+                {role === "admin" ? (
+                  <>
+                    <div
+                      className={`${styles["nb-info-admin"]}`}
+                      onClick={() => {
+                        this.props.navigate("/editPromo");
+                      }}
+                    >
+                      Edit promo
+                    </div>
+                    <div
+                      className={`${styles["nb-info-admin"]}`}
+                      onClick={() => {
+                        this.props.navigate("/addPromo");
+                      }}
+                    >
+                      Add new promo
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
               </div>
               <div className={`${styles["post-right"]} col-md col-sm`}>
                 <div className={`${styles["menu-toggle"]}`}>
@@ -180,6 +195,7 @@ class Product extends Component {
                       });
                       setSearchParams(url);
                       this.favoriteClick();
+                      this.props.dispatch(productActions.getFavoriteAction());
                     }}
                   >
                     Favorite & Promo
@@ -237,8 +253,32 @@ class Product extends Component {
                     );
                   })}
                 </div>
-                <div className={`${styles["nb-info"]}`}>
-                  *the price has been cutted by discount appears
+                <div className="ms-5">
+                  <div className={`${styles["nb-info"]} mb-5`}>
+                    *the price has been cutted by discount appears
+                  </div>
+                  {role === "admin" ? (
+                    <>
+                      <div
+                        onClick={() => {
+                          this.props.navigate("/editProduct");
+                        }}
+                        className={`${styles["nb-info-admin"]}`}
+                      >
+                        Edit product
+                      </div>
+                      <div
+                        className={`${styles["nb-info-admin"]}`}
+                        onClick={() => {
+                          this.props.navigate("/addProduct");
+                        }}
+                      >
+                        Add new product
+                      </div>
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="col-md"></div>
               </div>
@@ -257,6 +297,15 @@ Product.propTypes = {
   createSearchParams: PropTypes.object,
 };
 
-const NewComponent = withSearchParams(withLocation(withNavigate(Product)));
+const mapStateToProps = (reduxState) => {
+  return {
+    counter: reduxState.counter,
+    product: reduxState.product,
+  };
+};
+
+const NewComponent = withSearchParams(
+  withLocation(withNavigate(connect(mapStateToProps)(Product)))
+);
 
 export default NewComponent;

@@ -1,0 +1,244 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;900&display=swap");
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Rubik", sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* main-content */
+.main-container {
+  display: flex;
+  width: 100%;
+  background-color: white;
+  border-top: 0.5px solid #9f9f9f;
+  box-shadow: 0px 30px 60px rgb(57 57 57 / 10%);
+}
+
+.main-container .left-content {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 1rem 2rem;
+}
+
+.main-container .left-content h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #6a4029;
+  padding: 2rem;
+}
+
+.main-container .left-content p {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 400;
+  max-width: 75%;
+  padding-bottom: 1.5rem;
+}
+
+.main-container .left-content .promo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.promo-detail {
+  position: relative;
+}
+
+.main-container .left-content .promo-detail .med-bar {
+  position: absolute;
+  height: 75%;
+  padding: 5rem;
+  background-color: black;
+  border-radius: 1rem;
+  right: -2rem;
+  top: 2rem;
+}
+
+.main-container .left-content .promo-detail .back-bar {
+  position: absolute;
+  height: 65%;
+  padding: 5rem;
+  background-color: #895537;
+  border-radius: 1rem;
+  right: -3.5rem;
+  top: 3.7rem;
+}
+
+.main-container .left-content .promo-detail {
+  width: 75%;
+}
+
+.left-content .promo-detail button {
+  border: none;
+  background-color: #6a4029;
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  width: 100%;
+  padding: 1rem;
+  margin-top: 2rem;
+  border-radius: 1rem;
+}
+
+.left-content .promo-detail button:hover {
+  transform: scale(1.1);
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.left-content .promo-detail button:active {
+  position: relative;
+  top: 2px;
+}
+
+.left-content ol {
+  list-style: none;
+  margin-top: 10rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+  color: #4f5665;
+}
+
+.left-content .add-promo {
+  padding: 8rem 3rem;
+}
+
+.main-container .right-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 6rem;
+  padding: 2rem;
+  border-left: 0.5px solid #9f9f9f;
+}
+
+.main-container .right-content ul {
+  list-style: none;
+  display: flex;
+  gap: 5rem;
+  padding: 0;
+}
+
+.main-container .right-content ul li {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #9f9f9f;
+}
+
+.main-container .right-content ul li:hover {
+  color: #6a4029;
+  font-weight: 700;
+  cursor: pointer;
+  border-bottom: 3px solid #6a4029;
+  /* box-shadow: 5px 10px 18px rgba(106, 64, 41, 0.67); */
+}
+
+.right-content .content-detail {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 8rem 2rem;
+  padding: 0 3rem;
+}
+
+.right-content .add-product {
+  width: 100%;
+  padding: 8.6rem 2rem;
+}
+
+/* hamburger */
+.menu-toggle {
+  position: relative;
+  display: flex;
+  height: 20px;
+  justify-content: space-around;
+  display: none;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 28px;
+  height: 10px;
+  background-color: #4f5665;
+  border-radius: 50%;
+  transition: all 0.5s;
+}
+
+.menu-toggle input {
+  position: absolute;
+  width: 29px;
+  height: 28px;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 11;
+}
+
+/* hamburger animation */
+
+.menu-toggle input:checked ~ span {
+  background-color: black;
+  transform: rotate(180deg) translate(-1px, -2px);
+}
+
+/* responsive */
+
+/* menu content */
+@media screen and (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .main-container .left-content {
+    width: 100%;
+    padding-top: 8rem;
+  }
+
+  .main-container .right-content ul {
+    padding: 2rem 0;
+    gap: 2rem;
+  }
+
+  .main-container .right-content ul li {
+    font-size: 1rem;
+  }
+
+  .right-content .content-detail {
+    gap: 8rem 3rem;
+    padding: 0;
+  }
+
+  .right-content .content-detail {
+    justify-content: center;
+  }
+
+  .left-content .add-promo,
+  .right-content .add-product {
+    padding-top: 1rem;
+  }
+}
+
+@media screen and (max-width: 556px) {
+  .main-container .right-content ul {
+    gap: 1rem;
+  }
+
+  .right-content .content-detail {
+    padding: 0;
+  }
+
+  .right-content .content-detail {
+    justify-content: center;
+  }
+}

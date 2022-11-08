@@ -62,13 +62,25 @@
 }
 
 .nb-info {
-  position: absolute;
-  bottom: 0em;
+  /* position: absolute;
+  bottom: 0em; */
   font-family: "Poppins";
   font-style: normal;
   font-weight: 400;
   font-size: 17px;
   color: #6a4029;
+}
+
+.nb-info-admin {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 38px;
+  /* text-align: center; */
+  text-decoration-line: underline;
+  color: #6a4029;
+  cursor: pointer;
 }
 
 .post-right {

@@ -87,7 +87,6 @@ footer {
 .content {
   background-color: #f8f8f8;
   border-radius: 10px;
-  margin: 10px 10px;
   padding: 20px;
 }
 
@@ -114,6 +113,7 @@ footer {
 }
 
 .btn {
+  width: 100%;
   border: 0;
   border-radius: 1.5vh;
 }
@@ -219,7 +219,7 @@ footer {
   max-width: 150vh;
   margin: 0 auto;
   justify-content: space-around;
-  margin-bottom: 100px;
+  /* margin-bottom: 100px; */
 }
 
 .mid-in-profile {
@@ -259,6 +259,7 @@ footer {
 }
 
 .edit {
+  text-align: center;
   padding: 0.5em 1.55em;
   margin: 2em 0em 1em 0em;
   font-family: "Poppins";
@@ -281,6 +282,8 @@ footer {
 }
 
 .log {
+  width: 100%;
+  text-align: center;
   padding: 0.5em 1.55em;
   margin: 1em 0em 1em 0em;
   font-family: "Poppins";
@@ -290,6 +293,13 @@ footer {
   background: #ffffff;
   border: 1px solid #9f9f9f;
   border-radius: 0.5em;
+}
+
+.log:hover,
+.btn:hover {
+  cursor: pointer;
+  width: 110%;
+  transition: 0.5s;
 }
 
 .cancel {
