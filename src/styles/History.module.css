@@ -9,7 +9,6 @@
 .hist-bck {
   background-image: url("../assets/background-history.png");
   background-size: cover;
-  
 }
 
 .title1 {
@@ -34,7 +33,6 @@
 
 .list-product {
   align-items: center;
-  justify-content: center;
   display: flex;
   flex-wrap: wrap;
   gap: 1em;

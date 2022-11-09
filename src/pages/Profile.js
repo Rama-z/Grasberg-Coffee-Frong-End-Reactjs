@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getProfileActions } from "../redux/actions/profile";
 import { editProfile } from "../utils/profile";
+import sample from "../assets/profile.png";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -57,14 +58,6 @@ const Profile = () => {
     }
   };
 
-  // const reqProfile = async () => {
-  //   try {
-  //     const response = await getProfile();
-  //     console.log(response.data.result.data[0]);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   useEffect(() => {
     // reqProfile();
     dispatch(getProfileActions());
@@ -72,6 +65,10 @@ const Profile = () => {
   // console.log(body);
 
   console.log(profile);
+  const gambarProfile = `http://localhost:8080/${profile.image}`;
+  const imageProfile = gambarProfile
+    ? `http://localhost:8080/${profile.image}`
+    : sample;
 
   return (
     <Fragment>
@@ -84,7 +81,7 @@ const Profile = () => {
             User Profile
           </section>
           <section
-            className={`${styles["flex-row"]} ${styles["content"]} ${styles["center"]} ${styles["mid-profile"]}`}
+            className={`${styles["flex-row1"]} ${styles["content"]} ${styles["center"]} ${styles["mid-profile"]}`}
           >
             <section
               className={`${styles["flex-column"]} ${styles["content"]} ${styles["profileImage"]} ${styles["mid-in-profile"]}`}
@@ -92,16 +89,13 @@ const Profile = () => {
               <div className={`${styles["flex-row"]}`}>
                 <img
                   className={`${styles["circular"]}`}
-                  src={
-                    imgPreview
-                      ? imgPreview
-                      : `http://localhost:8080/${profile.image}`
-                  }
+                  src={imgPreview ? imgPreview : imageProfile}
                   alt=""
                 />
+                {console.log(profile.image)}
               </div>
               <p className={`${styles["username"]}`}>
-                {profile.username || "your name here"}
+                {profile.username || "username"}
               </p>
               <p className={`${styles["email"]}`}>{profile.email}</p>
               <p
@@ -128,6 +122,168 @@ const Profile = () => {
               <p className={`${styles["edit"]} ${styles["btn"]}`}>
                 Edit Password
               </p>
+              <section
+                className={`${styles["content2"]} ${styles["mid-in-profile"]} ${styles["flex-column"]} ${styles["mid-first"]}`}
+              >
+                <div
+                  className={`${styles["format-text1"]} ${styles["flex-row"]}`}
+                >
+                  <p className={`${styles["font-format2"]}`}>Contacts</p>
+                  <div>
+                    <img src="./assets/pena.png" alt="" />
+                  </div>
+                </div>
+                <div
+                  className={`${styles["media-footer"]} ${styles["flex-row"]}`}
+                >
+                  <div
+                    className={`${styles["column-format"]} ${styles["flex-row"]} `}
+                  >
+                    <section>
+                      <p
+                        className={`${styles["font-format"]} ${styles["margins"]}`}
+                      >
+                        Email Adress :<p></p>
+                        <input
+                          type="text"
+                          className={`${styles["input"]}`}
+                          placeholder={profile.email || "Input your name"}
+                        />
+                        <div className={`${styles["under-input"]}`}></div>
+                      </p>
+                      <p
+                        className={`${styles["font-format"]} ${styles["margins"]}`}
+                      >
+                        Delivery Adress :<p></p>
+                        <input
+                          type="text"
+                          className={`${styles["input"]}`}
+                          placeholder={profile.adress || "Input your address"}
+                        />
+                        <div className={`${styles["under-input"]}`}></div>
+                      </p>
+                    </section>
+                  </div>
+                  <div>
+                    <p
+                      className={`${styles["font-format"]} ${styles["margins"]} ${styles["mobile-number"]}`}
+                    >
+                      Mobile Number : <p></p>
+                      <input
+                        type="text"
+                        className={`${styles["input"]}`}
+                        placeholder={profile.phone || "Input your phone number"}
+                      />
+                      <div className={`${styles["under-input"]}`}></div>
+                    </p>
+                  </div>
+                </div>
+                <div
+                  className={`${styles["flex-row"]} ${styles["font-format2"]} ${styles["details"]}`}
+                >
+                  Details
+                </div>
+                <div
+                  className={`${styles["media-footer"]} ${styles["flex-row"]}`}
+                >
+                  <div
+                    className={`${styles["flex-column"]} ${styles["column-format"]}`}
+                  >
+                    <p
+                      className={`${styles["font-format"]} ${styles["margins"]}`}
+                    >
+                      Display Name :<p></p>
+                      <input
+                        type="text"
+                        className={`${styles["input"]}`}
+                        placeholder={profile.username || "Input your address"}
+                        onChange={changeHandler}
+                      />
+                      <div className={`${styles["under-input"]}`}></div>
+                    </p>
+                    <p
+                      className={`${styles["font-format"]} ${styles["margins"]}`}
+                    >
+                      First Name :<p></p>
+                      <input
+                        type="text"
+                        className={`${styles["input"]}`}
+                        placeholder={profile.firstname || "Input your address"}
+                      />
+                      <div className={`${styles["under-input"]}`}></div>
+                    </p>
+                    <p
+                      className={`${styles["font-format"]} ${styles["margins"]}`}
+                    >
+                      Last Name :<p></p>
+                      <input
+                        type="text"
+                        className={`${styles["input"]}`}
+                        placeholder={profile.lastname || "Input your address"}
+                      />
+                      <div className={`${styles["under-input"]}`}></div>
+                    </p>
+                  </div>
+                  <div>
+                    <p
+                      className={`${styles["font-format"]} ${styles["margins"]}`}
+                    >
+                      DD/MM/YY: <p></p>
+                      <input
+                        disabled={notEdit}
+                        onChange={changeHandler}
+                        name="birthday"
+                        type={notEdit ? "text" : "date"}
+                        placeholder={getBirthday()}
+                        className={`${styles["input"]}`}
+                      />
+                      <div className={`${styles["under-input"]}`}></div>
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  <div
+                    className={`${styles["flex-row"]} ${styles["radio"]} ${styles["center"]}`}
+                  >
+                    <label htmlFor="Male">
+                      {notEdit ? (
+                        <input
+                          disabled={true}
+                          id="Male"
+                          // defaultChecked={profile.gender === "Male"}
+                          checked={profile.gender === "Male"}
+                          type="radio"
+                          placeholder="Male"
+                          name="gender"
+                          value="Male"
+                        />
+                      ) : (
+                        <input
+                          // defaultChecked={profile.gender === "Male"}
+                          type="radio"
+                          id="Male"
+                          name="gender"
+                          value="Male"
+                          onChange={changeHandler}
+                          className="me-2"
+                        />
+                      )}
+                      Male
+                    </label>
+                    <label htmlFor="Female">
+                      <input
+                        type="radio"
+                        id="Female"
+                        name="gender"
+                        value="Female"
+                        onChange={changeHandler}
+                        className="me-2"
+                      />
+                      Female
+                    </label>
+                  </div>
+                </div>
+              </section>
               <p className={`${styles["do"]}`}>
                 Do you want to save the change?
               </p>
@@ -159,7 +315,7 @@ const Profile = () => {
               </p>
             </section>
             <section
-              className={`${styles["content2"]} ${styles["mid-in-profile"]} ${styles["flex-column"]}`}
+              className={`${styles["content2"]} ${styles["mid-in-profile"]} ${styles["flex-column"]} ${styles["mid-second"]}`}
             >
               <div
                 className={`${styles["format-text1"]} ${styles["flex-row"]}`}
@@ -169,7 +325,9 @@ const Profile = () => {
                   <img src="./assets/pena.png" alt="" />
                 </div>
               </div>
-              <div className={`${styles["media-footer"]} `}>
+              <div
+                className={`${styles["media-footer"]} ${styles["flex-row"]}`}
+              >
                 <div
                   className={`${styles["column-format"]} ${styles["flex-row"]} `}
                 >
@@ -197,19 +355,19 @@ const Profile = () => {
                       <div className={`${styles["under-input"]}`}></div>
                     </p>
                   </section>
-                  <div className="ps-4">
-                    <p
-                      className={`${styles["font-format"]} ${styles["margins"]}`}
-                    >
-                      Mobile Number : <p></p>
-                      <input
-                        type="text"
-                        className={`${styles["input"]}`}
-                        placeholder={profile.phone || "Input your phone number"}
-                      />
-                      <div className={`${styles["under-input"]}`}></div>
-                    </p>
-                  </div>
+                </div>
+                <div>
+                  <p
+                    className={`${styles["font-format"]} ${styles["margins"]} ${styles["mobile-number"]}`}
+                  >
+                    Mobile Number : <p></p>
+                    <input
+                      type="text"
+                      className={`${styles["input"]}`}
+                      placeholder={profile.phone || "Input your phone number"}
+                    />
+                    <div className={`${styles["under-input"]}`}></div>
+                  </p>
                 </div>
               </div>
               <div

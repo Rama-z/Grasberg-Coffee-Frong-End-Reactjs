@@ -211,8 +211,9 @@ footer {
 
 .checkbox-pwd {
   position: relative;
-  bottom: 1em;
-  right: 5em;
+  bottom: 4em;
+  left: 10em;
+  /* right: 5em; */
 }
 
 .username {

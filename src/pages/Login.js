@@ -32,13 +32,6 @@ const Login = () => {
         pass: values.pass,
       })
       .then((res) => {
-        // console.log(process.env.REACT_APP_BACKEND_HOST);
-        // console.log(e);
-        // console.log(res);
-        // console.log(res.data);
-        // console.log(res.data.data);
-        // console.log(res.data.data.token);
-        // console.log(res.data.msg);
         localStorage.setItem("user-info", JSON.stringify(res.data.data));
         localStorage.setItem("token", JSON.stringify(res.data.data.token));
         navigate("/");
@@ -81,7 +74,6 @@ const Login = () => {
                 placeholder="Enter your password"
                 onChange={(e) => setValues({ ...values, pass: e.target.value })}
               />
-              <span>show password</span>
               <input
                 type="checkbox"
                 className={`${styles["checkbox-pwd"]}`}

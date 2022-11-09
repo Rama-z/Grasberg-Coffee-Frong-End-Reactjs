@@ -164,10 +164,6 @@ function AddProduct() {
                 }`}
               >
                 <p>{category}</p>
-                <div className={styles.arrows}>
-                  <p>&#9586;</p>
-                  <p>&#9585;</p>
-                </div>
               </div>
               <div className={isActive ? styles["list-dropdown"] : styles.none}>
                 <p

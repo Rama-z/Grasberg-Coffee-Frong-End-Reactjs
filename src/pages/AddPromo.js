@@ -8,7 +8,7 @@ import Camera from "../assets/camera.png";
 // import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useRef } from "react";
-import { postData } from "../utils/product";
+import { postData } from "../utils/promo";
 
 function AddProduct() {
   const [body, setBody] = useState({});
@@ -126,7 +126,7 @@ function AddProduct() {
                   <label className={styles["input-title"]}>
                     Input coupon code :
                   </label>
-                  <input type="text" name="code" placeholder="Input code" />
+                  <input type="text" name="codes" placeholder="Input code" />
                 </div>
               </div>
             </form>

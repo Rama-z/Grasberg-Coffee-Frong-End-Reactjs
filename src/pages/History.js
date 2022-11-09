@@ -51,7 +51,9 @@ export default class History extends Component {
               Long press to delete item
             </div>
           </section>
-          <section className={`${styles["list-product"]} container col-lg-9`}>
+          <section
+            className={`${styles["list-product"]} container col col-lg-9 ps-5`}
+          >
             {this.state.product.map((item, idx) => {
               return (
                 <CardHistory

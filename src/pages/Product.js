@@ -44,11 +44,6 @@ class Product extends Component {
         console.log(err);
       });
   };
-  componentDidMount() {
-    this.favoriteClick();
-    // this.props.dispatch(productActions.getFavoriteAction());
-    this.promoChanges();
-  }
   coffeeClick = async () => {
     axios
       .get(
@@ -91,7 +86,6 @@ class Product extends Component {
         console.log(err);
       });
   };
-
   promoChanges = async () => {
     axios
       .get(`${process.env.REACT_APP_BACKEND_HOST}promos/?codes=&menu=`)
@@ -103,6 +97,11 @@ class Product extends Component {
         console.log(err);
       });
   };
+  componentDidMount() {
+    this.favoriteClick();
+    // this.props.dispatch(productActions.getFavoriteAction());
+    this.promoChanges();
+  }
   render() {
     const { setSearchParams } = this.props;
     TabTitle("Grasberg Menu");
