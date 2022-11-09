@@ -417,7 +417,7 @@ section .mid-first {
     display: flex;
     flex-direction: column;
   }
-  .mid-first {
+  section .mid-first {
     display: flex;
   }
   .mid-second {
