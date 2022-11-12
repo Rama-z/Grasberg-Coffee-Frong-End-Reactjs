@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { getProfileActions } from "../redux/actions/profile";
 import { editProfile } from "../utils/profile";
 import sample from "../assets/profile.png";
+// import axios from "axios";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,10 @@ const Profile = () => {
     setBody({ ...body, [e.target.name]: e.target.value }),
   ];
 
+  // const logoutHandler = () => {
+  //   axios.delete();
+  // };
+
   const imageHandler = (e) => {
     const photo = e.target.files[0];
     setBody({ ...body, image: photo });
@@ -52,7 +57,7 @@ const Profile = () => {
       await editProfile(formData, token);
       dispatch(getProfileActions());
       onEdit();
-      console.log(formData);
+      // console.log(formData);
     } catch (error) {
       console.log(error);
     }
@@ -64,7 +69,7 @@ const Profile = () => {
   }, []);
   // console.log(body);
 
-  console.log(profile);
+  // console.log(profile);
   const gambarProfile = `http://localhost:8080/${profile.image}`;
   const imageProfile = gambarProfile
     ? `http://localhost:8080/${profile.image}`
@@ -92,7 +97,6 @@ const Profile = () => {
                   src={imgPreview ? imgPreview : imageProfile}
                   alt=""
                 />
-                {console.log(profile.image)}
               </div>
               <p className={`${styles["username"]}`}>
                 {profile.username || "username"}
@@ -101,7 +105,6 @@ const Profile = () => {
               <p
                 className={`${styles["btn"]} ${styles["choose"]} ${styles["krem"]}`}
                 onClick={(e) => {
-                  console.log("click");
                   e.preventDefault();
                   refTarget.current.click();
                 }}
@@ -128,7 +131,7 @@ const Profile = () => {
                 <div
                   className={`${styles["format-text1"]} ${styles["flex-row"]}`}
                 >
-                  <p className={`${styles["font-format2"]}`}>Contacts</p>
+                  <div className={`${styles["font-format2"]}`}>Contacts</div>
                   <div>
                     <img src="./assets/pena.png" alt="" />
                   </div>
@@ -140,7 +143,7 @@ const Profile = () => {
                     className={`${styles["column-format"]} ${styles["flex-row"]} `}
                   >
                     <section>
-                      <p
+                      <div
                         className={`${styles["font-format"]} ${styles["margins"]}`}
                       >
                         Email Adress :<p></p>
@@ -150,8 +153,8 @@ const Profile = () => {
                           placeholder={profile.email || "Input your name"}
                         />
                         <div className={`${styles["under-input"]}`}></div>
-                      </p>
-                      <p
+                      </div>
+                      <div
                         className={`${styles["font-format"]} ${styles["margins"]}`}
                       >
                         Delivery Adress :<p></p>
@@ -161,11 +164,11 @@ const Profile = () => {
                           placeholder={profile.adress || "Input your address"}
                         />
                         <div className={`${styles["under-input"]}`}></div>
-                      </p>
+                      </div>
                     </section>
                   </div>
                   <div>
-                    <p
+                    <div
                       className={`${styles["font-format"]} ${styles["margins"]} ${styles["mobile-number"]}`}
                     >
                       Mobile Number : <p></p>
@@ -175,7 +178,7 @@ const Profile = () => {
                         placeholder={profile.phone || "Input your phone number"}
                       />
                       <div className={`${styles["under-input"]}`}></div>
-                    </p>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -189,7 +192,7 @@ const Profile = () => {
                   <div
                     className={`${styles["flex-column"]} ${styles["column-format"]}`}
                   >
-                    <p
+                    <div
                       className={`${styles["font-format"]} ${styles["margins"]}`}
                     >
                       Display Name :<p></p>
@@ -200,8 +203,8 @@ const Profile = () => {
                         onChange={changeHandler}
                       />
                       <div className={`${styles["under-input"]}`}></div>
-                    </p>
-                    <p
+                    </div>
+                    <div
                       className={`${styles["font-format"]} ${styles["margins"]}`}
                     >
                       First Name :<p></p>
@@ -211,8 +214,8 @@ const Profile = () => {
                         placeholder={profile.firstname || "Input your address"}
                       />
                       <div className={`${styles["under-input"]}`}></div>
-                    </p>
-                    <p
+                    </div>
+                    <div
                       className={`${styles["font-format"]} ${styles["margins"]}`}
                     >
                       Last Name :<p></p>
@@ -222,10 +225,10 @@ const Profile = () => {
                         placeholder={profile.lastname || "Input your address"}
                       />
                       <div className={`${styles["under-input"]}`}></div>
-                    </p>
+                    </div>
                   </div>
                   <div>
-                    <p
+                    <div
                       className={`${styles["font-format"]} ${styles["margins"]}`}
                     >
                       DD/MM/YY: <p></p>
@@ -238,7 +241,7 @@ const Profile = () => {
                         className={`${styles["input"]}`}
                       />
                       <div className={`${styles["under-input"]}`}></div>
-                    </p>
+                    </div>
                   </div>
                 </div>
                 <div>
@@ -320,7 +323,7 @@ const Profile = () => {
               <div
                 className={`${styles["format-text1"]} ${styles["flex-row"]}`}
               >
-                <p className={`${styles["font-format2"]}`}>Contacts</p>
+                <div className={`${styles["font-format2"]}`}>Contacts</div>
                 <div>
                   <img src="./assets/pena.png" alt="" />
                 </div>
@@ -332,7 +335,7 @@ const Profile = () => {
                   className={`${styles["column-format"]} ${styles["flex-row"]} `}
                 >
                   <section>
-                    <p
+                    <div
                       className={`${styles["font-format"]} ${styles["margins"]}`}
                     >
                       Email Adress :<p></p>
@@ -342,8 +345,8 @@ const Profile = () => {
                         placeholder={profile.email || "Input your name"}
                       />
                       <div className={`${styles["under-input"]}`}></div>
-                    </p>
-                    <p
+                    </div>
+                    <div
                       className={`${styles["font-format"]} ${styles["margins"]}`}
                     >
                       Delivery Adress :<p></p>
@@ -353,11 +356,11 @@ const Profile = () => {
                         placeholder={profile.adress || "Input your address"}
                       />
                       <div className={`${styles["under-input"]}`}></div>
-                    </p>
+                    </div>
                   </section>
                 </div>
                 <div>
-                  <p
+                  <div
                     className={`${styles["font-format"]} ${styles["margins"]} ${styles["mobile-number"]}`}
                   >
                     Mobile Number : <p></p>
@@ -367,7 +370,7 @@ const Profile = () => {
                       placeholder={profile.phone || "Input your phone number"}
                     />
                     <div className={`${styles["under-input"]}`}></div>
-                  </p>
+                  </div>
                 </div>
               </div>
               <div
@@ -381,7 +384,7 @@ const Profile = () => {
                 <div
                   className={`${styles["flex-column"]} ${styles["column-format"]}`}
                 >
-                  <p
+                  <div
                     className={`${styles["font-format"]} ${styles["margins"]}`}
                   >
                     Display Name :<p></p>
@@ -392,8 +395,8 @@ const Profile = () => {
                       onChange={changeHandler}
                     />
                     <div className={`${styles["under-input"]}`}></div>
-                  </p>
-                  <p
+                  </div>
+                  <div
                     className={`${styles["font-format"]} ${styles["margins"]}`}
                   >
                     First Name :<p></p>
@@ -403,8 +406,8 @@ const Profile = () => {
                       placeholder={profile.firstname || "Input your address"}
                     />
                     <div className={`${styles["under-input"]}`}></div>
-                  </p>
-                  <p
+                  </div>
+                  <div
                     className={`${styles["font-format"]} ${styles["margins"]}`}
                   >
                     Last Name :<p></p>
@@ -414,10 +417,10 @@ const Profile = () => {
                       placeholder={profile.lastname || "Input your address"}
                     />
                     <div className={`${styles["under-input"]}`}></div>
-                  </p>
+                  </div>
                 </div>
                 <div>
-                  <p
+                  <div
                     className={`${styles["font-format"]} ${styles["margins"]}`}
                   >
                     DD/MM/YY: <p></p>
@@ -430,7 +433,7 @@ const Profile = () => {
                       className={`${styles["input"]}`}
                     />
                     <div className={`${styles["under-input"]}`}></div>
-                  </p>
+                  </div>
                 </div>
               </div>
               <div>

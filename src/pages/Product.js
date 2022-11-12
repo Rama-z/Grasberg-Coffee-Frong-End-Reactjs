@@ -11,7 +11,7 @@ import axios from "axios";
 import withNavigate from "../helpers/withNavigate";
 import withLocation from "../helpers/withLocation";
 import withSearchParams from "../helpers/withSearchParams";
-import { getFavorite } from "../utils/product";
+// import { getFavorite } from "../utils/product";
 import productActions from "../redux/actions/product";
 import { connect } from "react-redux";
 
@@ -32,17 +32,18 @@ class Product extends Component {
   }
   slide() {}
   favoriteClick = () => {
-    // const url = process.env.REACT_APP_BACKEND_HOST;
-    // console.log(url);
-    // this.props.dispatch(productActions.getFavoriteAction());
-    getFavorite()
-      .then((res) => {
-        const product = res.data.result;
-        this.setState({ product });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.props.dispatch(productActions.getFavoriteAction());
+    // console.log(this.props.dispatch(productActions.getFavoriteAction()));
+    // getFavorite()
+    //   .then((res) => {
+    //     console.log(res.data.result);
+    //     const product = res.data.result;
+    //     this.setState({ product });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    // console.log(getFavorite());
   };
   coffeeClick = async () => {
     axios
@@ -90,7 +91,7 @@ class Product extends Component {
     axios
       .get(`${process.env.REACT_APP_BACKEND_HOST}promos/?codes=&menu=`)
       .then((res) => {
-        const promo = res.data.result;
+        const promo = res.data.data;
         this.setState({ promo });
       })
       .catch((err) => {
@@ -98,14 +99,15 @@ class Product extends Component {
       });
   };
   componentDidMount() {
-    this.favoriteClick();
-    // this.props.dispatch(productActions.getFavoriteAction());
+    // this.favoriteClick();
+    this.props.dispatch(productActions.getAllProductAction("page=1&limit=12"));
+    // console.log(this.props.product);
     this.promoChanges();
   }
+
   render() {
     const { setSearchParams } = this.props;
     TabTitle("Grasberg Menu");
-    console.log(this.props.searchParams);
     const role = JSON.parse(localStorage.getItem("user-info"))
       ? JSON.parse(localStorage.getItem("user-info")).role
       : "";
@@ -188,16 +190,18 @@ class Product extends Component {
                   <div
                     className={`${styles["fvrt2"]} col-md-3 col-sm`}
                     onClick={() => {
-                      const url = createSearchParams({
-                        search: "",
-                        orderBy: "transactions",
-                      });
-                      setSearchParams(url);
-                      this.favoriteClick();
-                      this.props.dispatch(productActions.getFavoriteAction());
+                      // const url = createSearchParams({
+                      //   search: "",
+                      //   orderBy: "transactions",
+                      // });
+                      // setSearchParams(url);
+                      // this.favoriteClick();
+                      this.props.dispatch(
+                        productActions.getAllProductAction("page=1&limit=12")
+                      );
                     }}
                   >
-                    Favorite & Promo
+                    Favorite
                   </div>
                   <div
                     className={`${styles["fvrt2"]} col-md-2 col-sm`}

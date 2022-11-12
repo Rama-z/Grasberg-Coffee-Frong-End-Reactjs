@@ -14,14 +14,6 @@ export default function NavLogin() {
   const title = state.title;
   const [profile, setProfile] = useState({});
   const [search, setSearch] = useState(() => "");
-  // console.log(element);
-
-  // function slide() {
-  //   setState((state) => ({
-  //     text:
-  //       state.text === `${styles["slide-bar"]}` ? "" : `${styles["slide-bar"]}`,
-  //   }));
-  // }
 
   function searchBar() {
     setState((state) => ({
@@ -40,13 +32,11 @@ export default function NavLogin() {
   const getDataProfile = async () => {
     try {
       const result = await getProfile();
-      console.log(result.data.result.data[0]);
-      // console.log(result.data.result[0]);
-      setProfile(result.data.result.data[0]);
+      // console.log(result.data.data[0]);
+      setProfile(result.data.data[0]);
     } catch (error) {
-      // console.log(error);
-      // console.log(error.response.data.statusCode);
-      if (error.response.data.statusCode === 403) {
+      console.log(error);
+      if (error === 403) {
         navigate("/login");
       }
     }

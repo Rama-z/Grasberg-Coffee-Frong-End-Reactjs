@@ -23,14 +23,14 @@ export const profileReducer = (prevState = initialState, action) => {
         ...prevState,
         isError: true,
         isLoading: false,
-        error: action.payload.response.result.data.msg,
+        error: action.payload.response.data.msg,
       };
     case getProfile.concat("_", Fulfilled):
       return {
         ...prevState,
         isError: true,
         isLoading: false,
-        profile: action.payload.data.result.data[0],
+        profile: action.payload.data.data[0],
       };
     default:
       return prevState;

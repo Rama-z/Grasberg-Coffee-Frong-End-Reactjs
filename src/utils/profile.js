@@ -1,6 +1,5 @@
 import axios from "axios";
 const baseUrl = process.env.REACT_APP_BACKEND_HOST;
-console.log(baseUrl);
 
 export const getProfile = () => {
   const token = JSON.parse(localStorage.getItem("user-info")).token;

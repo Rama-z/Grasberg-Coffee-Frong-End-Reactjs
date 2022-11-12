@@ -26,7 +26,8 @@ export default class History extends Component {
         config
       )
       .then((res) => {
-        const product = res.data.result.data;
+        console.log(res.data.data);
+        const product = res.data.data;
         this.setState({ product });
       })
       .catch((err) => {
@@ -34,7 +35,7 @@ export default class History extends Component {
       });
   };
   componentDidMount() {
-    console.log(JSON.parse(localStorage.getItem("user-info")).token);
+    // console.log(JSON.parse(localStorage.getItem("user-info")).token);
     this.getHistory();
   }
   render() {

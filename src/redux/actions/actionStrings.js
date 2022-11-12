@@ -5,6 +5,7 @@ const actionStrings = {
   counterDown: "COUNTER_DOWN",
   counterReset: "COUNTER_RESET",
   getFavorites: "GET_FAVORITE",
+  getAllProduct: "GET_ALL_PRODUCT",
   pending: `_${ActionType.Pending}`,
   fulfilled: `_${ActionType.Fulfilled}`,
   rejected: `_${ActionType.Rejected}`,

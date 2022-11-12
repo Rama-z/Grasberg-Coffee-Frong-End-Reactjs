@@ -1,10 +1,17 @@
 import actionStrings from "./actionStrings";
-import { getFavorite, postData } from "../../utils/product";
+import { getFavorite, getAllProduct, postData } from "../../utils/product";
 
 const getFavoriteAction = () => {
   return {
     type: actionStrings.getFavorites,
     payload: getFavorite(),
+  };
+};
+
+const getAllProductAction = (limit) => {
+  return {
+    type: actionStrings.getAllProduct,
+    payload: getAllProduct(limit),
   };
 };
 
@@ -17,6 +24,7 @@ const addProductActions = (token, body) => {
 
 const productAction = {
   getFavoriteAction,
+  getAllProductAction,
   addProductActions,
 };
 

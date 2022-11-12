@@ -11,15 +11,16 @@ import Payment from "./pages/Payment";
 import ProductDetails from "./pages/ProductDetails";
 import ForgotPWD from "./pages/ForgotPWD";
 import App from "./App";
-import TryLogin from "./pages/TryLogin";
+// import TryLogin from "./pages/TryLogin";
 import LoginError from "./pages/LoginError";
 import PrivateElement from "./components/PrivateElement";
-import Counter from "./pages/Counter";
+// import Counter from "./pages/Counter";
 import EditProduct from "./pages/EditProduct";
 import EditPromo from "./pages/EditPromo";
 import AddPromo from "./pages/AddPromo";
 import AddProduct from "./pages/AddProduct";
-import DetailsProduct from "./pages/DetailsProduct";
+// import DetailsProduct from "./pages/DetailsProduct";
+// import TryProduct from "./pages/TryProduct";
 // import Protected from "./utils/Protected";
 // import Error from "./pages/Error";
 
@@ -38,14 +39,21 @@ const router = createBrowserRouter([
       </PrivateElement>
     ),
   },
-  { path: "/payment", element: <Payment /> },
+  {
+    path: "/payment",
+    element: (
+      <PrivateElement allowedRoles={["admin", "user"]}>
+        <Payment />
+      </PrivateElement>
+    ),
+  },
   { path: "/product/:id", element: <ProductDetails /> },
-  { path: "/products/:id", element: <DetailsProduct /> },
+  // { path: "/products/:id", element: <DetailsProduct /> },
   { path: "/forgotpwd", element: <ForgotPWD /> },
   { path: "/app", element: <App /> },
-  { path: "/trylogin", element: <TryLogin /> },
+  // { path: "/tryproduct", element: <TryProduct /> },
   { path: "/loginerror", element: <LoginError /> },
-  { path: "/counter", element: <Counter /> },
+  // { path: "/counter", element: <Counter /> },
   { path: "/editProduct", element: <EditProduct /> },
   { path: "/editPromo", element: <EditPromo /> },
   { path: "/addPromo", element: <AddPromo /> },
