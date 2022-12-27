@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 
 class CardProduct extends Component {
   render() {
-    // console.log(this.props.menu);
     return (
       <>
         <section className={`${styles["post-cont"]}`}>

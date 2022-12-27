@@ -45,6 +45,125 @@
   border-radius: 20px;
 }
 
+.setting-dropdown {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  position: relative;
+}
+
+.hide {
+  background-color: white;
+  text-align: start;
+  position: relative;
+  box-shadow: 0 0 3px #9f9f9f;
+  color: #9f9f9f !important;
+  box-shadow: 0px 5px 8px -2px black;
+  font-family: Rubik;
+  cursor: not-allowed;
+  font-weight: 700;
+  padding: 5px 20px;
+  border-radius: 25px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  -ms-border-radius: 25px;
+  -o-border-radius: 25px;
+}
+
+.next {
+  background-color: white;
+  text-align: end;
+  font-family: Rubik;
+  cursor: pointer;
+  box-shadow: 0 0 3px #9f9f9f;
+  box-shadow: 0px 5px 8px -2px black;
+  position: relative;
+  font-weight: 700;
+  padding: 5px 20px;
+  border-radius: 25px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  -ms-border-radius: 25px;
+  -o-border-radius: 25px;
+}
+
+.prev {
+  background-color: white;
+  text-align: start;
+  position: relative;
+  box-shadow: 0 0 3px #9f9f9f;
+  box-shadow: 0px 5px 8px -2px black;
+  font-family: Rubik;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 5px 20px;
+  border-radius: 25px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  -ms-border-radius: 25px;
+  -o-border-radius: 25px;
+}
+
+.bungkusan {
+  margin-top: 85px;
+  display: flex;
+  color: black;
+  padding: 25px 40px;
+  gap: 2rem;
+  justify-content: flex-end;
+}
+
+.loading {
+  margin: 0 auto;
+}
+
+.filters {
+  background-color: #6a4029;
+  padding: 5px;
+  width: 8%;
+  text-align: center;
+  color: white;
+  font-family: Poppins;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+}
+
+.list {
+  position: absolute;
+  right: 2px;
+  top: 42px;
+  z-index: 1;
+  padding: 6px;
+  box-shadow: 0 0 3px #9f9f9f;
+  border-radius: 10px;
+  background-color: white;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+.list p:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.list-hide {
+  display: none;
+}
+
+.list p {
+  font-family: Poppins;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
 .promo-t {
   font-family: "Rubik";
   font-style: normal;

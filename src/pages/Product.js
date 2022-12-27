@@ -7,14 +7,13 @@ import Header from "../components/HeaderHome";
 import Footer from "../components/Footer";
 import TabTitle from "../utils/WebDinamis";
 import PropTypes from "prop-types";
-import axios from "axios";
 import withNavigate from "../helpers/withNavigate";
 import withLocation from "../helpers/withLocation";
 import withSearchParams from "../helpers/withSearchParams";
-// import { getFavorite } from "../utils/product";
 import productActions from "../redux/actions/product";
+import promoActions from "../redux/actions/promo";
 import { connect } from "react-redux";
-
+import loadingImage from "../assets/readerarea (1).svg";
 class Product extends Component {
   constructor() {
     super();
@@ -24,6 +23,7 @@ class Product extends Component {
       underline: "",
       search: "",
       filter: "",
+      dropdown: false,
       order_by: "",
       order_in: "",
       page: "",
@@ -31,78 +31,83 @@ class Product extends Component {
     };
   }
   slide() {}
-  favoriteClick = () => {
-    this.props.dispatch(productActions.getFavoriteAction());
-    // console.log(this.props.dispatch(productActions.getFavoriteAction()));
-    // getFavorite()
-    //   .then((res) => {
-    //     console.log(res.data.result);
-    //     const product = res.data.result;
-    //     this.setState({ product });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    // console.log(getFavorite());
+
+  onSortHandler = (sort, cending) => {
+    this.setState(
+      (prevState) => ({
+        searchParams: {
+          ...prevState.searchParams,
+          filter: prevState.searchParams.filter
+            ? prevState.searchParams.filter
+            : "",
+          order_by: sort,
+          order_in: cending,
+          page: "2",
+        },
+      }),
+      () => {
+        this.props.setSearchParams(this.state.searchParams);
+      }
+    );
   };
-  coffeeClick = async () => {
-    axios
-      .get(
-        `${process.env.REACT_APP_BACKEND_HOST}products/?search=&filter=1&order_by=&order_in=&page=1&limit=15`
-      )
-      .then((res) => {
-        console.log(res.data);
-        const product = res.data.result;
-        this.setState({ product });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+  onPricehHandler = (sort, cending) => {
+    this.setState(
+      (prevState) => ({
+        searchParams: {
+          ...prevState.searchParams,
+          filter: prevState.searchParams.filter
+            ? prevState.searchParams.filter
+            : "",
+          order_by: sort,
+          order_in: cending,
+          page: "1",
+        },
+      }),
+      () => {
+        this.props.setSearchParams(this.state.searchParams);
+      }
+    );
   };
-  nonCoffeeClick = async () => {
-    axios
-      .get(
-        `${process.env.REACT_APP_BACKEND_HOST}products/?search=&filter=2&order_by=&order_in=&page=1&limit=15`
-      )
-      .then((res) => {
-        console.log(res.data);
-        const product = res.data.result;
-        this.setState({ product });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+  getData = (limit) => {
+    this.props.dispatch(productActions.getProductNextAction(limit));
   };
-  foodsClick = async () => {
-    axios
-      .get(
-        `${process.env.REACT_APP_BACKEND_HOST}products/?search=&filter=3&order_by=&order_in=&page=&limit=`
-      )
-      .then((res) => {
-        console.log(res.data);
-        const product = res.data.result;
-        this.setState({ product });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  promoChanges = async () => {
-    axios
-      .get(`${process.env.REACT_APP_BACKEND_HOST}promos/?codes=&menu=`)
-      .then((res) => {
-        const promo = res.data.data;
-        this.setState({ promo });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+
   componentDidMount() {
-    // this.favoriteClick();
-    this.props.dispatch(productActions.getAllProductAction("page=1&limit=12"));
-    // console.log(this.props.product);
-    this.promoChanges();
+    if (this.props.searchParams.toString()) {
+      return (
+        this.props.dispatch(promoActions.getPromoAction()),
+        this.props.dispatch(
+          productActions.getAllProductAction(this.props.searchParams.toString())
+        )
+      );
+    }
+    this.props.dispatch(productActions.getFavoriteAction("page=1&limit=4"));
+    console.log(this.props.searchParams.toString());
+    this.props.dispatch(promoActions.getPromoAction());
+    this.setState((prevState) => ({
+      searchParams: {
+        ...prevState.searchParams,
+        search: "",
+        filter: "",
+        order_by: "transactions",
+        order_in: "",
+        page: "1",
+        limit: "4",
+      },
+    }));
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.searchParams.toString() !== this.props.searchParams.toString()
+    ) {
+      console.log(this.props.searchParams.toString());
+      this.props.dispatch(
+        productActions.getAllProductAction(this.props.searchParams.toString())
+      );
+    }
   }
 
   render() {
@@ -132,7 +137,7 @@ class Product extends Component {
                   </div>
                 </div>
                 <div className={`${styles["gapping"]}`}>
-                  {this.state.promo.map((item, idx) => {
+                  {this.props.promo.promo.map((item, idx) => {
                     return (
                       <CardPromo
                         menu={item.codes}
@@ -190,14 +195,28 @@ class Product extends Component {
                   <div
                     className={`${styles["fvrt2"]} col-md-3 col-sm`}
                     onClick={() => {
-                      // const url = createSearchParams({
-                      //   search: "",
-                      //   orderBy: "transactions",
-                      // });
-                      // setSearchParams(url);
-                      // this.favoriteClick();
+                      this.setState((prevState) => ({
+                        searchParams: {
+                          ...prevState.searchParams,
+                          search: "",
+                          filter: "",
+                          order_by: "transactions",
+                          order_in: "",
+                          page: "1",
+                          limit: "4",
+                        },
+                      }));
+                      const url = createSearchParams({
+                        search: "",
+                        filter: "",
+                        order_by: "transactions",
+                        order_in: "",
+                        page: "1",
+                        limit: "4",
+                      });
+                      setSearchParams(url);
                       this.props.dispatch(
-                        productActions.getAllProductAction("page=1&limit=12")
+                        productActions.getFavoriteAction("page=1&limit=4")
                       );
                     }}
                   >
@@ -206,11 +225,29 @@ class Product extends Component {
                   <div
                     className={`${styles["fvrt2"]} col-md-2 col-sm`}
                     onClick={() => {
+                      this.setState((prevState) => ({
+                        searchParams: {
+                          ...prevState.searchParams,
+                          search: "",
+                          filter: "1",
+                          order_by: "",
+                          order_in: "",
+                          page: "1",
+                          limit: "4",
+                        },
+                      }));
                       const url = createSearchParams({
+                        search: "",
                         filter: "1",
+                        order_by: "",
+                        order_in: "",
+                        page: "1",
+                        limit: "4",
                       });
                       setSearchParams(url);
-                      this.coffeeClick();
+                      this.props.dispatch(
+                        productActions.getCoffeeAction("page=1&limit=4")
+                      );
                     }}
                   >
                     Coffee
@@ -218,11 +255,29 @@ class Product extends Component {
                   <div
                     className={`${styles["fvrt2"]} col-md-2 col-sm`}
                     onClick={() => {
+                      this.setState((prevState) => ({
+                        searchParams: {
+                          ...prevState.searchParams,
+                          search: "",
+                          filter: "2",
+                          order_by: "",
+                          order_in: "",
+                          page: "1",
+                          limit: "4",
+                        },
+                      }));
                       const url = createSearchParams({
+                        search: "",
                         filter: "2",
+                        order_by: "",
+                        order_in: "",
+                        page: "1",
+                        limit: "4",
                       });
                       setSearchParams(url);
-                      this.nonCoffeeClick();
+                      this.props.dispatch(
+                        productActions.getNonCoffeeAction("page=1&limit=4")
+                      );
                     }}
                   >
                     Non Coffee
@@ -230,11 +285,29 @@ class Product extends Component {
                   <div
                     className={`${styles["fvrt2"]} col-md-2 col-sm`}
                     onClick={() => {
+                      this.setState((prevState) => ({
+                        searchParams: {
+                          ...prevState.searchParams,
+                          search: "",
+                          filter: "3",
+                          order_by: "",
+                          order_in: "",
+                          page: "1",
+                          limit: "4",
+                        },
+                      }));
                       const url = createSearchParams({
+                        search: "",
                         filter: "3",
+                        order_by: "",
+                        order_in: "",
+                        page: "1",
+                        limit: "4",
                       });
                       setSearchParams(url);
-                      this.foodsClick();
+                      this.props.dispatch(
+                        productActions.getFoodAction("page=1&limit=4")
+                      );
                     }}
                   >
                     Foods
@@ -243,18 +316,111 @@ class Product extends Component {
                     Add-on
                   </div>
                 </div>
+                <div
+                  className={styles["setting-dropdown"]}
+                  onClick={() => {
+                    this.setState((prevState) => ({
+                      dropdown: prevState.dropdown ? false : true,
+                    }));
+                  }}
+                >
+                  <p className={styles.filters}>Filter</p>
+                  <div
+                    className={
+                      this.state.dropdown ? styles["list"] : styles["list-hide"]
+                    }
+                  >
+                    <p
+                      onClick={() => {
+                        this.onSortHandler("created_at", "asc");
+                      }}
+                    >
+                      Newest
+                    </p>
+                    <p
+                      onClick={() => {
+                        this.onSortHandler("created_at", "desc");
+                      }}
+                    >
+                      Latest
+                    </p>
+                    <p
+                      onClick={() => {
+                        this.onPricehHandler("price", "asc");
+                      }}
+                    >
+                      Cheap to Expensive
+                    </p>
+                    <p
+                      onClick={() => {
+                        this.onPricehHandler("price", "desc");
+                      }}
+                    >
+                      Expensive to Cheap
+                    </p>
+                  </div>
+                </div>
                 <div className={`${styles["card-product"]} ms-5 mt-2`}>
-                  {this.state.product.map((item, idx) => {
-                    return (
-                      <CardProduct
-                        menu={item.menu}
-                        price={item.price}
-                        key={idx}
-                        id={item.id}
-                        image={item.image}
-                      />
-                    );
-                  })}
+                  {!this.props.product.isLoading ? (
+                    this.props.product.product.map((item, idx) => {
+                      return (
+                        <CardProduct
+                          menu={item.menu}
+                          price={item.price}
+                          key={idx}
+                          id={item.id}
+                          image={item.image}
+                        />
+                      );
+                    })
+                  ) : (
+                    <img
+                      src={loadingImage}
+                      alt="loading"
+                      className={`${styles["loading"]}`}
+                    />
+                  )}
+                </div>
+                <div className={styles.bungkusan}>
+                  <button
+                    className={this.props.product.togglePrev}
+                    onClick={() => {
+                      const url = createSearchParams({
+                        search: this.state.searchParams.search || "",
+                        filter: this.state.searchParams.filter,
+                        order_by: this.state.searchParams.order_by,
+                        order_in: this.state.searchParams.order_in,
+                        page: Number(this.state.searchParams.page).toString(),
+                        limit: "4",
+                      });
+                      setSearchParams(url);
+                    }}
+                  >
+                    PREV
+                  </button>
+                  <button
+                    className={this.props.product.toggleNext}
+                    onClick={() => {
+                      this.setState((prevState) => ({
+                        searchParams: {
+                          ...prevState.searchParams,
+                        },
+                      }));
+                      const url = createSearchParams({
+                        search: this.state.searchParams.search || "",
+                        filter: this.state.searchParams.filter,
+                        order_by: this.state.searchParams.order_by,
+                        order_in: this.state.searchParams.order_in,
+                        page: (
+                          Number(this.state.searchParams.page) + 1
+                        ).toString(),
+                        limit: "4",
+                      });
+                      setSearchParams(url);
+                    }}
+                  >
+                    NEXT
+                  </button>
                 </div>
                 <div className="ms-5">
                   <div className={`${styles["nb-info"]} mb-5`}>
@@ -304,6 +470,7 @@ const mapStateToProps = (reduxState) => {
   return {
     counter: reduxState.counter,
     product: reduxState.product,
+    promo: reduxState.promo,
   };
 };
 

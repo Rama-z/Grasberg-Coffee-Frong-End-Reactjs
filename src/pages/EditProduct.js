@@ -2,13 +2,10 @@ import React from "react";
 import styles from "../styles/AddProduct.module.css";
 import Header from "../components/HeaderHome";
 import Footer from "../components/Footer";
-// import Button from "../components/Button";
-
 import Camera from "../assets/camera.png";
-// import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useRef } from "react";
-import { postData } from "../utils/product";
+import { editProduct } from "../utils/product";
 
 function AddProduct() {
   const [body, setBody] = useState({});
@@ -19,27 +16,32 @@ function AddProduct() {
   const token = JSON.parse(localStorage.getItem("user-info")).token;
 
   const setDropdown = () => setIsActive(!isActive);
+
   const changeHandler = (e) => {
     setBody({ ...body, [e.target.name]: e.target.value });
   };
+
   const imageHandler = (e) => {
     const photo = e.target.files[0];
     setBody({ ...body, image: photo });
     setImgPrev(URL.createObjectURL(photo));
   };
-  const postProduct = async () => {
+
+  const editData = async () => {
     const formData = new FormData();
     Object.keys(body).forEach((e) => {
       formData.append(e, body[e]);
     });
     try {
-      const response = await postData(token, formData);
+      const response = await editProduct(token, formData);
       console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
+
   console.log(token, body);
+
   return (
     <>
       <Header />
@@ -211,7 +213,7 @@ function AddProduct() {
             <div className={styles["btn-container"]}>
               <button
                 onClick={() => {
-                  postProduct();
+                  editData();
                 }}
                 className={`${styles["btn"]} ${styles["btn-save"]}`}
               >

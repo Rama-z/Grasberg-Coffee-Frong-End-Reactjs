@@ -1,11 +1,19 @@
 import { ActionType } from "redux-promise-middleware";
 
-const actionStrings = {
+export const actionStrings = {
+  authLogin: "AUTH_LOGIN",
   counterUp: "COUNTER_UP",
   counterDown: "COUNTER_DOWN",
   counterReset: "COUNTER_RESET",
   getFavorites: "GET_FAVORITE",
+  getCoffee: "GET_COFFEE",
+  getNonCoffee: "GET_NONCOFFEE",
+  getFood: "GET_FOOD",
   getAllProduct: "GET_ALL_PRODUCT",
+  editProduct: "EDIT_PRODUCT",
+  getProducts: "GET_PRODUCTS",
+  getPromos: "GET_PROMO",
+  addPromo: "ADD_PROMO",
   pending: `_${ActionType.Pending}`,
   fulfilled: `_${ActionType.Fulfilled}`,
   rejected: `_${ActionType.Rejected}`,
@@ -15,4 +23,4 @@ const actionStrings = {
   getDetailProduct: "_GET_PRODUCT_DETAIL",
 };
 
-export default actionStrings;
+// export default actionStrings;

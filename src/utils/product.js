@@ -1,23 +1,61 @@
 import axios from "axios";
 const baseUrl = process.env.REACT_APP_BACKEND_HOST;
 
-// const getAllProduct = (limit) => {
-//   console.log(process.env.REACT_APP_BACKEND_HOST);
-//   const url = `${baseUrl}products/?search=&filter=&order_by=transactions&order_in=&${limit}`;
-//   console.log(axios.get(url));
-//   return axios.get(url);
-// };
+const getAllProduct = (params) => {
+  return axios({
+    method: "GET",
+    url: `${baseUrl}products/?${params}`,
+  });
+};
 
-const getAllProduct = (limit) => {
+const getProductNext = (url) => {
+  return axios.get(url);
+};
+
+const getFavorite = (limit) => {
   return axios({
     method: "GET",
     url: `${baseUrl}products/?search=&filter=&order_by=transactions&order_in=&${limit}`,
   });
 };
 
-const getFavorite = () => {
-  const url = `${process.env.REACT_APP_BACKEND_HOST}products/?search=&filter=&order_by=transactions&order_in=&page=&limit=`;
-  return axios.get(url);
+const getCoffee = (limit) => {
+  return axios({
+    method: "GET",
+    url: `${baseUrl}products/?search=&filter=1&order_by=&order_in=&${limit}`,
+  });
+};
+
+const getNonCoffee = (limit) => {
+  return axios({
+    method: "GET",
+    url: `${baseUrl}products/?search=&filter=2&order_by=&order_in=&${limit}`,
+  });
+};
+
+const getFood = (limit) => {
+  return axios({
+    method: "GET",
+    url: `${baseUrl}products/?search=&filter=3&order_by=&order_in=&${limit}`,
+  });
+};
+
+const postData = (token, data) => {
+  return axios({
+    method: "POST",
+    url: `${baseUrl}products/?search=&filter=&order_by=&order_in=&page=&limit=`,
+    data,
+    headers: { "x-access-token": token },
+  });
+};
+
+const editProduct = (data, token /*id*/) => {
+  const url = `${process.env.REACT_APP_BACKEND_HOST}products/image/193`;
+  return axios.patch(url, data, {
+    headers: {
+      "x-access-token": token,
+    },
+  });
 };
 
 const axiosRequest = (method, url, data, params) => {
@@ -29,17 +67,17 @@ const axiosRequest = (method, url, data, params) => {
   });
 };
 
-export const postData = (token, data) => {
-  return axios({
-    method: "POST",
-    url: `${baseUrl}products/?search=&filter=&order_by=&order_in=&page=&limit=`,
-    data,
-    headers: { "x-access-token": token },
-  });
-};
-
 export const getData = (url, params, data) => {
   return axiosRequest("GET", url, data, params);
 };
 
-export { getFavorite, getAllProduct };
+export {
+  getFavorite,
+  getProductNext,
+  getAllProduct,
+  getCoffee,
+  getNonCoffee,
+  getFood,
+  postData,
+  editProduct,
+};

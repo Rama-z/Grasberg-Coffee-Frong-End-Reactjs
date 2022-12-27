@@ -6,15 +6,14 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { getProfile } from "../utils/profile";
 import sample from "../assets/profile.png";
-import { connect } from "react-redux";
-import { createSearchParams } from "react-router-dom";
 
-const NavLogin = ({ setSearchParams }) => {
+export default function NavLogin() {
   const navigate = useNavigate();
   const [state, setState] = useState("");
   const text = state.text;
   const title = state.title;
   const [profile, setProfile] = useState({});
+  const [search, setSearch] = useState(() => "");
 
   function searchBar() {
     setState((state) => ({
@@ -22,9 +21,18 @@ const NavLogin = ({ setSearchParams }) => {
     }));
   }
 
+  const setValue = (event) => {
+    console.log(event);
+    setSearch(event.target.value);
+  };
+  const getSearch = () => {
+    return navigate(`/product?search=${search}`);
+  };
+
   const getDataProfile = async () => {
     try {
       const result = await getProfile();
+      // console.log(result.data.data[0]);
       setProfile(result.data.data[0]);
     } catch (error) {
       console.log(error);
@@ -34,25 +42,6 @@ const NavLogin = ({ setSearchParams }) => {
     }
   };
 
-  const onSearchHandler = (e) => {
-    console.log("search handler");
-    this.setState((prevState) => ({
-      searchParams: {
-        ...prevState.searchParams,
-        search: e.target.value,
-      },
-    }));
-    const url = createSearchParams({
-      search: e.target.value,
-      filter: "",
-      order_by: "transactions",
-      order_in: "",
-      page: "1",
-      limit: "4",
-    });
-    setSearchParams(url);
-  };
-
   useEffect(() => {
     getDataProfile();
   }, []);
@@ -60,8 +49,13 @@ const NavLogin = ({ setSearchParams }) => {
   return (
     <>
       <section className={`${styles["searching"]} ${text}`}>
-        <form className={styles.searching} onSubmit={onSearchHandler}>
-          <input className={title} type="text" placeholder="search here ..." />
+        <form className={styles.searching} onSubmit={getSearch}>
+          <input
+            className={title}
+            type="text"
+            placeholder="search here ..."
+            onChange={setValue}
+          />
           <div className={styles["search-img"]} onClick={searchBar}>
             <img src={searching} alt="searching" />
           </div>
@@ -81,16 +75,4 @@ const NavLogin = ({ setSearchParams }) => {
       </section>
     </>
   );
-};
-
-const mapStateToProps = (reduxState) => {
-  return {
-    counter: reduxState.counter,
-    product: reduxState.product,
-    promo: reduxState.promo,
-  };
-};
-
-const NewComponent = connect(mapStateToProps)(NavLogin);
-
-export default NewComponent;
+}

@@ -1,44 +1,101 @@
-import React from "react";
-import styles from "../styles/AddProduct.module.css";
-import Header from "../components/HeaderHome";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import NavBar from "../components/HeaderHome";
 import Footer from "../components/Footer";
-// import Button from "../components/Button";
+import styles from "../styles/EditProduct2.module.css";
+import Toast from "../components/Toast";
+import { useParams } from "react-router-dom";
+import { editProduct } from "../utils/product";
+import { useDispatch, useSelector } from "react-redux";
+import { getDetailProductAction } from "../redux/actions/product";
 
-import Camera from "../assets/camera.png";
-// import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useRef } from "react";
-// import { postData } from "../utils/promo";
-
-function AddProduct() {
+const EditProduct = () => {
+  const product = useSelector((state) => state.getDetailProduct);
+  const { id } = useParams();
+  console.log(id);
   const [body, setBody] = useState({});
   const [imgPrev, setImgPrev] = useState(null);
+  const [toastInfo, setToastInfo] = useState({ display: false });
   const [isActive, setIsActive] = useState(false);
-  const [category, setCategory] = useState("Select Categories");
+  const [category, setCategory] = useState("");
   const refTarget = useRef(null);
   const token = JSON.parse(localStorage.getItem("user-info")).token;
+  const dispatch = useDispatch();
 
   const setDropdown = () => setIsActive(!isActive);
+
   const changeHandler = (e) => {
     setBody({ ...body, [e.target.name]: e.target.value });
   };
+
   const imageHandler = (e) => {
     const photo = e.target.files[0];
+    const defaultSize = 2 * 1024 * 1024;
+    if (
+      photo.type !== "image/jpeg" &&
+      photo.type !== "image/jpg" &&
+      photo.type !== "image/png"
+    )
+      return setToastInfo({
+        display: true,
+        status: "error",
+        message: "Extension file wrong! Only .jpeg, .jpg, .png are allowed.",
+      });
+    if (photo.size > defaultSize)
+      return setToastInfo({
+        display: true,
+        status: "error",
+        message: "File to large. Max. file size 2 Mb",
+      });
     setBody({ ...body, image: photo });
     setImgPrev(URL.createObjectURL(photo));
   };
 
-  console.log(token, body);
+  const postProduct = async () => {
+    console.log(id);
+    const formData = new FormData();
+    Object.keys(body).forEach((e) => {
+      formData.append(e, body[e]);
+    });
+    try {
+      const response = await editProduct(token, formData);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const currency = (price) => {
+    return (
+      "IDR " +
+      parseFloat(price)
+        .toFixed()
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    );
+  };
+
+  useEffect(() => {
+    dispatch(getDetailProductAction(id));
+    setCategory(product);
+  }, []);
+
   return (
-    <>
-      <Header />
+    <Fragment>
+      <Toast
+        status={toastInfo.status}
+        message={toastInfo.message}
+        display={!toastInfo.display ? "none" : "flex"}
+        changeState={(value) => {
+          setToastInfo({ display: value });
+        }}
+      />
+      <NavBar />
       <main className={styles["main-add-product"]}>
         <p className={styles["category-text"]}>
           Favorites and Promos{" "}
-          <span className={styles["add-title"]}> &#62; Add new promo</span>
+          <span className={styles["add-title"]}> &#62; </span>
         </p>
         <section className={styles["main-section"]}>
-          <section className={styles["left-content"]}>
+          <section className={`${styles["content"]} ${styles["left"]}`}>
             <form action="">
               <div
                 onClick={(e) => {
@@ -48,19 +105,12 @@ function AddProduct() {
                 className={`${styles["image-container"]} ${styles["pointer"]}`}
               >
                 <img
-                  src={Camera}
-                  className={styles[!imgPrev ? "dummy-preview" : "none"]}
-                  alt="product"
-                />
-                <img
-                  className={styles[!imgPrev ? "none" : "image-preview"]}
-                  src={imgPrev}
+                  className={styles["image-preview"]}
+                  src={imgPrev ? imgPrev : ""}
                   alt="preview"
                 />
               </div>
-              <button
-                className={`${styles["btn"]} ${styles["btn-take-pic"]} my-3`}
-              >
+              <button className={`${styles["btn"]} ${styles["btn-take-pic"]}`}>
                 Take Picture
               </button>
               <button
@@ -78,46 +128,6 @@ function AddProduct() {
                 ref={refTarget}
                 style={{ display: "none" }}
               />
-              <div className={`${styles["promo-details"]} `}>
-                <div
-                  className={`${styles["enter-discount"]} ${styles["input-box"]}`}
-                >
-                  <label className={styles["input-title"]}>
-                    Enter the discount :
-                  </label>
-                  <input
-                    type="text"
-                    name="stock"
-                    required
-                    placeholder="Input stock"
-                  />
-                </div>
-                <div
-                  className={`${styles["expire-date"]} ${styles["input-box"]}`}
-                >
-                  <label className={styles["input-title"]}>Expire date :</label>
-                  <input
-                    type="date"
-                    name="start"
-                    required
-                    placeholder="Select start date"
-                  />
-                  <input
-                    type="date"
-                    name="end"
-                    required
-                    placeholder="Select end date"
-                  />
-                </div>
-                <div
-                  className={`${styles["coupon-code"]} ${styles["input-box"]}`}
-                >
-                  <label className={styles["input-title"]}>
-                    Input coupon code :
-                  </label>
-                  <input type="text" name="codes" placeholder="Input code" />
-                </div>
-              </div>
             </form>
           </section>
           <section className={`${styles["content"]} ${styles["right"]}`}>
@@ -127,20 +137,20 @@ function AddProduct() {
                 onChange={changeHandler}
                 name="menu"
                 type="text"
-                placeholder="Input product name"
+                placeholder="nama"
               />
               <label htmlFor="price">Price:</label>
               <input
                 onChange={changeHandler}
                 name="price"
-                placeholder="Input price"
+                placeholder={currency(product)}
                 type="text"
               />
               <label htmlFor="description">Description:</label>
               <input
                 onChange={changeHandler}
                 name="description"
-                placeholder="Input description"
+                placeholder={product}
                 type="text"
               />
               <label htmlFor="description">Product Categories:</label>
@@ -162,7 +172,7 @@ function AddProduct() {
                 <p
                   onClick={() => {
                     setCategory("Coffee");
-                    setBody({ ...body, varian_id: 1 });
+                    setBody({ ...body, category_id: 1 });
                     setDropdown();
                   }}
                 >
@@ -171,7 +181,7 @@ function AddProduct() {
                 <p
                   onClick={() => {
                     setCategory("Non Coffee");
-                    setBody({ ...body, varian_id: 2 });
+                    setBody({ ...body, category_id: 2 });
                     setDropdown();
                   }}
                 >
@@ -180,7 +190,7 @@ function AddProduct() {
                 <p
                   onClick={() => {
                     setCategory("Foods");
-                    setBody({ ...body, varian_id: 3 });
+                    setBody({ ...body, category_id: 3 });
                     setDropdown();
                   }}
                 >
@@ -189,7 +199,7 @@ function AddProduct() {
                 <p
                   onClick={() => {
                     setCategory("Add on");
-                    setBody({ ...body, varian_id: 4 });
+                    setBody({ ...body, category_id: 4 });
                     setDropdown();
                   }}
                 >
@@ -199,7 +209,9 @@ function AddProduct() {
             </form>
             <div className={styles["btn-container"]}>
               <button
-                onClick={() => {}}
+                onClick={() => {
+                  postProduct();
+                }}
                 className={`${styles["btn"]} ${styles["btn-save"]}`}
               >
                 Save Product
@@ -212,8 +224,8 @@ function AddProduct() {
         </section>
       </main>
       <Footer />
-    </>
+    </Fragment>
   );
-}
+};
 
-export default AddProduct;
+export default EditProduct;

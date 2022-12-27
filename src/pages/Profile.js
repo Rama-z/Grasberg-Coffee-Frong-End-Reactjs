@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { getProfileActions } from "../redux/actions/profile";
 import { editProfile } from "../utils/profile";
 import sample from "../assets/profile.png";
-// import axios from "axios";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -57,19 +56,15 @@ const Profile = () => {
       await editProfile(formData, token);
       dispatch(getProfileActions());
       onEdit();
-      // console.log(formData);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    // reqProfile();
     dispatch(getProfileActions());
   }, []);
-  // console.log(body);
 
-  // console.log(profile);
   const gambarProfile = `http://localhost:8080/${profile.image}`;
   const imageProfile = gambarProfile
     ? `http://localhost:8080/${profile.image}`

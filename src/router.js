@@ -16,6 +16,7 @@ import LoginError from "./pages/LoginError";
 import PrivateElement from "./components/PrivateElement";
 // import Counter from "./pages/Counter";
 import EditProduct from "./pages/EditProduct";
+// import EditProduct2 from "./pages/EditProduct2";
 import EditPromo from "./pages/EditPromo";
 import AddPromo from "./pages/AddPromo";
 import AddProduct from "./pages/AddProduct";
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
   { path: "/auth", element: <Login /> },
   { path: "/signup", element: <Signup /> },
   { path: "/profile", element: <Profile /> },
-  { path: "/product", element: <Product /> },
+  { path: "/products", element: <Product /> },
   {
     path: "/history",
     element: (
@@ -51,10 +52,11 @@ const router = createBrowserRouter([
   // { path: "/products/:id", element: <DetailsProduct /> },
   { path: "/forgotpwd", element: <ForgotPWD /> },
   { path: "/app", element: <App /> },
-  // { path: "/tryproduct", element: <TryProduct /> },
+  // { path: "/tryprofile", element: <Coba2 /> },
   { path: "/loginerror", element: <LoginError /> },
   // { path: "/counter", element: <Counter /> },
   { path: "/editProduct", element: <EditProduct /> },
+  // { path: "/editProduct2/:id", element: <EditProduct2 /> },
   { path: "/editPromo", element: <EditPromo /> },
   { path: "/addPromo", element: <AddPromo /> },
   { path: "/addProduct", element: <AddProduct /> },

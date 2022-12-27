@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 // import prod_cold_brew from "../assets/Product/img_coldbrew.png";
 import withRouteParams from "../helpers/withRouteParams";
 import axios from "axios";
+import { connect } from "react-redux";
 
 class ProductDetails extends Component {
   constructor() {
@@ -15,19 +16,19 @@ class ProductDetails extends Component {
       product: "",
     };
   }
+
   componentDidMount() {
     this.coffeeClick();
-    // {this.state.product.map((item, idx) => {
-    //   return <div key={idx}>{item.description}</div>;
-    // })}
+    console.log(this.state.searhparams);
   }
+
   coffeeClick = async () => {
     const { params } = this.props;
+    console.log(this.props.searhparams);
     axios
       .get(`http://localhost:8080/api/v1/products/${params.id}`)
       .then((res) => {
         console.log(res.data);
-        console.log(res.data.result);
         console.log(res.data.result.description);
         const product = res.data.result;
         this.setState({ product });
@@ -37,14 +38,13 @@ class ProductDetails extends Component {
       });
   };
   render() {
-    // const { params } = this.props;
-    // console.log(params);
     const role = JSON.parse(localStorage.getItem("user-info"))
       ? JSON.parse(localStorage.getItem("user-info")).role
       : "";
     return (
       <>
         <Header />
+        <div>benar</div>
         <main className="row d-flex justify-content-center align-content-center flex-column flex-md-row mb-5">
           <section className="col-6 col-sm-12 col-lg-6 col-md-6 text-center">
             <nav className="text-start">
@@ -172,4 +172,14 @@ class ProductDetails extends Component {
   }
 }
 
-export default withRouteParams(ProductDetails);
+const mapStateToProps = (reduxState) => {
+  return {
+    counter: reduxState.counter,
+    product: reduxState.product,
+    promo: reduxState.promo,
+  };
+};
+
+const NewComponent = withRouteParams(connect(mapStateToProps)(ProductDetails));
+
+export default NewComponent;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Footer from "../components/FooterHalf";
 import Header from "../components/HalfHeaderLogin";
@@ -13,10 +13,14 @@ import withSearchParams from "../helpers/withSearchParams";
 import TabTitle from "../utils/WebDinamis";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import authAction from "../redux/actions/auth";
 
 const Login = () => {
   const navigate = useNavigate();
   // const [userInfo, setUserInfo] = useState({});
+  const dispatch = useDispatch();
+  const isFulfilled = useSelector((state) => state.auth.isFulfilled);
   const [values, setValues] = useState({
     email: "",
     pass: "",
@@ -26,19 +30,12 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:8080/api/v1/auth", {
-        email: values.email,
-        pass: values.pass,
-      })
-      .then((res) => {
-        localStorage.setItem("user-info", JSON.stringify(res.data.data));
-        localStorage.setItem("token", JSON.stringify(res.data.data.token));
-        navigate("/");
-      })
-      .catch((err) => console.error(err.response.data));
+    console.log(values);
+    dispatch(authAction.loginThunk(values));
+    console.log(isFulfilled);
+    if (isFulfilled) navigate("/");
   };
-  const handlePassVisibilty = () => {
+  const handlePassVisibility = () => {
     setValues({
       ...values,
       showPass: !values.showPass,
@@ -78,7 +75,7 @@ const Login = () => {
                 type="checkbox"
                 className={`${styles["checkbox-pwd"]}`}
                 defaultChecked={false}
-                onChange={handlePassVisibilty}
+                onChange={handlePassVisibility}
               />
               <Link to={"/forgotpwd"}>
                 <p className={`${styles["forget"]}`}>Forget Password</p>
