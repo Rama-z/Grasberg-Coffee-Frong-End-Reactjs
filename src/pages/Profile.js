@@ -3,27 +3,36 @@ import styles from "../styles/Profile.module.css";
 import Header from "../components/HeaderHome";
 import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { getProfileActions } from "../redux/actions/profile";
-import { editProfile } from "../utils/profile";
+// import { useNavigate } from "react-router-dom";
+// import { editProfile } from "../utils/profile";
 import sample from "../assets/profile.png";
+// import authAction from "../redux/actions/auth";
+import profileAction from "../redux/actions/profile";
+import Modal from "../components/ModalLogout";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const token = JSON.parse(localStorage.getItem("user-info")).token;
+  // const navigate = useNavigate();
+  const token = useSelector((state) => state.auth.token);
   const refTarget = useRef(null);
-  const profile = useSelector((state) => state.profile.profile);
+  const profile = useSelector((state) => state.user);
   const [body, setBody] = useState({});
-  const [imgPreview, setImgPreview] = useState(null);
   const [notEdit, setNotEdit] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const modalHandler = () => {
+    setModalOpen(!modalOpen);
+  };
+
+  useEffect(() => {
+    dispatch(profileAction.getProfileThunk(token));
+  }, [dispatch]);
 
   const onEdit = () => {
     setNotEdit(!notEdit);
   };
 
   const getBirthday = () => {
-    const date = new Date(profile.birthday);
+    const date = new Date(profile?.birthday);
     const yyyy = date.getFullYear();
     let mm = date.getMonth() + 1; // Months start at 0!
     let dd = date.getDate();
@@ -36,14 +45,10 @@ const Profile = () => {
     setBody({ ...body, [e.target.name]: e.target.value }),
   ];
 
-  // const logoutHandler = () => {
-  //   axios.delete();
-  // };
-
   const imageHandler = (e) => {
     const photo = e.target.files[0];
     setBody({ ...body, image: photo });
-    setImgPreview(URL.createObjectURL(photo));
+    // setImgPreview(URL.createObjectURL(photo));
   };
 
   const handleChanges = async (body) => {
@@ -51,27 +56,16 @@ const Profile = () => {
     Object.keys(body).forEach((e) => {
       formData.append(e, body[e]);
     });
-    console.log(formData);
     try {
-      await editProfile(formData, token);
-      dispatch(getProfileActions());
+      // await editProfile(formData, token);
       onEdit();
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    dispatch(getProfileActions());
-  }, []);
-
-  const gambarProfile = `http://localhost:8080/${profile.image}`;
-  const imageProfile = gambarProfile
-    ? `http://localhost:8080/${profile.image}`
-    : sample;
-
   return (
-    <Fragment>
+    <>
       <Header />
       <section className={`${styles["background"]} pb-5`}>
         <main>
@@ -89,7 +83,7 @@ const Profile = () => {
               <div className={`${styles["flex-row"]}`}>
                 <img
                   className={`${styles["circular"]}`}
-                  src={imgPreview ? imgPreview : imageProfile}
+                  src={profile.image || sample}
                   alt=""
                 />
               </div>
@@ -145,7 +139,8 @@ const Profile = () => {
                         <input
                           type="text"
                           className={`${styles["input"]}`}
-                          placeholder={profile.email || "Input your name"}
+                          placeholder={profile.email}
+                          disabled
                         />
                         <div className={`${styles["under-input"]}`}></div>
                       </div>
@@ -156,7 +151,7 @@ const Profile = () => {
                         <input
                           type="text"
                           className={`${styles["input"]}`}
-                          placeholder={profile.adress || "Input your address"}
+                          placeholder={profile.address || "Input your address"}
                         />
                         <div className={`${styles["under-input"]}`}></div>
                       </div>
@@ -248,8 +243,8 @@ const Profile = () => {
                         <input
                           disabled={true}
                           id="Male"
-                          // defaultChecked={profile.gender === "Male"}
-                          checked={profile.gender === "Male"}
+                          // defaultChecked={profile?.gender === "Male"}
+                          checked={profile?.gender === "Male"}
                           type="radio"
                           placeholder="Male"
                           name="gender"
@@ -257,7 +252,7 @@ const Profile = () => {
                         />
                       ) : (
                         <input
-                          // defaultChecked={profile.gender === "Male"}
+                          // defaultChecked={profile?.gender === "Male"}
                           type="radio"
                           id="Male"
                           name="gender"
@@ -302,16 +297,11 @@ const Profile = () => {
               >
                 Cancel
               </p>
-              <p
-                className={`${styles["log"]}`}
-                onClick={() => {
-                  localStorage.removeItem("user-info");
-                  navigate("/");
-                }}
-              >
+              <div className={`${styles["log"]}`} onClick={modalHandler}>
                 Log out
-              </p>
+              </div>
             </section>
+
             <section
               className={`${styles["content2"]} ${styles["mid-in-profile"]} ${styles["flex-column"]} ${styles["mid-second"]}`}
             >
@@ -337,7 +327,7 @@ const Profile = () => {
                       <input
                         type="text"
                         className={`${styles["input"]}`}
-                        placeholder={profile.email || "Input your name"}
+                        placeholder={profile?.email || "Input your name"}
                       />
                       <div className={`${styles["under-input"]}`}></div>
                     </div>
@@ -348,7 +338,7 @@ const Profile = () => {
                       <input
                         type="text"
                         className={`${styles["input"]}`}
-                        placeholder={profile.adress || "Input your address"}
+                        placeholder={profile?.adress || "Input your address"}
                       />
                       <div className={`${styles["under-input"]}`}></div>
                     </div>
@@ -362,7 +352,7 @@ const Profile = () => {
                     <input
                       type="text"
                       className={`${styles["input"]}`}
-                      placeholder={profile.phone || "Input your phone number"}
+                      placeholder={profile?.phone || "Input your phone number"}
                     />
                     <div className={`${styles["under-input"]}`}></div>
                   </div>
@@ -386,7 +376,7 @@ const Profile = () => {
                     <input
                       type="text"
                       className={`${styles["input"]}`}
-                      placeholder={profile.username || "Input your address"}
+                      placeholder={profile?.username || "Input your address"}
                       onChange={changeHandler}
                     />
                     <div className={`${styles["under-input"]}`}></div>
@@ -398,7 +388,7 @@ const Profile = () => {
                     <input
                       type="text"
                       className={`${styles["input"]}`}
-                      placeholder={profile.firstname || "Input your address"}
+                      placeholder={profile?.firstname || "Input your address"}
                     />
                     <div className={`${styles["under-input"]}`}></div>
                   </div>
@@ -409,7 +399,7 @@ const Profile = () => {
                     <input
                       type="text"
                       className={`${styles["input"]}`}
-                      placeholder={profile.lastname || "Input your address"}
+                      placeholder={profile?.lastname || "Input your address"}
                     />
                     <div className={`${styles["under-input"]}`}></div>
                   </div>
@@ -440,8 +430,8 @@ const Profile = () => {
                       <input
                         disabled={true}
                         id="Male"
-                        // defaultChecked={profile.gender === "Male"}
-                        checked={profile.gender === "Male"}
+                        // defaultChecked={profile?.gender === "Male"}
+                        checked={profile?.gender === "Male"}
                         type="radio"
                         placeholder="Male"
                         name="gender"
@@ -449,7 +439,7 @@ const Profile = () => {
                       />
                     ) : (
                       <input
-                        // defaultChecked={profile.gender === "Male"}
+                        // defaultChecked={profile?.gender === "Male"}
                         type="radio"
                         id="Male"
                         name="gender"
@@ -477,8 +467,9 @@ const Profile = () => {
           </section>
         </main>
       </section>
+      <Modal open={modalOpen} setOpen={setModalOpen} />
       <Footer />
-    </Fragment>
+    </>
   );
 };
 

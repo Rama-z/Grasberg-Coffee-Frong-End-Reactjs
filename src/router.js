@@ -28,8 +28,8 @@ import AddProduct from "./pages/AddProduct";
 const router = createBrowserRouter([
   // { path: "/", element: <App />, errorElement: <Error /> },
   { path: "/", element: <Home /> },
-  { path: "/auth", element: <Login /> },
-  { path: "/signup", element: <Signup /> },
+  { path: "/auth/login", element: <Login /> },
+  { path: "/auth/register", element: <Signup /> },
   { path: "/profile", element: <Profile /> },
   { path: "/products", element: <Product /> },
   {
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
   },
   { path: "/product/:id", element: <ProductDetails /> },
   // { path: "/products/:id", element: <DetailsProduct /> },
-  { path: "/forgotpwd", element: <ForgotPWD /> },
+  { path: "/auth/forgot", element: <ForgotPWD /> },
   { path: "/app", element: <App /> },
   // { path: "/tryprofile", element: <Coba2 /> },
   { path: "/loginerror", element: <LoginError /> },

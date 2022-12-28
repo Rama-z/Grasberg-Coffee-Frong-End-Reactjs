@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import searching from "../assets/Home/search.png";
 import { useState } from "react";
 import { useEffect } from "react";
-import { getProfile } from "../utils/profile";
+// import { getProfile } from "../utils/profile";
 import sample from "../assets/profile.png";
 import { connect } from "react-redux";
 import { createSearchParams } from "react-router-dom";
@@ -20,19 +20,20 @@ const NavLogin = ({ setSearchParams }) => {
     setState((state) => ({
       title: state.title === `${styles.show}` ? "" : `${styles.show}`,
     }));
+    setProfile({ ...profile });
   }
 
-  const getDataProfile = async () => {
-    try {
-      const result = await getProfile();
-      setProfile(result.data.data[0]);
-    } catch (error) {
-      console.log(error);
-      if (error === 403) {
-        navigate("/login");
-      }
-    }
-  };
+  // const getDataProfile = async () => {
+  //   try {
+  //     const result = await getProfile();
+  //     setProfile(result.data.data[0]);
+  //   } catch (error) {
+  //     console.log(error);
+  //     if (error === 403) {
+  //       navigate("/login");
+  //     }
+  //   }
+  // };
 
   const onSearchHandler = (e) => {
     console.log("search handler");
@@ -54,7 +55,7 @@ const NavLogin = ({ setSearchParams }) => {
   };
 
   useEffect(() => {
-    getDataProfile();
+    // getDataProfile();
   }, []);
 
   return (

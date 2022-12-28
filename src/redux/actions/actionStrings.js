@@ -2,6 +2,8 @@ import { ActionType } from "redux-promise-middleware";
 
 export const actionStrings = {
   authLogin: "AUTH_LOGIN",
+  authRegister: "AUTH_REGISTER",
+  authLogout: "AUTH_LOGOUT",
   counterUp: "COUNTER_UP",
   counterDown: "COUNTER_DOWN",
   counterReset: "COUNTER_RESET",

@@ -1,38 +1,50 @@
-// import actionStrings from "../actions/actionStrings";
-// import { ActionType } from "redux-promise-middleware";
+import { actionStrings } from "../actions/actionStrings";
+import { ActionType } from "redux-promise-middleware";
 
-// const initialState = {
-//   profile: [],
-//   isError: false,
-//   isLoading: false,
-//   error: null,
-// };
+const initialState = {
+  profile: [],
+  isError: false,
+  isLoading: false,
+  error: null,
+};
 
-// export const profileReducer = (prevState = initialState, action) => {
-//   const { getProfile } = actionStrings;
-//   const { Pending, Rejected, Fulfilled } = ActionType;
-//   switch (action.type) {
-//     case getProfile.concat("_", Pending):
-//       return {
-//         ...prevState,
-//         isError: false,
-//         isLoading: true,
-//       };
-//     case getProfile.concat("_", Rejected):
-//       return {
-//         ...prevState,
-//         isError: true,
-//         isLoading: false,
-//         error: action.payload.msg,
-//       };
-//     case getProfile.concat("_", Fulfilled):
-//       return {
-//         ...prevState,
-//         isError: true,
-//         isLoading: false,
-//         profile: action.payload.data.data[0],
-//       };
-//     default:
-//       return prevState;
-//   }
-// };
+const userReducer = (prevState = initialState, { type, payload }) => {
+  const { Pending, Rejected, Fulfilled } = ActionType;
+  const { getProfile } = actionStrings;
+  switch (type) {
+    case getProfile.concat("_", Pending):
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case getProfile.concat("_", Rejected):
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: true,
+        isFulfilled: false,
+      };
+    case getProfile.concat("_", Fulfilled):
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: false,
+        isFulfilled: true,
+        username: payload.data.data.username,
+        firstname: payload.data.data.firstname,
+        lastname: payload.data.data.lastname,
+        gender: payload.data.data.gender,
+        birthday: payload.data.data.birthday,
+        address: payload.data.data.address,
+        image: payload.data.data.image,
+        phone: payload.data.data.phone,
+        email: payload.data.data.email,
+      };
+    default:
+      return prevState;
+  }
+};
+
+export default userReducer;

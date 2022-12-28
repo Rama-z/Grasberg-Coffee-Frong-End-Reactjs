@@ -1,13 +1,13 @@
 import axios from "axios";
 const URL = `${process.env.REACT_APP_BACKEND_HOST}/api/v1`;
 
-// const config = (token) => {
-//   return {
-//     header: {
-//       "x-access-token": `${token}`,
-//     },
-//   };
-// };
+const config = (token) => {
+  return {
+    headers: {
+      "x-access-token": `${token}`,
+    },
+  };
+};
 
 export const login = (body) => {
   const URLS = `${URL}/auth/login`;
@@ -19,9 +19,9 @@ export const register = (body) => {
   return axios.post(URLS, body);
 };
 
-export const logout = () => {
+export const logout = (token) => {
   const URLS = `${URL}/auth/logout`;
-  return axios.delete(URLS);
+  return axios.delete(URLS, config(token));
 };
 
 export const forgot = (body) => {

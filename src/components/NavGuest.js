@@ -8,10 +8,10 @@ export default function NavGuest() {
       <nav
         className={`${styles["drop-nav2"]} ${styles["gap-nav"]} col col-lg col-md`}
       >
-        <Link to={"/auth"}>
+        <Link to={"/auth/login"}>
           <p className={`${styles["login"]}`}>Login</p>
         </Link>
-        <Link to={"/signup"}>
+        <Link to={"/auth/register"}>
           <p className={`${styles["signup"]}`}>Sign Up</p>
         </Link>
       </nav>

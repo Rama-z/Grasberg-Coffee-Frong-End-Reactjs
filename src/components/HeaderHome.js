@@ -1,16 +1,14 @@
 import React from "react";
 import styles from "../styles/HeaderHome.module.css";
 import imageCoba from "../assets/Profiles/coffee 3.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NavLogin from "./NavLogin";
 import NavGuest from "./NavGuest";
 import { useSelector } from "react-redux";
 
-// import withNavigate from "../helpers/withNavigate";
-
 export default function Header() {
   const token = useSelector((state) => state.auth.token);
-
+  const navigate = useNavigate();
   return (
     <>
       <header
@@ -31,9 +29,14 @@ export default function Header() {
         <nav
           className={`col col-sm-8 col-lg-6 col-md-6 ${styles["drop-nav"]} ${styles["gap-nav"]} ${styles["mid"]} ${styles["dropdown-content"]}`}
         >
-          <Link to={"/"}>
-            <p className={`${styles["visited"]}`}>Home</p>
-          </Link>
+          <p
+            className={`${styles["visited"]}`}
+            onClick={() => {
+              navigate("/history");
+            }}
+          >
+            Home
+          </p>
           <Link to={"/products"}>
             <p className={`${styles["visited"]}`}>Product</p>
           </Link>

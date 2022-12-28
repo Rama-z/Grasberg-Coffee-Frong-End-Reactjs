@@ -209,11 +209,11 @@ footer {
   max-width: 90vh;
 }
 
-.checkbox-pwd {
-  position: relative;
-  bottom: 4em;
-  left: 10em;
-  /* right: 5em; */
+.visibility {
+  cursor: pointer;
+  position: absolute;
+  top: 2.2em;
+  right: 1em;
 }
 
 .username {
@@ -418,6 +418,15 @@ footer {
   margin-top: 0.5em;
 }
 
+.inputErr {
+  background: #ffffff;
+  border: 1px solid red;
+  border-radius: 10px;
+  width: 25em;
+  height: 4em;
+  padding-left: 2em;
+}
+
 .google {
   width: 27px;
   height: 28px;
@@ -468,6 +477,60 @@ footer {
 
 .footer-left {
   justify-content: center;
+}
+
+.errEmail {
+  display: flex;
+  position: relative;
+  bottom: 12px;
+  color: red;
+}
+
+.errEmailNo {
+  display: none;
+}
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 10px;
+  height: 10px;
+  margin-bottom: 6px;
+  margin-right: 6px;
+}
+
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  margin: 0px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @media only screen and (max-width: 768px) {

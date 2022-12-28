@@ -5,42 +5,26 @@ import asideLogin from "../assets/SignIn/aside.png";
 import google from "../assets/SignIn/google.png";
 import Footer from "../components/FooterHalf";
 import Header from "../components/HalfHeaderSignUp";
-import { Link } from "react-router-dom";
-import withNavigate from "../helpers/withNavigate";
-import withLocation from "../helpers/withLocation";
 import TabTitle from "../utils/WebDinamis";
-import PropTypes from "prop-types";
-import withSearchParams from "../helpers/withSearchParams";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import authAction from "../redux/actions/auth";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
   const [values, setValues] = useState({
-    username: "",
     email: "",
     pass: "",
-    gender: "",
-    adress: "",
     phone: "",
   });
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:8080/api/v1/users/register", {
-        email: values.email,
-        pass: values.pass,
-        username: "user1",
-        gender: "male",
-        adress: "adress",
-        phone: values.phone,
-      })
-      .then((res) => {
-        console.log(values.pass);
-        console.log(res.data.result);
-        navigate("/auth");
-      })
-      .catch((err) => console.error(err.response));
+    const success = () => {
+      navigate("/auth/login");
+    };
+    dispatch(authAction.registerThunk(values, success));
   };
   TabTitle("Sign Up");
   return (
@@ -52,7 +36,7 @@ const SignUp = () => {
         <main>
           <Header />
           <section className={`${styles["center"]} ${styles["flex-column"]}`}>
-            <div className={`${styles["flex-column"]}`}>
+            <form className={`${styles["flex-column"]}`}>
               <p className={`${styles["email"]}`}>Email Adress :</p>
               <input
                 type="text"
@@ -61,6 +45,7 @@ const SignUp = () => {
                 onChange={(e) =>
                   setValues({ ...values, email: e.target.value })
                 }
+                required
               />
               <p className={`${styles["email"]}`}>Password :</p>
               <input
@@ -69,6 +54,7 @@ const SignUp = () => {
                 className={`${styles["input-box"]} ${styles["input"]}`}
                 placeholder="Enter your password"
                 onChange={(e) => setValues({ ...values, pass: e.target.value })}
+                required
               />
               <p className={`${styles["email"]}`}>Phone Number :</p>
               <input
@@ -79,13 +65,23 @@ const SignUp = () => {
                 onChange={(e) =>
                   setValues({ ...values, phone: e.target.value })
                 }
+                required
               />
-              <p
+              <div
                 className={`${styles["choose"]} ${styles["krem"]} ${styles["btn"]}`}
                 onClick={handleSubmit}
               >
-                Sign Up
-              </p>
+                {auth.isLoading ? (
+                  <div className={styles["lds-ring"]}>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                ) : (
+                  <div>Sign Up</div>
+                )}
+              </div>
               <div className={`${styles["google-container"]}`}>
                 <img
                   src={google}
@@ -103,14 +99,15 @@ const SignUp = () => {
                 <p className={`${styles["dont"]}`}>Already have an account?</p>
                 <div className={`${styles["space"]}`}></div>
               </div>
-              <Link to={"/auth"}>
-                <p
-                  className={`${styles["remove"]} ${styles["coklat"]} ${styles["btn"]}`}
-                >
-                  Login Here
-                </p>
-              </Link>
-            </div>
+              <p
+                className={`${styles["remove"]} ${styles["coklat"]} ${styles["btn"]}`}
+                onClick={() => {
+                  navigate("/auth/login");
+                }}
+              >
+                Login Here
+              </p>
+            </form>
           </section>
           <Footer />
         </main>
@@ -119,12 +116,4 @@ const SignUp = () => {
   );
 };
 
-SignUp.propTypes = {
-  navigate: PropTypes.func,
-  searchParams: PropTypes.object,
-  createSearchParams: PropTypes.object,
-};
-
-const NewComponent = withSearchParams(withLocation(withNavigate(SignUp)));
-
-export default NewComponent;
+export default SignUp;

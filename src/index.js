@@ -13,10 +13,20 @@ import reduxStore, { persistedStore } from "./redux/store";
 // import router
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
+import { ToastContainer } from "react-toastify";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+    <ToastContainer
+      position="top-center"
+      autoClose={2000}
+      hideProgressBar={false}
+      closeOnClick={true}
+      pauseOnHover={true}
+      draggable={true}
+      theme="light"
+    />
     <ReduxProvider store={reduxStore}>
       <PersistGate loading={null} persistor={persistedStore}>
         <RouterProvider router={router} />

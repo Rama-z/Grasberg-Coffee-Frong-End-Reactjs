@@ -1,45 +1,54 @@
 import React, { useState } from "react";
-// import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Footer from "../components/FooterHalf";
 import Header from "../components/HalfHeaderLogin";
 import styles from "../styles/Login.module.css";
 import asideLogin from "../assets/SignIn/aside.png";
 import google from "../assets/SignIn/google.png";
-import { Link /*createSearchParams*/ } from "react-router-dom";
-import withNavigate from "../helpers/withNavigate";
-import withLocation from "../helpers/withLocation";
-import withSearchParams from "../helpers/withSearchParams";
+import ReportIcon from "@mui/icons-material/Report";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import TabTitle from "../utils/WebDinamis";
-import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import authAction from "../redux/actions/auth";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const navigate = useNavigate();
-  // const [userInfo, setUserInfo] = useState({});
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const isFulfilled = useSelector((state) => state.auth.isFulfilled);
+  const [errEmail, setErrEmail] = useState(false);
+  const [errPass, setErrPass] = useState(false);
+  const [showPass, setShowPass] = useState(false);
   const [values, setValues] = useState({
     email: "",
     pass: "",
-    showPass: false,
   });
   TabTitle("Login");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(values);
-    dispatch(authAction.loginThunk(values));
-    console.log(isFulfilled);
-    if (isFulfilled) navigate("/");
+    const success = () => {
+      navigate("/");
+    };
+    const failed = (msg) => {
+      toast.error(`Login Failed, ${msg}`);
+    };
+    if (values.email.trim() === "") {
+      if (values.pass.trim() === "") {
+        setErrEmail(true);
+        setErrPass(true);
+        return;
+      }
+      return setErrEmail(true);
+    }
+    if (values.pass.trim() === "") return setErrPass(true);
+    dispatch(authAction.loginThunk(values, success, failed));
   };
   const handlePassVisibility = () => {
-    setValues({
-      ...values,
-      showPass: !values.showPass,
-    });
+    setShowPass(!showPass);
   };
   return (
     <>
@@ -56,35 +65,76 @@ const Login = () => {
               <p className={`${styles["email"]}`}>Email Adress :</p>
               <input
                 type="text"
-                className={`${styles["input-box"]} ${styles["input"]}`}
+                className={`${styles["input-box"]} ${
+                  errEmail ? styles["inputErr"] : styles["input"]
+                }`}
                 placeholder="Enter your email adress"
-                onChange={(e) =>
-                  setValues({ ...values, email: e.target.value })
-                }
+                onChange={(e) => {
+                  setValues({ ...values, email: e.target.value });
+                  setErrEmail(false);
+                }}
               />
-              <p className={`${styles["email"]}`}>Password :</p>
-              <input
-                type={values.showPass ? "text" : "password"}
-                name=""
-                id=""
-                className={`${styles["input-box"]} ${styles["input"]}`}
-                placeholder="Enter your password"
-                onChange={(e) => setValues({ ...values, pass: e.target.value })}
-              />
-              <input
+              <div className={errEmail ? styles.errEmail : styles.errEmailNo}>
+                <ReportIcon />
+                <div>Fill Email Address</div>
+              </div>
+              <div style={{ position: "relative" }}>
+                <p className={`${styles["email"]}`}>Password :</p>
+                <input
+                  type={showPass ? "text" : "password"}
+                  name=""
+                  id=""
+                  className={`${styles["input-box"]} ${
+                    errPass ? styles["inputErr"] : styles["input"]
+                  }`}
+                  placeholder="Enter your password"
+                  onChange={(e) => {
+                    setValues({ ...values, pass: e.target.value });
+                    setErrPass(false);
+                  }}
+                />
+                {showPass ? (
+                  <VisibilityIcon
+                    className={`${styles["visibility"]}`}
+                    onClick={handlePassVisibility}
+                  />
+                ) : (
+                  <VisibilityOffIcon
+                    className={`${styles["visibility"]}`}
+                    onClick={handlePassVisibility}
+                  />
+                )}
+              </div>
+              {/* <input
                 type="checkbox"
                 className={`${styles["checkbox-pwd"]}`}
                 defaultChecked={false}
                 onChange={handlePassVisibility}
-              />
-              <Link to={"/forgotpwd"}>
-                <p className={`${styles["forget"]}`}>Forget Password</p>
-              </Link>
+              /> */}
+              <div className={errPass ? styles.errEmail : styles.errEmailNo}>
+                <ReportIcon />
+                <div>Fill Password</div>
+              </div>
+              <p
+                className={`${styles["forget"]}`}
+                onClick={() => navigate("/auth/forgot")}
+              >
+                Forget Password
+              </p>
               <button
                 onClick={handleSubmit}
                 className={`${styles["choose"]} ${styles["btn"]} ${styles["krem"]}`}
               >
-                Login
+                {auth.isLoading ? (
+                  <div className={styles["lds-ring"]}>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                ) : (
+                  <div>Login</div>
+                )}
               </button>
               <div className={`${styles["google-container"]}`}>
                 <img
@@ -101,13 +151,14 @@ const Login = () => {
                 <p className={`${styles["dont"]}`}>Dont have an account</p>
                 <div className={`${styles["space"]}`}></div>
               </div>
-              <Link to={"/signup"}>
-                <p
-                  className={`${styles["remove"]} ${styles["coklat"]} ${styles["btn"]}`}
-                >
-                  Sign Up Here
-                </p>
-              </Link>
+              <p
+                className={`${styles["remove"]} ${styles["coklat"]} ${styles["btn"]}`}
+                onClick={() => {
+                  navigate("/auth/register");
+                }}
+              >
+                Sign Up Here
+              </p>
             </form>
           </main>
           <Footer />
@@ -117,12 +168,4 @@ const Login = () => {
   );
 };
 
-Login.propTypes = {
-  navigate: PropTypes.func,
-  searchParams: PropTypes.object,
-  createSearchParams: PropTypes.object,
-};
-
-const NewComponent = withSearchParams(withLocation(withNavigate(Login)));
-
-export default NewComponent;
+export default Login;
