@@ -64,6 +64,17 @@
   padding-left: 2em;
 }
 
+.errEmail {
+  display: flex;
+  position: relative;
+  bottom: 12px;
+  color: red;
+}
+
+.errEmailNo {
+  display: none;
+}
+
 .choose {
   padding: 1em 4em;
   margin: 1em 0 1em 0;

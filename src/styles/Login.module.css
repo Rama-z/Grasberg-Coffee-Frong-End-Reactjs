@@ -370,6 +370,7 @@ footer {
 }
 
 .forget {
+  cursor: pointer;
   margin-bottom: 2em;
   font-family: "Rubik";
   font-style: normal;

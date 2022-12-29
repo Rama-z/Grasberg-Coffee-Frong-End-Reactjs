@@ -105,12 +105,6 @@ const Login = () => {
                   />
                 )}
               </div>
-              {/* <input
-                type="checkbox"
-                className={`${styles["checkbox-pwd"]}`}
-                defaultChecked={false}
-                onChange={handlePassVisibility}
-              /> */}
               <div className={errPass ? styles.errEmail : styles.errEmailNo}>
                 <ReportIcon />
                 <div>Fill Password</div>

@@ -3,13 +3,15 @@ import { ActionType } from "redux-promise-middleware";
 export const actionStrings = {
   authLogin: "AUTH_LOGIN",
   authRegister: "AUTH_REGISTER",
+  authForgot: "AUTH_FORGOT",
+  authConfirm: "AUTH_CONFIRM",
   authLogout: "AUTH_LOGOUT",
   counterUp: "COUNTER_UP",
   counterDown: "COUNTER_DOWN",
   counterReset: "COUNTER_RESET",
   getFavorites: "GET_FAVORITE",
   getCoffee: "GET_COFFEE",
-  getNonCoffee: "GET_NONCOFFEE",
+  getNonCoffee: "GET_NON_COFFEE",
   getFood: "GET_FOOD",
   getAllProduct: "GET_ALL_PRODUCT",
   editProduct: "EDIT_PRODUCT",
@@ -24,5 +26,3 @@ export const actionStrings = {
   createProduct: "_CREATE_PRODUCT",
   getDetailProduct: "_GET_PRODUCT_DETAIL",
 };
-
-// export default actionStrings;

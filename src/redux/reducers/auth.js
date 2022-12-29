@@ -13,9 +13,36 @@ const initialState = {
 
 const authReducer = (prevState = initialState, { payload, type }) => {
   const { Pending, Rejected, Fulfilled } = ActionType;
-  const { authLogin, authLogout, authRegister } = actionStrings;
+  const { authLogin, authLogout, authRegister, authForgot, authConfirm } =
+    actionStrings;
   console.log(payload);
   switch (type) {
+    case authRegister.concat("_", Pending):
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case authRegister.concat("_", Rejected):
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: true,
+        isFulfilled: false,
+        error: payload.data?.message,
+      };
+    case authRegister.concat("_", Fulfilled):
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: false,
+        isFulfilled: true,
+        id: null,
+        role: null,
+        token: null,
+      };
+
     case authLogin.concat("_", Pending):
       return {
         ...prevState,
@@ -42,14 +69,14 @@ const authReducer = (prevState = initialState, { payload, type }) => {
         role: payload.data.data.role,
       };
 
-    case authRegister.concat("_", Pending):
+    case authForgot.concat("_", Pending):
       return {
         ...prevState,
         isLoading: true,
         isError: false,
         isFulfilled: false,
       };
-    case authRegister.concat("_", Rejected):
+    case authForgot.concat("_", Rejected):
       return {
         ...prevState,
         isLoading: false,
@@ -57,15 +84,35 @@ const authReducer = (prevState = initialState, { payload, type }) => {
         isFulfilled: false,
         error: payload.data?.message,
       };
-    case authRegister.concat("_", Fulfilled):
+    case authForgot.concat("_", Fulfilled):
       return {
         ...prevState,
         isLoading: false,
         isError: false,
         isFulfilled: true,
-        id: null,
-        role: null,
-        token: null,
+      };
+
+    case authConfirm.concat("_", Pending):
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case authConfirm.concat("_", Rejected):
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: true,
+        isFulfilled: false,
+        error: payload.data?.message,
+      };
+    case authConfirm.concat("_", Fulfilled):
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: false,
+        isFulfilled: true,
       };
 
     case authLogout.concat("_", Pending):

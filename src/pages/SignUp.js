@@ -87,6 +87,10 @@ const SignUp = () => {
                 }}
                 required
               />
+              <div className={errEmail ? styles.errEmail : styles.errEmailNo}>
+                <ReportIcon />
+                <div>Fill Email Address</div>
+              </div>
               <div style={{ position: "relative" }}>
                 <p className={`${styles["email"]}`}>Password :</p>
                 <input
@@ -114,6 +118,10 @@ const SignUp = () => {
                   />
                 )}
               </div>
+              <div className={errPass ? styles.errEmail : styles.errEmailNo}>
+                <ReportIcon />
+                <div>Fill Password</div>
+              </div>
               <p className={`${styles["email"]}`}>Phone Number :</p>
               <input
                 type="text"
@@ -128,6 +136,10 @@ const SignUp = () => {
                 }}
                 required
               />
+              <div className={errPhone ? styles.errEmail : styles.errEmailNo}>
+                <ReportIcon />
+                <div>Fill Phone Number</div>
+              </div>
               <div
                 className={`${styles["choose"]} ${styles["krem"]} ${styles["btn"]}`}
                 onClick={handleSubmit}
