@@ -55,6 +55,15 @@
   padding-left: 2em;
 }
 
+.inputErr {
+  background: #ffffff;
+  border: 1px solid red;
+  border-radius: 10px;
+  width: 25em;
+  height: 4em;
+  padding-left: 2em;
+}
+
 .choose {
   padding: 1em 4em;
   margin: 1em 0 1em 0;
@@ -192,6 +201,13 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.visibility {
+  cursor: pointer;
+  position: absolute;
+  top: 2.2em;
+  right: 1em;
 }
 
 @media only screen and (max-width: 768px) {

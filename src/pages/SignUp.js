@@ -4,16 +4,24 @@ import styles from "../styles/SignUp.module.css";
 import asideLogin from "../assets/SignIn/aside.png";
 import google from "../assets/SignIn/google.png";
 import Footer from "../components/FooterHalf";
-import Header from "../components/HalfHeaderSignUp";
+import Header from "../components/HalfHeaderLogin";
 import TabTitle from "../utils/WebDinamis";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import authAction from "../redux/actions/auth";
+import ReportIcon from "@mui/icons-material/Report";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const [errEmail, setErrEmail] = useState(false);
+  const [errPass, setErrPass] = useState(false);
+  const [errPhone, setErrPhone] = useState(false);
+  const [showPass, setShowPass] = useState(false);
   const [values, setValues] = useState({
     email: "",
     pass: "",
@@ -24,7 +32,36 @@ const SignUp = () => {
     const success = () => {
       navigate("/auth/login");
     };
-    dispatch(authAction.registerThunk(values, success));
+    const failed = (msg) => {
+      toast.error(`Register Failed, ${msg}`);
+    };
+    if (values.email.trim() === "") {
+      if (values.pass.trim() === "") {
+        if (values.phone.trim() === "") {
+          setErrEmail(true);
+          setErrPass(true);
+          setErrPhone(true);
+          return;
+        }
+        setErrEmail(true);
+        setErrPass(true);
+        return;
+      }
+      return setErrEmail(true);
+    }
+    if (values.pass.trim() === "") {
+      if (values.phone.trim() === "") {
+        setErrPass(true);
+        setErrPhone(true);
+        return;
+      }
+      return setErrPass(true);
+    }
+    if (values.phone.trim() === "") return setErrPhone(true);
+    dispatch(authAction.registerThunk(values, success, failed));
+  };
+  const handlePassVisibility = () => {
+    setShowPass(!showPass);
   };
   TabTitle("Sign Up");
   return (
@@ -40,31 +77,55 @@ const SignUp = () => {
               <p className={`${styles["email"]}`}>Email Adress :</p>
               <input
                 type="text"
-                className={`${styles["input-box"]} ${styles["input"]}`}
+                className={`${styles["input-box"]} ${
+                  errEmail ? styles["inputErr"] : styles["input"]
+                }`}
                 placeholder="Enter your email adress"
-                onChange={(e) =>
-                  setValues({ ...values, email: e.target.value })
-                }
+                onChange={(e) => {
+                  setValues({ ...values, email: e.target.value });
+                  setErrEmail(false);
+                }}
                 required
               />
-              <p className={`${styles["email"]}`}>Password :</p>
-              <input
-                type="password"
-                name=""
-                className={`${styles["input-box"]} ${styles["input"]}`}
-                placeholder="Enter your password"
-                onChange={(e) => setValues({ ...values, pass: e.target.value })}
-                required
-              />
+              <div style={{ position: "relative" }}>
+                <p className={`${styles["email"]}`}>Password :</p>
+                <input
+                  type={showPass ? "text" : "password"}
+                  name=""
+                  className={`${styles["input-box"]} ${
+                    errPass ? styles["inputErr"] : styles["input"]
+                  }`}
+                  placeholder="Enter your password"
+                  onChange={(e) => {
+                    setValues({ ...values, pass: e.target.value });
+                    setErrPass(false);
+                  }}
+                  required
+                />
+                {showPass ? (
+                  <VisibilityIcon
+                    className={`${styles["visibility"]}`}
+                    onClick={handlePassVisibility}
+                  />
+                ) : (
+                  <VisibilityOffIcon
+                    className={`${styles["visibility"]}`}
+                    onClick={handlePassVisibility}
+                  />
+                )}
+              </div>
               <p className={`${styles["email"]}`}>Phone Number :</p>
               <input
                 type="text"
                 name=""
-                className={`${styles["input-box"]} ${styles["input"]}`}
+                className={`${styles["input-box"]} ${
+                  errPhone ? styles["inputErr"] : styles["input"]
+                }`}
                 placeholder="Enter your password"
-                onChange={(e) =>
-                  setValues({ ...values, phone: e.target.value })
-                }
+                onChange={(e) => {
+                  setValues({ ...values, phone: e.target.value });
+                  setErrPhone(false);
+                }}
                 required
               />
               <div

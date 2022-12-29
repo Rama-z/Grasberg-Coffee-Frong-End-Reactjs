@@ -1,22 +1,31 @@
-import React, { Component } from 'react'
-import styles from "../styles/HalfHeaderLogin.module.css"
-import coffee from "../assets/Profiles/coffee 3.png" 
-import { Link } from 'react-router-dom';
+import React from "react";
+import styles from "../styles/HalfHeaderLogin.module.css";
+import coffee from "../assets/Profiles/coffee 3.png";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-export default class HalfHeader extends Component {
-  render() {
-    return (
-      <>
-      <section className={`${styles["grasberg"]} container row d-flex align-items-center`}>
-        <section className={`${styles["center"]} ${styles["logo-name"]} col`}>
-          <img src= {coffee} className= {`${styles["logo-img"]} me-3`} alt=""/>
-          <Link to={"/"}>
-            Grasberg Coffee
-          </Link>
+export default function HalfHeader() {
+  const navigate = useNavigate();
+  const currentURL = window.location.href;
+  const pathname = window.location.pathname;
+  return (
+    <>
+      <section
+        className={`${styles["grasberg"]} container row d-flex align-items-center`}
+      >
+        <section
+          className={`${styles["center"]} ${styles["logo-name"]} col`}
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
+        >
+          <img src={coffee} className={`${styles["logo-img"]} me-3`} alt="" />
+          Grasberg Coffee
         </section>
-        <p className={`${styles["login"]} text-end col`}>Login</p>
+        {pathname === "/auth/login" ? (
+          <p className={`${styles["login"]} text-end col`}>Login</p>
+        ) : (
+          <p className={`${styles["login"]} text-end col`}>Sign Up</p>
+        )}
       </section>
-      </>
-    )
-  }
+    </>
+  );
 }
