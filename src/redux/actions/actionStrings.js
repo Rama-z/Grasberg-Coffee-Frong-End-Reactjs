@@ -21,8 +21,9 @@ export const actionStrings = {
   pending: `_${ActionType.Pending}`,
   fulfilled: `_${ActionType.Fulfilled}`,
   rejected: `_${ActionType.Rejected}`,
-  getProfile: "_GET_PROFILE",
-  updateProfile: "_UPDATE_PROFILE",
-  createProduct: "_CREATE_PRODUCT",
-  getDetailProduct: "_GET_PRODUCT_DETAIL",
+  getProfile: "GET_PROFILE",
+  editPassword: "EDIT_PASSWORD",
+  editProfile: "EDIT_PROFILE",
+  createProduct: "CREATE_PRODUCT",
+  getDetailProduct: "GET_PRODUCT_DETAIL",
 };

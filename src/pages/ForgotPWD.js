@@ -5,24 +5,29 @@ import Footer from "../components/Footer";
 import TabTitle from "../utils/WebDinamis";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import authAction from "../redux/actions/auth";
 import Countdown from "react-countdown";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRef } from "react";
+import ReportIcon from "@mui/icons-material/Report";
 
 export default function ForgotPWD() {
   TabTitle("Forget Password");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState();
+  const auth = useSelector((state) => state.auth);
+  const [email, setEmail] = useState("");
+  const [errEmail, setErrEmail] = useState(false);
+  const [resend, setResend] = useState(true);
   const [count, setCount] = useState(Date.now() + 120000);
-  const directLink = `http://localhost:3000/auth/confirm`;
+  const directLink = `https://grasberg-coffee-front-end-reactjs.vercel.app/auth/confirm`;
   const clockRef = useRef();
   const submitHandler = (e) => {
-    setCount(Date.now() + 120000);
     e.preventDefault();
+    if (email.trim() === "") return setErrEmail(true);
+    setCount(Date.now() + 120000);
     const body = {
       email,
       directLink,
@@ -60,10 +65,24 @@ export default function ForgotPWD() {
             placeholder="Enter your email addres to get link"
             onChange={(e) => {
               setEmail(e.target.value);
+              setErrEmail(false);
             }}
           />
+          <div className={errEmail ? styles.errEmail : styles.errEmailNo}>
+            <ReportIcon />
+            <div>Fill Email</div>
+          </div>
           <button className={`${styles["send"]} ms-4`} type="submit">
-            Send
+            {auth.isLoading ? (
+              <div className={styles["lds-ring"]}>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            ) : (
+              <div>Send</div>
+            )}
           </button>
         </form>
         <div
@@ -76,7 +95,7 @@ export default function ForgotPWD() {
         >
           <button
             className={`${styles["resend"]} col col-sm col-md col-lg-3 text-align mt-5`}
-            onClick={submitHandler}
+            disabled={resend}
           >
             Resend Link
           </button>
@@ -84,7 +103,12 @@ export default function ForgotPWD() {
         <div
           className={`${styles["timer"]} col col-sm col-md col-lg mt-5 pb-5 text-center`}
         >
-          <Countdown date={count} autoStart={false} ref={clockRef} />
+          <Countdown
+            date={count}
+            autoStart={false}
+            ref={clockRef}
+            onComplete={() => setResend(false)}
+          />
         </div>
       </section>
       <Footer />

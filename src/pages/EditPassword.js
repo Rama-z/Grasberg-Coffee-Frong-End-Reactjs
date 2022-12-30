@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "../styles/Confirm.module.css";
+import React, { useEffect } from "react";
+import styles from "../styles/EditPassword.module.css";
 import Header from "../components/HeaderHome";
 import Footer from "../components/Footer";
 import TabTitle from "../utils/WebDinamis";
@@ -12,22 +12,43 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import userAction from "../redux/actions/profile";
 
-export default function Confirm() {
+export default function EditPassword() {
   TabTitle("Confirm Password");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.user);
   const [showPass, setShowPass] = useState(false);
+  const [showPassOld, setShowPassOld] = useState(false);
   const [showPassConfirm, setShowPassConfirm] = useState(false);
-  const [pass, setPass] = useState("");
-  const [confirm, setConfirm] = useState("");
   const [errPass, setErrPass] = useState(false);
+  const [errOld, setErrOld] = useState(false);
   const [errConfirm, setErrConfirm] = useState(false);
+  const [pass, setPass] = useState("");
+  const [old, setOld] = useState("");
+  const [confirm, setConfirm] = useState("");
   const { otp } = useParams();
-  const pinCode = otp;
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const submitHandler = (e) => {
     e.preventDefault();
+    if (old.trim() === "") {
+      if (pass.trim() === "") {
+        if (confirm.trim() === "") {
+          setErrOld(true);
+          setErrPass(true);
+          setErrConfirm(true);
+          return;
+        }
+        setErrOld(true);
+        setErrPass(true);
+        return;
+      }
+      return setErrOld(true);
+    }
     if (pass.trim() === "") {
       if (confirm.trim() === "") {
         setErrPass(true);
@@ -42,19 +63,22 @@ export default function Confirm() {
         "Please make sure your new password are same with confirm password "
       );
     const body = {
-      pinCode,
-      newPassword: pass,
+      old_password: old,
+      new_password: pass,
     };
     const success = () => {
-      toast.success("Change password success, please login!");
+      toast.success("Change password success!");
     };
     const failed = (msg) => {
       toast.error(`Change password failed, ${msg}`);
     };
-    dispatch(authAction.confirmThunk(body, success, failed));
+    dispatch(userAction.editPasswordThunk(body, auth.token, success, failed));
   };
   const handlePassVisibility = () => {
     setShowPass(!showPass);
+  };
+  const handlePassVisibilityOld = () => {
+    setShowPassOld(!showPassOld);
   };
   const handlePassVisibilityConfirm = () => {
     setShowPassConfirm(!showPassConfirm);
@@ -64,20 +88,38 @@ export default function Confirm() {
       <Header />
       <section className={`${styles["background"]}`}>
         <div className={`${styles[""]}`}>
-          <div className={`${styles["title"]}`}>Set your new password</div>
+          <div className={`${styles["title"]}`}>Reset Your Password</div>
           <div className={`${styles["subtitle"]}`}></div>
         </div>
         <form className={`${styles["form"]}`} onSubmit={submitHandler}>
           <div className={`${styles.column}`}>
             <div style={{ color: "white" }} className={``}>
-              Pin Code
+              Old Password
             </div>
             <input
               className={`${styles["input"]}`}
-              type="text"
-              value={otp}
-              disabled
+              type={showPassOld ? "text" : "password"}
+              placeholder="Enter your old password"
+              onChange={(e) => {
+                setOld(e.target.value);
+                setErrOld(false);
+              }}
             />
+            {showPassOld ? (
+              <VisibilityIcon
+                className={`${styles["visibility"]}`}
+                onClick={handlePassVisibilityOld}
+              />
+            ) : (
+              <VisibilityOffIcon
+                className={`${styles["visibility"]}`}
+                onClick={handlePassVisibilityOld}
+              />
+            )}
+            <div className={errOld ? styles.errEmail : styles.errEmailNo}>
+              <ReportIcon />
+              <div>Fill Old Password</div>
+            </div>
           </div>
           <div className={`${styles.column}`}>
             <div style={{ color: "white" }} className={``}>
@@ -134,11 +176,11 @@ export default function Confirm() {
             )}
             <div className={errConfirm ? styles.errEmail : styles.errEmailNo}>
               <ReportIcon />
-              <div>Confirm New Password</div>
+              <div>Fill Confirm Password</div>
             </div>
           </div>
           <button className={`${styles["resend"]}`} type="submit">
-            {auth.isLoading ? (
+            {user.isLoading ? (
               <div className={styles["lds-ring"]}>
                 <div></div>
                 <div></div>

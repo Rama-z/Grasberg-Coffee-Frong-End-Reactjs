@@ -11,6 +11,7 @@ import Payment from "./pages/Payment";
 import ProductDetails from "./pages/ProductDetails";
 import ForgotPWD from "./pages/ForgotPWD";
 import Confirm from "./pages/Confirm";
+import EditPassword from "./pages/EditPassword";
 import App from "./App";
 // import TryLogin from "./pages/TryLogin";
 import LoginError from "./pages/LoginError";
@@ -53,6 +54,7 @@ const router = createBrowserRouter([
   // { path: "/products/:id", element: <DetailsProduct /> },
   { path: "/auth/forgot", element: <ForgotPWD /> },
   { path: "/auth/confirm/:otp", element: <Confirm /> },
+  { path: "/user/edit-password", element: <EditPassword /> },
   { path: "/app", element: <App /> },
   // { path: "/tryprofile", element: <Coba2 /> },
   { path: "/loginerror", element: <LoginError /> },

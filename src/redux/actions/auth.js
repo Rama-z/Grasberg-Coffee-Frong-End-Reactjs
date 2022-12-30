@@ -82,7 +82,7 @@ const loginThunk = (body, cbSuccess, cbFailed) => {
     } catch (error) {
       console.log(error.response.data.msg);
       dispatch(loginRejected(error));
-      typeof cbSuccess === "function" && cbFailed(error.response.data.msg);
+      typeof cbFailed === "function" && cbFailed(error.response.data.msg);
     }
   };
 };
@@ -96,7 +96,7 @@ const registerThunk = (body, cbSuccess, cbFailed) => {
       typeof cbSuccess === "function" && cbSuccess();
     } catch (error) {
       dispatch(registerRejected(error));
-      typeof cbSuccess === "function" && cbFailed(error.response.data.msg);
+      typeof cbFailed === "function" && cbFailed(error.response.data.msg);
     }
   };
 };
@@ -111,7 +111,7 @@ const confirmThunk = (body, cbSuccess, cbFailed) => {
     } catch (error) {
       console.log(error.response.data.msg);
       dispatch(confirmRejected(error));
-      typeof cbSuccess === "function" && cbFailed(error.response.data.msg);
+      typeof cbFailed === "function" && cbFailed(error.response.data.msg);
     }
   };
 };
@@ -126,7 +126,7 @@ const forgotThunk = (body, cbSuccess, cbFailed) => {
     } catch (error) {
       console.log(error.response.data.msg);
       dispatch(forgotRejected(error));
-      typeof cbSuccess === "function" && cbFailed(error.response.data.msg);
+      typeof cbFailed === "function" && cbFailed(error.response.data.msg);
     }
   };
 };
@@ -141,7 +141,7 @@ const logoutThunk = (token, cbSuccess, cbFailed) => {
     } catch (error) {
       console.log(error);
       dispatch(logoutRejected(error));
-      typeof cbSuccess === "function" && cbFailed(error.response.data.msg);
+      typeof cbFailed === "function" && cbFailed(error.response.data.msg);
     }
   };
 };

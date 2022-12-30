@@ -95,6 +95,7 @@ section .mid-first {
 
 .circular {
   border-radius: 50%;
+  max-width: 100px;
 }
 
 .content {
@@ -116,10 +117,11 @@ section .mid-first {
 }
 
 .input {
-  border: 0px;
+  border: 0px solid black;
   overflow: scroll;
   font-size: 1em;
-  width: 80%;
+  width: 100%;
+  outline: none;
 }
 
 .under-input {
@@ -130,6 +132,25 @@ section .mid-first {
   width: 100%;
   border: 0;
   border-radius: 1.5vh;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.btn2 {
+  width: 100%;
+  border: 0;
+  border-radius: 1.5vh;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .margins {
@@ -307,11 +328,16 @@ section .mid-first {
   background: #ffffff;
   border: 1px solid #9f9f9f;
   border-radius: 0.5em;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .log:hover,
 .btn:hover {
-  cursor: pointer;
   width: 110%;
   transition: 0.5s;
 }
@@ -402,6 +428,60 @@ section .mid-first {
   border-radius: 50%;
   border: 0px solid black;
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.22);
+}
+
+.pen {
+  color: black;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 10px;
+  height: 10px;
+  margin-bottom: 6px;
+  margin-right: 6px;
+}
+
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  margin: 0px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @media only screen and (max-width: 768px) {

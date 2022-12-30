@@ -92,6 +92,7 @@ p {
 }
 
 .visited {
+  cursor: pointer;
   font-family: "Rubik";
   font-style: normal;
   font-weight: 400;

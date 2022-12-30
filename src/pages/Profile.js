@@ -3,65 +3,89 @@ import styles from "../styles/Profile.module.css";
 import Header from "../components/HeaderHome";
 import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import { editProfile } from "../utils/profile";
 import sample from "../assets/profile.png";
 // import authAction from "../redux/actions/auth";
-import profileAction from "../redux/actions/profile";
+import userAction from "../redux/actions/profile";
 import Modal from "../components/ModalLogout";
+import { toast } from "react-toastify";
+import { EditLocation } from "@mui/icons-material";
+import CreateIcon from "@mui/icons-material/Create";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const token = useSelector((state) => state.auth.token);
   const refTarget = useRef(null);
-  const profile = useSelector((state) => state.user);
-  const [body, setBody] = useState({});
-  const [notEdit, setNotEdit] = useState(true);
+  const profile = useSelector((state) => state.user.profile);
+  const [imagePreview, setImagePreview] = useState(profile.image);
+  const [body, setBody] = useState({
+    username: profile.username,
+    firstname: profile.firstname,
+    lastname: profile.lastname,
+    birthday: profile.birthday,
+    gender: profile.gender,
+    address: profile.address,
+    image: profile.image,
+  });
+  const [edit, setEdit] = useState(true);
+  console.log(edit);
   const [modalOpen, setModalOpen] = useState(false);
+
   const modalHandler = () => {
     setModalOpen(!modalOpen);
   };
 
   useEffect(() => {
-    dispatch(profileAction.getProfileThunk(token));
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    dispatch(userAction.getProfileThunk(token));
   }, [dispatch]);
 
-  const onEdit = () => {
-    setNotEdit(!notEdit);
-  };
-
   const getBirthday = () => {
-    const date = new Date(profile?.birthday);
+    const date = new Date(body.birthday);
     const yyyy = date.getFullYear();
     let mm = date.getMonth() + 1; // Months start at 0!
     let dd = date.getDate();
     if (dd < 10) dd = "0" + dd;
     if (mm < 10) mm = "0" + mm;
-    return dd + "/" + mm + "/" + yyyy;
+    return yyyy + "-" + mm + "-" + dd;
   };
 
-  const changeHandler = (e) => [
-    setBody({ ...body, [e.target.name]: e.target.value }),
-  ];
+  const changeHandler = (e) => {
+    setBody({ ...body, [e.target.name]: e.target.value });
+  };
 
   const imageHandler = (e) => {
     const photo = e.target.files[0];
-    setBody({ ...body, image: photo });
-    // setImgPreview(URL.createObjectURL(photo));
+    const defaultSize = 2 * 1024 * 1024;
+    if (
+      photo.type !== "image/jpeg" &&
+      photo.type !== "image/jpg" &&
+      photo.type !== "image/png"
+    )
+      return toast.error("Only receive .jpeg, .jpg, .png file");
+    if (photo.size > defaultSize)
+      return toast.error("File are too large, max size are 2 Mb");
+    setBody({ ...body, image: e.target.files[0] });
+    setImagePreview(URL.createObjectURL(e.target.files[0]));
   };
 
-  const handleChanges = async (body) => {
+  const submitHandler = () => {
     const formData = new FormData();
-    Object.keys(body).forEach((e) => {
-      formData.append(e, body[e]);
+    Object.keys(body).forEach((key, idx) => {
+      formData.append(key, body[key]);
     });
-    try {
-      // await editProfile(formData, token);
-      onEdit();
-    } catch (error) {
-      console.log(error);
-    }
+    const success = () => {
+      toast.success("Edit profile success!");
+    };
+    const failed = (msg) => {
+      toast.error(`Edit profile failed, ${msg}`);
+    };
+    dispatch(userAction.editProfileThunk(formData, token, success, failed));
   };
 
   return (
@@ -83,7 +107,7 @@ const Profile = () => {
               <div className={`${styles["flex-row"]}`}>
                 <img
                   className={`${styles["circular"]}`}
-                  src={profile.image || sample}
+                  src={imagePreview ? imagePreview : body.image}
                   alt=""
                 />
               </div>
@@ -91,27 +115,38 @@ const Profile = () => {
                 {profile.username || "username"}
               </p>
               <p className={`${styles["email"]}`}>{profile.email}</p>
-              <p
-                className={`${styles["btn"]} ${styles["choose"]} ${styles["krem"]}`}
+              <button
+                disabled={edit}
+                className={`${edit ? styles["btn2"] : styles["btn"]} ${
+                  styles["choose"]
+                } ${styles["krem"]}`}
                 onClick={(e) => {
                   e.preventDefault();
                   refTarget.current.click();
                 }}
               >
                 Choose Photo
-              </p>
+              </button>
               <input
                 type="file"
                 ref={refTarget}
                 onChange={(e) => imageHandler(e)}
                 style={{ display: "none" }}
               />
-              <p
-                className={`${styles["btn"]} ${styles["coklat"]} ${styles["remove"]}`}
+              <button
+                disabled={edit}
+                className={`${edit ? styles["btn2"] : styles["btn"]} ${
+                  styles["coklat"]
+                } ${styles["remove"]}`}
               >
                 Remove Photo
-              </p>
-              <p className={`${styles["edit"]} ${styles["btn"]}`}>
+              </button>
+              <p
+                className={`${styles["edit"]} ${styles["btn"]}`}
+                onClick={() => {
+                  navigate("/user/edit-password");
+                }}
+              >
                 Edit Password
               </p>
               <section
@@ -121,8 +156,14 @@ const Profile = () => {
                   className={`${styles["format-text1"]} ${styles["flex-row"]}`}
                 >
                   <div className={`${styles["font-format2"]}`}>Contacts</div>
-                  <div>
-                    <img src="./assets/pena.png" alt="" />
+                  <div
+                    className={styles.pen}
+                    onClick={() => {
+                      setEdit(!edit);
+                    }}
+                  >
+                    Edit
+                    <CreateIcon />
                   </div>
                 </div>
                 <div
@@ -135,23 +176,32 @@ const Profile = () => {
                       <div
                         className={`${styles["font-format"]} ${styles["margins"]}`}
                       >
-                        Email Adress :<p></p>
+                        Email Address :<p></p>
                         <input
                           type="text"
                           className={`${styles["input"]}`}
-                          placeholder={profile.email}
-                          disabled
+                          value={profile.email}
+                          disabled={true}
+                          style={{ cursor: "not-allowed" }}
                         />
                         <div className={`${styles["under-input"]}`}></div>
                       </div>
                       <div
                         className={`${styles["font-format"]} ${styles["margins"]}`}
                       >
-                        Delivery Adress :<p></p>
+                        Delivery Address :<p></p>
                         <input
+                          disabled={edit}
                           type="text"
                           className={`${styles["input"]}`}
-                          placeholder={profile.address || "Input your address"}
+                          placeholder="Input your delivery address"
+                          value={body.address}
+                          onChange={(e) => {
+                            setBody({
+                              ...body,
+                              address: e.target.value,
+                            });
+                          }}
                         />
                         <div className={`${styles["under-input"]}`}></div>
                       </div>
@@ -165,7 +215,9 @@ const Profile = () => {
                       <input
                         type="text"
                         className={`${styles["input"]}`}
-                        placeholder={profile.phone || "Input your phone number"}
+                        style={{ cursor: "not-allowed" }}
+                        value={profile.phone}
+                        disabled
                       />
                       <div className={`${styles["under-input"]}`}></div>
                     </div>
@@ -189,8 +241,15 @@ const Profile = () => {
                       <input
                         type="text"
                         className={`${styles["input"]}`}
-                        placeholder={profile.username || "Input your address"}
-                        onChange={changeHandler}
+                        placeholder="Input your Display Name"
+                        value={body.username}
+                        disabled={edit}
+                        onChange={(e) => {
+                          setBody({
+                            ...body,
+                            username: e.target.value,
+                          });
+                        }}
                       />
                       <div className={`${styles["under-input"]}`}></div>
                     </div>
@@ -199,9 +258,17 @@ const Profile = () => {
                     >
                       First Name :<p></p>
                       <input
+                        disabled={edit}
                         type="text"
                         className={`${styles["input"]}`}
-                        placeholder={profile.firstname || "Input your address"}
+                        placeholder="Input your first name"
+                        value={body.firstname}
+                        onChange={(e) => {
+                          setBody({
+                            ...body,
+                            firstname: e.target.value,
+                          });
+                        }}
                       />
                       <div className={`${styles["under-input"]}`}></div>
                     </div>
@@ -210,9 +277,17 @@ const Profile = () => {
                     >
                       Last Name :<p></p>
                       <input
+                        disabled={edit}
                         type="text"
                         className={`${styles["input"]}`}
-                        placeholder={profile.lastname || "Input your address"}
+                        placeholder="Input your last name"
+                        value={body.lastname}
+                        onChange={(e) => {
+                          setBody({
+                            ...body,
+                            lastname: e.target.value,
+                          });
+                        }}
                       />
                       <div className={`${styles["under-input"]}`}></div>
                     </div>
@@ -223,12 +298,13 @@ const Profile = () => {
                     >
                       DD/MM/YY: <p></p>
                       <input
-                        disabled={notEdit}
+                        disabled={edit}
                         onChange={changeHandler}
                         name="birthday"
-                        type={notEdit ? "text" : "date"}
+                        type={edit ? "date" : "text"}
                         placeholder={getBirthday()}
                         className={`${styles["input"]}`}
+                        style={{ overflow: "hidden" }}
                       />
                       <div className={`${styles["under-input"]}`}></div>
                     </div>
@@ -239,32 +315,21 @@ const Profile = () => {
                     className={`${styles["flex-row"]} ${styles["radio"]} ${styles["center"]}`}
                   >
                     <label htmlFor="Male">
-                      {notEdit ? (
-                        <input
-                          disabled={true}
-                          id="Male"
-                          // defaultChecked={profile?.gender === "Male"}
-                          checked={profile?.gender === "Male"}
-                          type="radio"
-                          placeholder="Male"
-                          name="gender"
-                          value="Male"
-                        />
-                      ) : (
-                        <input
-                          // defaultChecked={profile?.gender === "Male"}
-                          type="radio"
-                          id="Male"
-                          name="gender"
-                          value="Male"
-                          onChange={changeHandler}
-                          className="me-2"
-                        />
-                      )}
+                      <input
+                        disabled={edit}
+                        id="Male"
+                        defaultChecked={profile?.gender === "Male"}
+                        checked={profile?.gender === "Male"}
+                        type="radio"
+                        placeholder="Male"
+                        name="gender"
+                        value="Male"
+                      />
                       Male
                     </label>
                     <label htmlFor="Female">
                       <input
+                        disabled={edit}
                         type="radio"
                         id="Female"
                         name="gender"
@@ -280,26 +345,50 @@ const Profile = () => {
               <p className={`${styles["do"]}`}>
                 Do you want to save the change?
               </p>
-              <p
-                className={`${styles["btn"]} ${styles["coklat"]} ${styles["save"]}`}
+              <button
+                disabled={edit}
+                className={`${edit ? styles["btn2"] : styles["btn"]} ${
+                  styles["coklat"]
+                } ${styles["save"]}`}
                 onClick={() => {
-                  handleChanges(body);
+                  // handleChanges(body);
+                  submitHandler();
                 }}
               >
-                Save Change
-              </p>
-              <p
-                className={`${styles["btn"]} ${styles["krem"]} ${styles["cancel"]}`}
+                {profile.isLoading ? (
+                  <div className={styles["lds-ring"]}>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                ) : (
+                  <div>Save Change</div>
+                )}
+              </button>
+              <button
+                disabled={edit}
+                className={`${edit ? styles["btn2"] : styles["btn"]} ${
+                  styles["krem"]
+                } ${styles["cancel"]}`}
                 onClick={() => {
-                  setBody({});
-                  onEdit();
+                  setBody({
+                    username: profile.username,
+                    firstname: profile.firstname,
+                    lastname: profile.lastname,
+                    birthday: profile.birthday,
+                    gender: profile.gender,
+                    address: profile.address,
+                    image: profile.image,
+                  });
+                  setEdit(true);
                 }}
               >
                 Cancel
-              </p>
-              <div className={`${styles["log"]}`} onClick={modalHandler}>
+              </button>
+              <button className={`${styles["log"]}`} onClick={modalHandler}>
                 Log out
-              </div>
+              </button>
             </section>
 
             <section
@@ -309,8 +398,14 @@ const Profile = () => {
                 className={`${styles["format-text1"]} ${styles["flex-row"]}`}
               >
                 <div className={`${styles["font-format2"]}`}>Contacts</div>
-                <div>
-                  <img src="./assets/pena.png" alt="" />
+                <div
+                  className={styles.pen}
+                  onClick={() => {
+                    setEdit(!edit);
+                  }}
+                >
+                  Edit
+                  <CreateIcon />
                 </div>
               </div>
               <div
@@ -323,22 +418,32 @@ const Profile = () => {
                     <div
                       className={`${styles["font-format"]} ${styles["margins"]}`}
                     >
-                      Email Adress :<p></p>
+                      Email Address :<p></p>
                       <input
                         type="text"
                         className={`${styles["input"]}`}
-                        placeholder={profile?.email || "Input your name"}
+                        value={profile.email}
+                        disabled
+                        style={{ cursor: "not-allowed" }}
                       />
                       <div className={`${styles["under-input"]}`}></div>
                     </div>
                     <div
                       className={`${styles["font-format"]} ${styles["margins"]}`}
                     >
-                      Delivery Adress :<p></p>
+                      Delivery Address :<p></p>
                       <input
+                        disabled={edit}
                         type="text"
                         className={`${styles["input"]}`}
-                        placeholder={profile?.adress || "Input your address"}
+                        placeholder="Input your delivery address"
+                        value={body.address}
+                        onChange={(e) => {
+                          setBody({
+                            ...body,
+                            address: e.target.value,
+                          });
+                        }}
                       />
                       <div className={`${styles["under-input"]}`}></div>
                     </div>
@@ -352,7 +457,10 @@ const Profile = () => {
                     <input
                       type="text"
                       className={`${styles["input"]}`}
-                      placeholder={profile?.phone || "Input your phone number"}
+                      placeholder="Input your phone number"
+                      style={{ cursor: "not-allowed" }}
+                      value={profile.phone}
+                      disabled
                     />
                     <div className={`${styles["under-input"]}`}></div>
                   </div>
@@ -376,8 +484,15 @@ const Profile = () => {
                     <input
                       type="text"
                       className={`${styles["input"]}`}
-                      placeholder={profile?.username || "Input your address"}
-                      onChange={changeHandler}
+                      placeholder="Input your Display Name"
+                      value={body.username}
+                      disabled={edit}
+                      onChange={(e) => {
+                        setBody({
+                          ...body,
+                          username: e.target.value,
+                        });
+                      }}
                     />
                     <div className={`${styles["under-input"]}`}></div>
                   </div>
@@ -386,9 +501,17 @@ const Profile = () => {
                   >
                     First Name :<p></p>
                     <input
+                      disabled={edit}
                       type="text"
                       className={`${styles["input"]}`}
-                      placeholder={profile?.firstname || "Input your address"}
+                      placeholder="Input your first name"
+                      value={body.firstname}
+                      onChange={(e) => {
+                        setBody({
+                          ...body,
+                          firstname: e.target.value,
+                        });
+                      }}
                     />
                     <div className={`${styles["under-input"]}`}></div>
                   </div>
@@ -397,9 +520,17 @@ const Profile = () => {
                   >
                     Last Name :<p></p>
                     <input
+                      disabled={edit}
                       type="text"
                       className={`${styles["input"]}`}
-                      placeholder={profile?.lastname || "Input your address"}
+                      placeholder="Input your last name"
+                      value={body.lastname}
+                      onChange={(e) => {
+                        setBody({
+                          ...body,
+                          lastname: e.target.value,
+                        });
+                      }}
                     />
                     <div className={`${styles["under-input"]}`}></div>
                   </div>
@@ -410,12 +541,14 @@ const Profile = () => {
                   >
                     DD/MM/YY: <p></p>
                     <input
-                      disabled={notEdit}
+                      disabled={edit}
                       onChange={changeHandler}
                       name="birthday"
-                      type={notEdit ? "text" : "date"}
-                      placeholder={getBirthday()}
+                      type={"date"}
+                      placeholder="Input your birthday"
+                      value={getBirthday()}
                       className={`${styles["input"]}`}
+                      style={{ overflow: "hidden" }}
                     />
                     <div className={`${styles["under-input"]}`}></div>
                   </div>
@@ -426,37 +559,37 @@ const Profile = () => {
                   className={`${styles["flex-row"]} ${styles["radio"]} ${styles["center"]}`}
                 >
                   <label htmlFor="Male">
-                    {notEdit ? (
-                      <input
-                        disabled={true}
-                        id="Male"
-                        // defaultChecked={profile?.gender === "Male"}
-                        checked={profile?.gender === "Male"}
-                        type="radio"
-                        placeholder="Male"
-                        name="gender"
-                        value="Male"
-                      />
-                    ) : (
-                      <input
-                        // defaultChecked={profile?.gender === "Male"}
-                        type="radio"
-                        id="Male"
-                        name="gender"
-                        value="Male"
-                        onChange={changeHandler}
-                        className="me-2"
-                      />
-                    )}
+                    <input
+                      disabled={edit}
+                      defaultChecked={body.gender === "male"}
+                      type="radio"
+                      id="Male"
+                      name="gender"
+                      value="male"
+                      onChange={(e) => {
+                        setBody({
+                          ...body,
+                          gender: e.target.value,
+                        });
+                      }}
+                      className="me-2"
+                    />
                     Male
                   </label>
                   <label htmlFor="Female">
                     <input
+                      disabled={edit}
+                      defaultChecked={body.gender === "female"}
                       type="radio"
                       id="Female"
                       name="gender"
-                      value="Female"
-                      onChange={changeHandler}
+                      value="female"
+                      onChange={(e) => {
+                        setBody({
+                          ...body,
+                          gender: e.target.value,
+                        });
+                      }}
                       className="me-2"
                     />
                     Female

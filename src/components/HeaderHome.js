@@ -32,31 +32,58 @@ export default function Header() {
           <p
             className={`${styles["visited"]}`}
             onClick={() => {
-              navigate("/history");
+              navigate("/");
             }}
           >
             Home
           </p>
-          <Link to={"/products"}>
-            <p className={`${styles["visited"]}`}>Product</p>
-          </Link>
-          <Link to={"/payment"}>
-            <p className={`${styles["visited"]}`}>Your Cart</p>
-          </Link>
-          <Link to={"/history"}>
-            <p className={`${styles["visited"]}`}>History</p>
-          </Link>
+          <p
+            className={`${styles["visited"]}`}
+            onClick={() => {
+              navigate("/products");
+            }}
+          >
+            Product
+          </p>
+          <p
+            className={`${styles["visited"]}`}
+            onClick={() => {
+              console.log("cart");
+              navigate("/payment");
+            }}
+          >
+            Your Cart
+          </p>
+          <p
+            className={`${styles["visited"]}`}
+            onClick={() => {
+              console.log("history");
+              navigate("/history");
+            }}
+          >
+            History
+          </p>
           {!token ? (
-            <Link to={"/auth"}>
-              <p className={`${styles["login"]}`}>Login</p>
-            </Link>
+            <p
+              className={`${styles["login"]}`}
+              onClick={() => {
+                navigate("/auth/login");
+              }}
+            >
+              Login
+            </p>
           ) : (
             ""
           )}
           {!token ? (
-            <Link to={"/signup"}>
-              <p className={`${styles["signup"]}`}>Sign Up</p>
-            </Link>
+            <p
+              className={`${styles["signup"]}`}
+              onClick={() => {
+                navigate("/auth/register");
+              }}
+            >
+              Sign Up
+            </p>
           ) : (
             ""
           )}

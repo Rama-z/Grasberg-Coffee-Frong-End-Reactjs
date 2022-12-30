@@ -6,92 +6,34 @@ import { useState } from "react";
 import { useEffect } from "react";
 // import { getProfile } from "../utils/profile";
 import sample from "../assets/profile.png";
-import { connect } from "react-redux";
-import { createSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const NavLogin = ({ setSearchParams }) => {
+export default function NavLogin() {
   const navigate = useNavigate();
-  const [state, setState] = useState("");
-  const text = state.text;
-  const title = state.title;
-  const [profile, setProfile] = useState({});
-
-  function searchBar() {
-    setState((state) => ({
-      title: state.title === `${styles.show}` ? "" : `${styles.show}`,
-    }));
-    setProfile({ ...profile });
-  }
-
-  // const getDataProfile = async () => {
-  //   try {
-  //     const result = await getProfile();
-  //     setProfile(result.data.data[0]);
-  //   } catch (error) {
-  //     console.log(error);
-  //     if (error === 403) {
-  //       navigate("/login");
-  //     }
-  //   }
-  // };
-
-  const onSearchHandler = (e) => {
-    console.log("search handler");
-    this.setState((prevState) => ({
-      searchParams: {
-        ...prevState.searchParams,
-        search: e.target.value,
-      },
-    }));
-    const url = createSearchParams({
-      search: e.target.value,
-      filter: "",
-      order_by: "transactions",
-      order_in: "",
-      page: "1",
-      limit: "4",
-    });
-    setSearchParams(url);
-  };
-
-  useEffect(() => {
-    // getDataProfile();
-  }, []);
+  const profile = useSelector((state) => state.user.profile);
 
   return (
     <>
-      <section className={`${styles["searching"]} ${text}`}>
-        <form className={styles.searching} onSubmit={onSearchHandler}>
-          <input className={title} type="text" placeholder="search here ..." />
-          <div className={styles["search-img"]} onClick={searchBar}>
+      <section className={`${styles["searching"]}`}>
+        <div className={styles.searching}>
+          <input type="text" placeholder="search here ..." />
+          <div className={styles["search-img"]}>
             <img src={searching} alt="searching" />
           </div>
-        </form>
+        </div>
         <div
           className={styles.profile}
           onClick={() => {
             navigate("/profile");
           }}
         >
-          {!profile.image ? (
-            <img src={sample} alt="profile" />
+          {profile.image ? (
+            <img src={profile.image} alt="profile" />
           ) : (
-            <img src={`http://localhost:8080/${profile.image}`} alt="profile" />
+            <img src={sample} alt="profile" />
           )}
         </div>
       </section>
     </>
   );
-};
-
-const mapStateToProps = (reduxState) => {
-  return {
-    counter: reduxState.counter,
-    product: reduxState.product,
-    promo: reduxState.promo,
-  };
-};
-
-const NewComponent = connect(mapStateToProps)(NavLogin);
-
-export default NewComponent;
+}
