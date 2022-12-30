@@ -1,88 +1,71 @@
-// import actionStrings from "./actionStrings";
-// import {
-//   getFavorite,
-//   getAllProduct,
-//   postData,
-//   getCoffee,
-//   getNonCoffee,
-//   getFood,
-//   getProductNext,
-//   editProduct,
-//   getData,
-// } from "../../utils/product";
+import { actionStrings } from "./actionStrings";
+import { getProducts, getProductById } from "../../utils/product";
+import { ActionType } from "redux-promise-middleware";
 
-// const getFavoriteAction = (limit) => {
-//   return {
-//     type: actionStrings.getFavorites,
-//     payload: getFavorite(limit),
-//   };
-// };
+const { Pending, Rejected, Fulfilled } = ActionType;
 
-// const getCoffeeAction = (limit) => {
-//   return {
-//     type: actionStrings.getFavorites,
-//     payload: getCoffee(limit),
-//   };
-// };
+const getProductsPending = () => ({
+  type: actionStrings.getProducts.concat("_", Pending),
+});
 
-// const getNonCoffeeAction = (limit) => {
-//   return {
-//     type: actionStrings.getFavorites,
-//     payload: getNonCoffee(limit),
-//   };
-// };
+const getProductsRejected = (error) => ({
+  type: actionStrings.getProducts.concat("_", Rejected),
+  payload: { error },
+});
 
-// const getFoodAction = (limit) => {
-//   return {
-//     type: actionStrings.getFavorites,
-//     payload: getFood(limit),
-//   };
-// };
+const getProductsFulfilled = (data) => ({
+  type: actionStrings.getProducts.concat("_", Fulfilled),
+  payload: { data },
+});
 
-// const getAllProductAction = (params) => {
-//   return {
-//     type: actionStrings.getAllProduct,
-//     payload: getAllProduct(params),
-//   };
-// };
+const getProductByIdPending = () => ({
+  type: actionStrings.getProductById.concat("_", Pending),
+});
 
-// const getProductNextAction = (url) => {
-//   return {
-//     type: actionStrings.getProducts,
-//     payload: getProductNext(url),
-//   };
-// };
+const getProductByIdRejected = (error) => ({
+  type: actionStrings.getProductById.concat("_", Rejected),
+  payload: { error },
+});
 
-// const addProductActions = (token, body) => {
-//   return {
-//     type: actionStrings.createProduct,
-//     payload: postData(token, body),
-//   };
-// };
+const getProductByIdFulfilled = (data) => ({
+  type: actionStrings.getProductById.concat("_", Fulfilled),
+  payload: { data },
+});
 
-// const editProductAction = (data, token, id) => {
-//   return {
-//     type: actionStrings.editProduct,
-//     payload: editProduct(data, token, id),
-//   };
-// };
+const getProductsThunk = (params, cbSuccess, cbFailed) => {
+  return async (dispatch) => {
+    try {
+      dispatch(getProductsPending());
+      const result = await getProducts(params);
+      dispatch(getProductsFulfilled(result.data));
+      console.log(result);
+      typeof cbSuccess === "function" && cbSuccess();
+    } catch (error) {
+      console.log(error.response.data.msg);
+      dispatch(getProductsRejected(error));
+      typeof cbFailed === "function" && cbFailed(error.response.data.msg);
+    }
+  };
+};
 
-// export const getDetailProductAction = (id) => {
-//   return {
-//     type: actionStrings.getDetailProduct,
-//     payload: getData(`products/image/${id}`),
-//   };
-// };
+const getProductByIdThunk = (id, cbSuccess, cbFailed) => {
+  return async (dispatch) => {
+    try {
+      dispatch(getProductByIdPending());
+      const result = await getProductById(id);
+      dispatch(getProductByIdFulfilled(result.data));
+      typeof cbSuccess === "function" && cbSuccess();
+    } catch (error) {
+      console.log(error.response.data.msg);
+      dispatch(getProductByIdRejected(error));
+      typeof cbFailed === "function" && cbFailed(error.response.data.msg);
+    }
+  };
+};
 
-// const productAction = {
-//   getFavoriteAction,
-//   getCoffeeAction,
-//   getNonCoffeeAction,
-//   getFoodAction,
-//   getAllProductAction,
-//   getProductNextAction,
-//   addProductActions,
-//   editProductAction,
-// };
+const productActions = {
+  getProductsThunk,
+  getProductByIdThunk,
+};
 
-// export default productAction;
+export default productActions;

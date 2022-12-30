@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import Camera from "../assets/camera.png";
 import { useState } from "react";
 import { useRef } from "react";
-import { editProduct } from "../utils/product";
+// import { editProduct } from "../utils/product";
 
 function AddProduct() {
   const [body, setBody] = useState({});
@@ -33,8 +33,7 @@ function AddProduct() {
       formData.append(e, body[e]);
     });
     try {
-      const response = await editProduct(token, formData);
-      console.log(response);
+      // const response = await editProduct(token, formData);
     } catch (error) {
       console.log(error);
     }

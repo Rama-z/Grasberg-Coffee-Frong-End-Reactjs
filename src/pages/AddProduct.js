@@ -8,7 +8,7 @@ import Camera from "../assets/camera.png";
 // import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useRef } from "react";
-import { postData } from "../utils/product";
+// import { postData } from "../utils/product";
 
 function AddProduct() {
   const [body, setBody] = useState({});
@@ -33,13 +33,12 @@ function AddProduct() {
       formData.append(e, body[e]);
     });
     try {
-      const response = await postData(token, formData);
-      console.log(response);
+      // const response = await postData(token, formData);
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(token, body);
+
   return (
     <>
       <Header />
