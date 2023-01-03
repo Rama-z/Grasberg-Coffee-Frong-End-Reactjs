@@ -17,6 +17,20 @@ const getPromoFulfilled = (data) => ({
   payload: { data },
 });
 
+const addPromoPending = () => ({
+  type: actionStrings.addPromo.concat("_", Pending),
+});
+
+const addPromoRejected = (error) => ({
+  type: actionStrings.addPromo.concat("_", Rejected),
+  payload: { error },
+});
+
+const addPromoFulfilled = (data) => ({
+  type: actionStrings.addPromo.concat("_", Fulfilled),
+  payload: { data },
+});
+
 const getPromoThunk = (params, cbSuccess, cbFailed) => {
   return async (dispatch) => {
     try {
@@ -31,8 +45,23 @@ const getPromoThunk = (params, cbSuccess, cbFailed) => {
   };
 };
 
+const addPromoThunk = (body, token, cbSuccess, cbFailed) => {
+  return async (dispatch) => {
+    try {
+      dispatch(addPromoPending());
+      const result = await addPromo(body, token);
+      dispatch(addPromoFulfilled(result.data));
+      typeof cbSuccess === "function" && cbSuccess();
+    } catch (error) {
+      dispatch(addPromoRejected(error));
+      typeof cbFailed === "function" && cbFailed(error.response.data.msg);
+    }
+  };
+};
+
 const promoAction = {
   getPromoThunk,
+  addPromoThunk,
 };
 
 export default promoAction;

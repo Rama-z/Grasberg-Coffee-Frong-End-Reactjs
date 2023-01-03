@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRef } from "react";
 import ReportIcon from "@mui/icons-material/Report";
+import { useEffect } from "react";
 
 export default function ForgotPWD() {
   TabTitle("Forget Password");
@@ -24,6 +25,9 @@ export default function ForgotPWD() {
   const [count, setCount] = useState(Date.now() + 120000);
   const directLink = `https://grasberg-coffee-front-end-reactjs.vercel.app/auth/confirm`;
   const clockRef = useRef();
+  useEffect(() => {
+    auth.token ? navigate("/") : null;
+  }, []);
   const submitHandler = (e) => {
     e.preventDefault();
     if (email.trim() === "") return setErrEmail(true);

@@ -1,13 +1,16 @@
 import React from "react";
 import styles from "../styles/HeaderHome.module.css";
 import imageCoba from "../assets/Profiles/coffee 3.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import NavLogin from "./NavLogin";
 import NavGuest from "./NavGuest";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import productActions from "../redux/actions/product";
 
-export default function Header() {
+export default function Header({ setTrigger }) {
   const token = useSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   return (
     <>
@@ -40,6 +43,19 @@ export default function Header() {
           <p
             className={`${styles["visited"]}`}
             onClick={() => {
+              if (window.location.pathname === "/products") {
+                setSearchParams({
+                  search: "",
+                  sort: "popular",
+                  filter: "",
+                  page: "1",
+                });
+                dispatch(
+                  productActions.getProductsThunk(
+                    `?search=&sort=popular&filter=&page=1&limit=12`
+                  )
+                );
+              }
               navigate("/products");
             }}
           >
@@ -48,7 +64,6 @@ export default function Header() {
           <p
             className={`${styles["visited"]}`}
             onClick={() => {
-              console.log("cart");
               navigate("/payment");
             }}
           >

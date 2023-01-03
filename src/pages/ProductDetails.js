@@ -6,12 +6,14 @@ import Header from "../components/HeaderHome";
 import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import productActions from "../redux/actions/product";
 import transactionAction from "../redux/actions/transaction";
 import { toast } from "react-toastify";
+import CreateIcon from "@mui/icons-material/Create";
 
 export default function ProductDetails() {
+  const navigate = useNavigate();
   const role = useSelector((state) => state.auth.role);
   const user = useSelector((state) => state.user);
   const product = useSelector((state) => state.product);
@@ -30,8 +32,8 @@ export default function ProductDetails() {
     delivery_method: "Door Delivery",
     delivery_time: "now",
     phone: user.profile.phone,
-    promo_id: 999,
-    payment_method: "BRI",
+    promo_id: cart.promo_id,
+    payment_method: cart.payment_method,
   });
   const [searchParams, setSearchParams] = useSearchParams();
   const { id } = useParams();
@@ -45,7 +47,22 @@ export default function ProductDetails() {
     <>
       <Header />
       <main className="row d-flex justify-content-center align-content-center flex-column flex-md-row mb-5">
-        {!product.isLoading ? (
+        {product.isLoading ? (
+          <div className={styles["lds-spinner"]}>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        ) : (
           <>
             <section className="col-6 col-sm-12 col-lg-6 col-md-6 text-center">
               <nav className="text-start">
@@ -164,8 +181,20 @@ export default function ProductDetails() {
               </section>
             </section>
             <article
+              style={{ position: "relative" }}
               className={`${styles.content_right} col-6 col-sm-12 col-md-6 col-lg-6 text-center d-flex flex-column justify-content-between mx-auto`}
             >
+              {role === "admin" ? (
+                <button
+                  className={styles["edit-product"]}
+                  onClick={() => {
+                    navigate("/editProduct");
+                  }}
+                >
+                  <div>Edit Product</div>
+                  <CreateIcon />
+                </button>
+              ) : null}
               <h2 className={styles.title}>{product.productDetail.menu}</h2>
               <div className="text-start">
                 {product.productDetail.description}
@@ -413,21 +442,6 @@ export default function ProductDetails() {
               </section>
             </section>
           </>
-        ) : (
-          <div className={styles["lds-spinner"]}>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
         )}
       </main>
       <Footer />

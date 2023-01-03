@@ -13,6 +13,8 @@ import TabTitle from "../utils/WebDinamis";
 import { useDispatch, useSelector } from "react-redux";
 import productActions from "../redux/actions/product";
 import promoAction from "../redux/actions/promo";
+import "react-toastify/dist/ReactToastify.css";
+import transactionAction from "../redux/actions/transaction";
 
 export default function Product() {
   TabTitle("Grasberg Menu");
@@ -21,79 +23,57 @@ export default function Product() {
   const dispatch = useDispatch();
   const product = useSelector((state) => state.product);
   const promo = useSelector((state) => state.promo.promo);
+  const meta = useSelector((state) => state.product.meta);
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const [body, setBody] = useState({});
-
+  const [dropdown, setDropdown] = useState(false);
+  const [trigger, setTrigger] = useState(false);
+  const [click, setClick] = useState("");
+  const params = `?search=${searchParams.get("search")}&sort=${searchParams.get(
+    "sort"
+  )}&filter=${searchParams.get("filter")}&page=${searchParams.get(
+    "page"
+  )}&limit=12`;
   useEffect(() => {
-    const params = `?filter=&page=&search=&limit=12&sort=popular`;
     const param = `?codes=`;
-    dispatch(productActions.getProductsThunk(params));
+    const success = () => {
+      setSearchParams({
+        search: "",
+        sort: "popular",
+        filter: "",
+        page: "1",
+      });
+    };
     dispatch(promoAction.getPromoThunk(param));
+    dispatch(
+      productActions.getProductsThunk(
+        `?search=&sort=popular&filter=&page=1&limit=12`,
+        success
+      )
+    );
     window.scrollTo(0, 0);
   }, [dispatch]);
-
-  // const onSortHandler = (sort, cending) => {
-  //   this.setState(
-  //     (prevState) => ({
-  //       searchParams: {
-  //         ...prevState.searchParams,
-  //         filter: prevState.searchParams.filter
-  //           ? prevState.searchParams.filter
-  //           : "",
-  //         order_by: sort,
-  //         order_in: cending,
-  //         page: "2",
-  //       },
-  //     }),
-  //     () => {
-  //       this.props.setSearchParams(this.state.searchParams);
-  //     }
-  //   );
-  // };
-
-  // const onPricehHandler = (sort, cending) => {
-  //   this.setState(
-  //     (prevState) => ({
-  //       searchParams: {
-  //         ...prevState.searchParams,
-  //         filter: prevState.searchParams.filter
-  //           ? prevState.searchParams.filter
-  //           : "",
-  //         order_by: sort,
-  //         order_in: cending,
-  //         page: "1",
-  //       },
-  //     }),
-  //     () => {
-  //       this.props.setSearchParams(this.state.searchParams);
-  //     }
-  //   );
-  // };
-
-  // const getData = (limit) => {
-  //   dispatch(productActions.getProductNextAction(limit));
-  // };
-
+  useEffect(() => {
+    dispatch(productActions.getProductsThunk(params));
+  }, [dispatch, trigger]);
   return (
     <>
-      <Header />
+      <Header setTrigger={setTrigger} />
       <main>
         <section className="container mb-5">
           <div className="row">
             <div className={`col-md-4 col-sm col col-lg-3`}>
-              <div className={`${styles["border-end"]}`}>
-                <div className="col-md text-center">
-                  <div
-                    className={`${styles["promo-t"]} col-md mt-3 mb-2`}
-                    onClick={() => {}}
-                  >
-                    Promo Today
-                  </div>
-                  <div className={`${styles["promo-t2"]} col-md mb-3`}>
-                    Coupons will be updated every weeks. Check them out!
-                  </div>
+              <div className="col-md text-center">
+                <div
+                  className={`${styles["promo-t"]} col-md mt-3 mb-2`}
+                  onClick={() => {}}
+                >
+                  Promo Today
                 </div>
+                <div className={`${styles["promo-t2"]} col-md mb-3`}>
+                  Coupons will be updated every weeks. Check them out!
+                </div>
+              </div>
+              <div className={`${styles["border-end"]}`}>
                 <div className={`${styles["gapping"]}`}>
                   {promo.map((item, idx) => {
                     return (
@@ -109,16 +89,6 @@ export default function Product() {
                   })}
                 </div>
               </div>
-              <button
-                className={`${styles["apply"]} col-md text-center my-5`}
-                onClick={() => {
-                  setSearchParams("search=promo");
-                  console.log(searchParams.values());
-                  console.log(searchParams.get("search"));
-                }}
-              >
-                Apply Coupon
-              </button>
               <div className={`${styles["terms"]} col-md mt-5 mb-5`}>
                 <div>
                   <strong>Terms and Condition</strong>
@@ -160,187 +130,197 @@ export default function Product() {
               </div>
               <div className="row mt-3 ms-3 text-center">
                 <div
-                  className={`${styles["fvrt2"]} col-md-3 col-sm`}
+                  className={`${
+                    click === "favorite"
+                      ? styles["favorite-clicked"]
+                      : styles["fvrt2"]
+                  } col-md-3 col-sm`}
                   onClick={() => {
-                    // this.setState((prevState) => ({
-                    //   searchParams: {
-                    //     ...prevState.searchParams,
-                    //     search: "",
-                    //     filter: "",
-                    //     order_by: "transactions",
-                    //     order_in: "",
-                    //     page: "1",
-                    //     limit: "4",
-                    //   },
-                    // }));
-                    // const url = createSearchParams({
-                    //   search: "",
-                    //   filter: "",
-                    //   order_by: "transactions",
-                    //   order_in: "",
-                    //   page: "1",
-                    //   limit: "4",
-                    // });
-                    // setSearchParams(url);
-                    // this.props.dispatch(
-                    //   productActions.getFavoriteAction("page=1&limit=4")
-                    // );
+                    setTrigger(!trigger);
+                    setClick("favorite");
+                    setSearchParams({
+                      search: "",
+                      sort: "popular",
+                      filter: "",
+                      page: "1",
+                    });
                   }}
                 >
                   Favorite
                 </div>
                 <div
-                  className={`${styles["fvrt2"]} col-md-2 col-sm`}
+                  className={`${
+                    click === "coffee"
+                      ? styles["favorite-clicked"]
+                      : styles["fvrt2"]
+                  } col-md-2 col-sm`}
                   onClick={() => {
-                    // this.setState((prevState) => ({
-                    //   searchParams: {
-                    //     ...prevState.searchParams,
-                    //     search: "",
-                    //     filter: "1",
-                    //     order_by: "",
-                    //     order_in: "",
-                    //     page: "1",
-                    //     limit: "4",
-                    //   },
-                    // }));
-                    // const url = createSearchParams({
-                    //   search: "",
-                    //   filter: "1",
-                    //   order_by: "",
-                    //   order_in: "",
-                    //   page: "1",
-                    //   limit: "4",
-                    // });
-                    // setSearchParams(url);
-                    // this.props.dispatch(
-                    //   productActions.getCoffeeAction("page=1&limit=4")
-                    // );
+                    setTrigger(!trigger);
+                    setClick("coffee");
+                    setSearchParams({
+                      search: "",
+                      sort: "",
+                      filter: "coffee",
+                      page: "1",
+                    });
                   }}
                 >
                   Coffee
                 </div>
                 <div
-                  className={`${styles["fvrt2"]} col-md-2 col-sm`}
+                  className={`${
+                    click === "non coffee"
+                      ? styles["favorite-clicked"]
+                      : styles["fvrt2"]
+                  } col-md-2 col-sm`}
                   onClick={() => {
-                    // this.setState((prevState) => ({
-                    //   searchParams: {
-                    //     ...prevState.searchParams,
-                    //     search: "",
-                    //     filter: "2",
-                    //     order_by: "",
-                    //     order_in: "",
-                    //     page: "1",
-                    //     limit: "4",
-                    //   },
-                    // }));
-                    // const url = createSearchParams({
-                    //   search: "",
-                    //   filter: "2",
-                    //   order_by: "",
-                    //   order_in: "",
-                    //   page: "1",
-                    //   limit: "4",
-                    // });
-                    // setSearchParams(url);
-                    // this.props.dispatch(
-                    //   productActions.getNonCoffeeAction("page=1&limit=4")
-                    // );
+                    setTrigger(!trigger);
+                    setClick("non coffee");
+                    setSearchParams({
+                      search: "",
+                      sort: "",
+                      filter: "nonCoffee",
+                      page: "1",
+                    });
                   }}
                 >
                   Non Coffee
                 </div>
                 <div
-                  className={`${styles["fvrt2"]} col-md-2 col-sm`}
+                  className={`${
+                    click === "food"
+                      ? styles["favorite-clicked"]
+                      : styles["fvrt2"]
+                  } col-md-2 col-sm`}
                   onClick={() => {
-                    // this.setState((prevState) => ({
-                    //   searchParams: {
-                    //     ...prevState.searchParams,
-                    //     search: "",
-                    //     filter: "3",
-                    //     order_by: "",
-                    //     order_in: "",
-                    //     page: "1",
-                    //     limit: "4",
-                    //   },
-                    // }));
-                    // const url = createSearchParams({
-                    //   search: "",
-                    //   filter: "3",
-                    //   order_by: "",
-                    //   order_in: "",
-                    //   page: "1",
-                    //   limit: "4",
-                    // });
-                    // setSearchParams(url);
-                    // this.props.dispatch(
-                    //   productActions.getFoodAction("page=1&limit=4")
-                    // );
+                    setTrigger(!trigger);
+                    setClick("foods");
+                    setSearchParams({
+                      search: "",
+                      sort: "",
+                      filter: "food",
+                      page: "1",
+                    });
                   }}
                 >
                   Foods
                 </div>
-                <div className={`${styles["fvrt2"]} col-md-2 col-sm`}>
+                <div className={`${styles["favorite"]} col-md-2 col-sm`}>
                   Add-on
                 </div>
               </div>
               <div
                 className={styles["setting-dropdown"]}
                 onClick={() => {
-                  // this.setState((prevState) => ({
-                  //   dropdown: prevState.dropdown ? false : true,
-                  // }));
+                  setDropdown(!dropdown);
                 }}
               >
-                <p className={styles.filters}>Filter</p>
+                <p className={styles.filters}>Sort</p>
                 <div
-                  className={
-                    body.dropdown ? styles["list"] : styles["list-hide"]
-                  }
+                  className={dropdown ? styles["list"] : styles["list-hide"]}
                 >
                   <p
                     onClick={() => {
-                      // onSortHandler("created_at", "asc");
+                      setTrigger(!trigger);
+                      setSearchParams({
+                        search: "",
+                        sort: "newest",
+                        filter: `${searchParams.get("filter")}`,
+                        page: "1",
+                      });
                     }}
                   >
                     Newest
                   </p>
                   <p
                     onClick={() => {
-                      // onSortHandler("created_at", "desc");
+                      setTrigger(!trigger);
+                      setSearchParams({
+                        search: "",
+                        sort: "oldest",
+                        filter: `${searchParams.get("filter")}`,
+                        page: "1",
+                      });
                     }}
                   >
                     Latest
                   </p>
                   <p
                     onClick={() => {
-                      // onPricehHandler("price", "asc");
+                      setTrigger(!trigger);
+                      setSearchParams({
+                        search: "",
+                        sort: "cheapest",
+                        filter: `${searchParams.get("filter")}`,
+                        page: "1",
+                      });
                     }}
                   >
                     Cheap to Expensive
                   </p>
                   <p
                     onClick={() => {
-                      // onPricehHandler("price", "desc");
+                      setTrigger(!trigger);
+                      setSearchParams({
+                        search: "",
+                        sort: "priciest",
+                        filter: `${searchParams.get("filter")}`,
+                        page: "1",
+                      });
                     }}
                   >
                     Expensive to Cheap
                   </p>
                 </div>
               </div>
-              <div className={`${styles["card-product"]} ms-5 mt-2`}>
+              <div>
                 {!product.isLoading ? (
-                  product.product.map((item, idx) => {
-                    return (
-                      <CardProduct
-                        menu={item.menu}
-                        price={item.price}
-                        key={idx}
-                        id={item.id}
-                        image={item.image}
-                        discount={item.discount}
-                      />
-                    );
-                  })
+                  <div className={`${styles["card-product"]} ms-5 mt-2`}>
+                    {product.product.map((item, idx) => {
+                      return (
+                        <CardProduct
+                          menu={item.menu}
+                          price={item.price}
+                          key={idx}
+                          id={item.id}
+                          image={item.image}
+                          discount={item.discount}
+                        />
+                      );
+                    })}
+                    <div className={styles.wrap}>
+                      <button
+                        disabled={searchParams.get("page") == 1}
+                        className={styles.wrapped}
+                        onClick={() => {
+                          setTrigger(!trigger);
+                          setSearchParams({
+                            search: "",
+                            sort: `${searchParams.get("sort")}`,
+                            filter: `${searchParams.get("filter")}`,
+                            page: `${searchParams.get("page") - 1}`,
+                          });
+                        }}
+                      >
+                        PREV
+                      </button>
+                      <button
+                        disabled={meta.totalPage == searchParams.get("page")}
+                        className={styles.wrapped}
+                        onClick={() => {
+                          setTrigger(!trigger);
+                          setSearchParams({
+                            search: "",
+                            sort: `${searchParams.get("sort")}`,
+                            filter: `${searchParams.get("filter")}`,
+                            page: `${Number(searchParams.get("page")) + 1}`,
+                          });
+                        }}
+                      >
+                        NEXT
+                      </button>
+                    </div>
+                  </div>
                 ) : (
                   <div className={styles["lds-spinner"]}>
                     <div></div>
@@ -358,47 +338,6 @@ export default function Product() {
                   </div>
                 )}
               </div>
-              <div className={styles.bungkusan}>
-                <button
-                  // className={this.props.product.togglePrev}
-                  onClick={() => {
-                    // const url = createSearchParams({
-                    //   search: this.state.searchParams.search || "",
-                    //   filter: this.state.searchParams.filter,
-                    //   order_by: this.state.searchParams.order_by,
-                    //   order_in: this.state.searchParams.order_in,
-                    //   page: Number(this.state.searchParams.page).toString(),
-                    //   limit: "4",
-                    // });
-                    // setSearchParams(url);
-                  }}
-                >
-                  PREV
-                </button>
-                <button
-                  // className={this.props.product.toggleNext}
-                  onClick={() => {
-                    // this.setState((prevState) => ({
-                    //   searchParams: {
-                    //     ...prevState.searchParams,
-                    //   },
-                    // }));
-                    // const url = createSearchParams({
-                    //   search: this.state.searchParams.search || "",
-                    //   filter: this.state.searchParams.filter,
-                    //   order_by: this.state.searchParams.order_by,
-                    //   order_in: this.state.searchParams.order_in,
-                    //   page: (
-                    //     Number(this.state.searchParams.page) + 1
-                    //   ).toString(),
-                    //   limit: "4",
-                    // });
-                    // setSearchParams(url);
-                  }}
-                >
-                  NEXT
-                </button>
-              </div>
               <div className="ms-5">
                 <div className={`${styles["nb-info"]} mb-5`}>
                   *the price has been cutted by discount appears
@@ -406,20 +345,20 @@ export default function Product() {
                 {role === "admin" ? (
                   <>
                     <div
-                      onClick={() => {
-                        navigate("/editProduct");
-                      }}
-                      className={`${styles["nb-info-admin"]}`}
-                    >
-                      Edit product
-                    </div>
-                    <div
                       className={`${styles["nb-info-admin"]}`}
                       onClick={() => {
                         navigate("/addProduct");
                       }}
                     >
                       Add new product
+                    </div>
+                    <div
+                      className={`${styles["nb-info-admin"]}`}
+                      onClick={() => {
+                        navigate("/addPromo");
+                      }}
+                    >
+                      Add new promo
                     </div>
                   </>
                 ) : (

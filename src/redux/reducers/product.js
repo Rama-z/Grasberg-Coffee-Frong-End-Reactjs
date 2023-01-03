@@ -10,7 +10,8 @@ const initialState = {
 };
 
 const productReducer = (prevState = initialState, { payload, type }) => {
-  const { getProducts, getProductById } = actionStrings;
+  const { getProducts, getProductById, addProduct, editProduct } =
+    actionStrings;
   const { Pending, Rejected, Fulfilled } = ActionType;
   switch (type) {
     case getProducts.concat("_", Pending):
@@ -34,6 +35,7 @@ const productReducer = (prevState = initialState, { payload, type }) => {
         isError: false,
         isFulfilled: true,
         product: payload.data.data,
+        meta: payload.data.meta,
       };
     case getProductById.concat("_", Pending):
       return {
@@ -56,6 +58,48 @@ const productReducer = (prevState = initialState, { payload, type }) => {
         isError: false,
         isFulfilled: true,
         productDetail: payload.data.data,
+      };
+    case addProduct.concat("_", Pending):
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case addProduct.concat("_", Rejected):
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: true,
+        isFulfilled: false,
+      };
+    case addProduct.concat("_", Fulfilled):
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: false,
+        isFulfilled: true,
+      };
+    case editProduct.concat("_", Pending):
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case editProduct.concat("_", Rejected):
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: true,
+        isFulfilled: false,
+      };
+    case editProduct.concat("_", Fulfilled):
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: false,
+        isFulfilled: true,
       };
     default:
       return prevState;

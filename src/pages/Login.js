@@ -15,6 +15,7 @@ import authAction from "../redux/actions/auth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import userAction from "../redux/actions/profile";
+import { useEffect } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,7 +30,9 @@ const Login = () => {
     pass: "",
   });
   TabTitle("Login");
-
+  useEffect(() => {
+    auth.token ? navigate("/") : null;
+  }, []);
   const handleSubmit = (e) => {
     e.preventDefault();
     const success = () => {

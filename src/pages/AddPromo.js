@@ -8,17 +8,19 @@ import Camera from "../assets/camera.png";
 // import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 // import { postData } from "../utils/promo";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import promoAction from "../redux/actions/promo";
 
 function AddProduct() {
+  const dispatch = useDispatch();
   const [body, setBody] = useState({});
   const [imgPrev, setImgPrev] = useState(null);
   const [isActive, setIsActive] = useState(false);
-  const [category, setCategory] = useState("Select Categories");
+  const [discount, setDiscount] = useState(false);
   const refTarget = useRef(null);
-  const token = JSON.parse(localStorage.getItem("user-info")).token;
-
-  const setDropdown = () => setIsActive(!isActive);
+  const token = useSelector((state) => state.auth.token);
   const changeHandler = (e) => {
     setBody({ ...body, [e.target.name]: e.target.value });
   };
@@ -28,7 +30,13 @@ function AddProduct() {
     setImgPrev(URL.createObjectURL(photo));
   };
 
-  console.log(token, body);
+  const submitHandler = () => {
+    const formData = new FormData();
+    Object.keys(body).forEach((e) => {
+      formData.append(e, body[e]);
+    });
+    dispatch(promoAction.addPromoThunk(formData, token));
+  };
   return (
     <>
       <Header />
@@ -78,7 +86,7 @@ function AddProduct() {
                 ref={refTarget}
                 style={{ display: "none" }}
               />
-              <div className={`${styles["promo-details"]} `}>
+              {/* <div className={`${styles["promo-details"]} `}>
                 <div
                   className={`${styles["enter-discount"]} ${styles["input-box"]}`}
                 >
@@ -117,25 +125,69 @@ function AddProduct() {
                   </label>
                   <input type="text" name="codes" placeholder="Input code" />
                 </div>
-              </div>
+              </div> */}
             </form>
           </section>
           <section className={`${styles["content"]} ${styles["right"]}`}>
             <form action="">
-              <label htmlFor="menu">Name:</label>
+              <label htmlFor="codes">Codes:</label>
               <input
                 onChange={changeHandler}
-                name="menu"
+                name="codes"
                 type="text"
                 placeholder="Input product name"
               />
-              <label htmlFor="price">Price:</label>
-              <input
-                onChange={changeHandler}
-                name="price"
-                placeholder="Input price"
-                type="text"
-              />
+              <label htmlFor="discount">Discount:</label>
+              <div
+                onClick={() => {
+                  setDiscount(!discount);
+                }}
+                className={`${styles[discount ? "active" : ""]} ${
+                  styles["box-dropdown"]
+                }`}
+              >
+                <p>{body.discount}</p>
+                <div>
+                  <ArrowDropDownIcon sx={{ fontSize: "30px" }} />
+                </div>
+              </div>
+              <div className={discount ? styles["list-dropdown"] : styles.none}>
+                <p
+                  onClick={() => {
+                    setBody({ ...body, discount: 10 });
+                    setDiscount(!discount);
+                  }}
+                >
+                  10%
+                </p>
+                <p
+                  onClick={() => {
+                    setBody({
+                      ...body,
+                      discount: 15,
+                    });
+                    setDiscount(!discount);
+                  }}
+                >
+                  15%
+                </p>
+                <p
+                  onClick={() => {
+                    setBody({ ...body, discount: 20 });
+                    setDiscount(!discount);
+                  }}
+                >
+                  20%
+                </p>
+                <p
+                  onClick={() => {
+                    setBody({ ...body, discount: 25 });
+                    setDiscount(!discount);
+                  }}
+                >
+                  25%
+                </p>
+              </div>
               <label htmlFor="description">Description:</label>
               <input
                 onChange={changeHandler}
@@ -143,66 +195,21 @@ function AddProduct() {
                 placeholder="Input description"
                 type="text"
               />
-              <label htmlFor="description">Product Categories:</label>
-              <div
-                onClick={() => {
-                  setDropdown();
-                }}
-                className={`${styles[isActive ? "active" : ""]} ${
-                  styles["box-dropdown"]
-                }`}
-              >
-                <p>{category}</p>
-                <div className={styles.arrows}>
-                  <p>&#9586;</p>
-                  <p>&#9585;</p>
-                </div>
-              </div>
-              <div className={isActive ? styles["list-dropdown"] : styles.none}>
-                <p
-                  onClick={() => {
-                    setCategory("Coffee");
-                    setBody({ ...body, varian_id: 1 });
-                    setDropdown();
-                  }}
-                >
-                  Coffee
-                </p>
-                <p
-                  onClick={() => {
-                    setCategory("Non Coffee");
-                    setBody({ ...body, varian_id: 2 });
-                    setDropdown();
-                  }}
-                >
-                  Non Coffee
-                </p>
-                <p
-                  onClick={() => {
-                    setCategory("Foods");
-                    setBody({ ...body, varian_id: 3 });
-                    setDropdown();
-                  }}
-                >
-                  Foods
-                </p>
-                <p
-                  onClick={() => {
-                    setCategory("Add on");
-                    setBody({ ...body, varian_id: 4 });
-                    setDropdown();
-                  }}
-                >
-                  Add on
-                </p>
-              </div>
+              <label htmlFor="expire">Expire Date:</label>
+              <input
+                type="date"
+                name="valid_date"
+                required
+                placeholder="Select start date"
+                onChange={changeHandler}
+              />
             </form>
             <div className={styles["btn-container"]}>
               <button
-                onClick={() => {}}
+                onClick={submitHandler}
                 className={`${styles["btn"]} ${styles["btn-save"]}`}
               >
-                Save Product
+                Save Promo
               </button>
               <button className={`${styles["btn"]} ${styles["btn-cancel"]}`}>
                 Cancel

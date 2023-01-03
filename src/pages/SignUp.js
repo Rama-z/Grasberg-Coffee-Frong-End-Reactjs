@@ -13,6 +13,7 @@ import ReportIcon from "@mui/icons-material/Report";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -27,6 +28,9 @@ const SignUp = () => {
     pass: "",
     phone: "",
   });
+  useEffect(() => {
+    auth.token ? navigate("/") : null;
+  }, []);
   const handleSubmit = (e) => {
     e.preventDefault();
     const success = () => {

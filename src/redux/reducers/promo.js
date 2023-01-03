@@ -38,28 +38,32 @@ export const promoReducer = (prevState = initialState, { type, payload }) => {
         promo: payload.data.data,
       };
     }
-    //     case addPromo.concat("_", Pending): {
-    //       return {
-    //         ...prevState,
-    //         isLoading: true,
-    //         isError: false,
-    //       };
-    //     }
-    //     case addPromo.concat("_", Rejected): {
-    //       return {
-    //         ...prevState,
-    //         isError: true,
-    //         isLoading: false,
-    //         errCreate: payload.message,
-    //       };
-    //     }
-    //     case addPromo.concat("_", Fulfilled): {
-    //       return {
-    //         ...prevState,
-    //         isLoading: false,
-    //         dataCreate: payload.data.data,
-    //       };
-    //     }
+    case addPromo.concat("_", Pending): {
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    }
+    case addPromo.concat("_", Rejected): {
+      return {
+        ...prevState,
+        isError: true,
+        isLoading: false,
+        isFulfilled: false,
+        errCreate: payload.message,
+      };
+    }
+    case addPromo.concat("_", Fulfilled): {
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: false,
+        isFulfilled: true,
+        dataCreate: payload.data.data,
+      };
+    }
     default:
       return prevState;
   }

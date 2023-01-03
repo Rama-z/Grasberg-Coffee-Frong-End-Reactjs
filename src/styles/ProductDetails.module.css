@@ -168,6 +168,22 @@
   user-select: none;
 }
 
+.edit-product {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 25px;
+  font-family: "Poppins";
+  border: 0 solid black;
+  padding: 0.5em 1em;
+  background: none;
+  cursor: pointer;
+  gap: 0.3em;
+}
+
 .staff {
   margin-top: -40px;
   background: #ffba33;

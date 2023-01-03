@@ -8,17 +8,26 @@ import Camera from "../assets/camera.png";
 // import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 // import { postData } from "../utils/product";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import productActions from "../redux/actions/product";
 
 function AddProduct() {
+  const promo = useSelector((state) => state.promo.promo);
+  const dispatch = useDispatch();
   const [body, setBody] = useState({});
   const [imgPrev, setImgPrev] = useState(null);
   const [isActive, setIsActive] = useState(false);
+  const [isPromoActive, setIsPromoActive] = useState(false);
   const [category, setCategory] = useState("Select Categories");
+  const [coupon, setCoupon] = useState("Select Coupon");
+  const [value, setValue] = useState(0);
+  const [expire, setExpire] = useState("hh/bb/tttt");
   const refTarget = useRef(null);
-  const token = JSON.parse(localStorage.getItem("user-info")).token;
+  const token = useSelector((state) => state.auth.token);
+  console.log(body);
 
-  const setDropdown = () => setIsActive(!isActive);
   const changeHandler = (e) => {
     setBody({ ...body, [e.target.name]: e.target.value });
   };
@@ -27,16 +36,12 @@ function AddProduct() {
     setBody({ ...body, image: photo });
     setImgPrev(URL.createObjectURL(photo));
   };
-  const postProduct = async () => {
+  const postProduct = () => {
     const formData = new FormData();
     Object.keys(body).forEach((e) => {
       formData.append(e, body[e]);
     });
-    try {
-      // const response = await postData(token, formData);
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(productActions.addProductThunk(formData, token));
   };
 
   return (
@@ -90,42 +95,61 @@ function AddProduct() {
               />
               <div className={`${styles["promo-details"]} `}>
                 <div
-                  className={`${styles["enter-discount"]} ${styles["input-box"]}`}
-                >
-                  <label className={styles["input-title"]}>
-                    Enter the discount :
-                  </label>
-                  <input
-                    type="text"
-                    name="stock"
-                    required
-                    placeholder="Input stock"
-                  />
-                </div>
-                <div
-                  className={`${styles["expire-date"]} ${styles["input-box"]}`}
-                >
-                  <label className={styles["input-title"]}>Expire date :</label>
-                  <input
-                    type="date"
-                    name="start"
-                    required
-                    placeholder="Select start date"
-                  />
-                  <input
-                    type="date"
-                    name="end"
-                    required
-                    placeholder="Select end date"
-                  />
-                </div>
-                <div
                   className={`${styles["coupon-code"]} ${styles["input-box"]}`}
                 >
                   <label className={styles["input-title"]}>
                     Input coupon code :
                   </label>
-                  <input type="text" name="code" placeholder="Input code" />
+                  <div
+                    onClick={() => {
+                      setIsPromoActive(!isPromoActive);
+                    }}
+                    className={`${styles[isPromoActive ? "active" : ""]} ${
+                      styles["box-dropdown"]
+                    }`}
+                  >
+                    <p>{coupon}</p>
+                    <div>
+                      <ArrowDropDownIcon sx={{ fontSize: "30px" }} />
+                    </div>
+                  </div>
+                  <div
+                    className={
+                      isPromoActive ? styles["list-dropdown"] : styles.none
+                    }
+                  >
+                    {promo.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          style={{ cursor: "pointer" }}
+                          onClick={() => {
+                            setCoupon(item.codes);
+                            setBody({ ...body, promo_id: item.id });
+                            setIsPromoActive(!isPromoActive);
+                            setValue(item.discount);
+                            setExpire(item.valid_date);
+                          }}
+                        >
+                          {`Codes: ${item.codes}, Discount: ${item.discount}%`}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div
+                  className={`${styles["enter-discount"]} ${styles["input-box"]}`}
+                >
+                  <label className={styles["input-title"]}>
+                    Discount applied :
+                  </label>
+                  <input disabled type="text" name="stock" value={value} />
+                </div>
+                <div
+                  className={`${styles["expire-date"]} ${styles["input-box"]}`}
+                >
+                  <label className={styles["input-title"]}>Expire date :</label>
+                  <input disabled type="text" name="start" value={expire} />
                 </div>
               </div>
             </form>
@@ -156,20 +180,23 @@ function AddProduct() {
               <label htmlFor="description">Product Categories:</label>
               <div
                 onClick={() => {
-                  setDropdown();
+                  setIsActive(!isActive);
                 }}
                 className={`${styles[isActive ? "active" : ""]} ${
                   styles["box-dropdown"]
                 }`}
               >
                 <p>{category}</p>
+                <div>
+                  <ArrowDropDownIcon sx={{ fontSize: "30px" }} />
+                </div>
               </div>
               <div className={isActive ? styles["list-dropdown"] : styles.none}>
                 <p
                   onClick={() => {
                     setCategory("Coffee");
                     setBody({ ...body, varian_id: 1 });
-                    setDropdown();
+                    setIsActive(!isActive);
                   }}
                 >
                   Coffee
@@ -178,7 +205,7 @@ function AddProduct() {
                   onClick={() => {
                     setCategory("Non Coffee");
                     setBody({ ...body, varian_id: 2 });
-                    setDropdown();
+                    setIsActive(!isActive);
                   }}
                 >
                   Non Coffee
@@ -187,16 +214,14 @@ function AddProduct() {
                   onClick={() => {
                     setCategory("Foods");
                     setBody({ ...body, varian_id: 3 });
-                    setDropdown();
+                    setIsActive(!isActive);
                   }}
                 >
                   Foods
                 </p>
                 <p
                   onClick={() => {
-                    setCategory("Add on");
-                    setBody({ ...body, varian_id: 4 });
-                    setDropdown();
+                    setIsActive(!isActive);
                   }}
                 >
                   Add on
@@ -205,9 +230,7 @@ function AddProduct() {
             </form>
             <div className={styles["btn-container"]}>
               <button
-                onClick={() => {
-                  postProduct();
-                }}
+                onClick={postProduct}
                 className={`${styles["btn"]} ${styles["btn-save"]}`}
               >
                 Save Product

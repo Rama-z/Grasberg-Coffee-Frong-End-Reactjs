@@ -12,7 +12,7 @@ import Modal from "../components/ModalLogout";
 import { toast } from "react-toastify";
 import { EditLocation } from "@mui/icons-material";
 import CreateIcon from "@mui/icons-material/Create";
-
+import "react-toastify/dist/ReactToastify.css";
 const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

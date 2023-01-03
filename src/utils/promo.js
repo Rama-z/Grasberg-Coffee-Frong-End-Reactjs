@@ -10,17 +10,11 @@ const config = (token) => {
 };
 
 export const getPromo = (params) => {
-  const URLS = `${baseUrl}/promos${params}`;
-  return axios.get(URLS);
+  const URL = `${baseUrl}/promos${params}`;
+  return axios.get(URL);
 };
 
-const addPromo = (token, data) => {
-  return axios({
-    method: "POST",
-    url: `${baseUrl}promos/`,
-    data,
-    headers: { "x-access-token": token },
-  });
+export const addPromo = (body, token) => {
+  const URL = `${baseUrl}/promos`;
+  return axios.post(URL, body, config(token));
 };
-
-export { addPromo };

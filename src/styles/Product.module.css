@@ -14,7 +14,7 @@
 }
 
 .border-end {
-  height: 80vh;
+  height: 68vh;
   border-radius: 30px;
   overflow-y: scroll;
 }
@@ -70,6 +70,12 @@
   align-items: flex-end;
   flex-direction: column;
   position: relative;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .hide {
@@ -124,15 +130,6 @@
   -o-border-radius: 25px;
 }
 
-.bungkusan {
-  margin-top: 85px;
-  display: flex;
-  color: black;
-  padding: 25px 40px;
-  gap: 2rem;
-  justify-content: flex-end;
-}
-
 .loading {
   margin: 0 auto;
 }
@@ -170,7 +167,6 @@
 
 .list p:hover {
   cursor: pointer;
-  text-decoration: underline;
 }
 
 .list-hide {
@@ -242,6 +238,12 @@
   color: #6a4029;
   cursor: pointer;
   text-decoration: underline;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .fvrt2 {
@@ -251,6 +253,42 @@
   font-size: 0.9em;
   color: #9f9f9f;
   cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.favorite-clicked {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.9em;
+  color: #6a4029;
+  cursor: pointer;
+  text-decoration: underline;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.favorite {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.9em;
+  color: #9f9f9f;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .underline {
@@ -364,6 +402,20 @@
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 4em;
+}
+
+.wrap {
+  margin-top: 35px;
+  display: flex;
+  color: black;
+  gap: 2rem;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.wrapped {
+  border-radius: 20px;
+  padding: 0.5em 1.5em;
 }
 
 .menu-toggle {
