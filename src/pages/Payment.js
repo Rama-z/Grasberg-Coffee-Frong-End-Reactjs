@@ -8,62 +8,83 @@ import Footer from "../components/Footer.js";
 import styles from "../styles/Payment.module.css";
 
 // import image
-import payment_image_1 from "../assets/Payment/payment_image_1.png";
-import payment_image_2 from "../assets/Payment/payment_image_2.png";
 import icon_card from "../assets/Payment/icon_card.png";
 import icon_cod from "../assets/Payment/icon_cod.png";
 import icon_bank from "../assets/Payment/icon_bank.png";
 import TabTitle from "../utils/WebDinamis";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import transactionAction from "../redux/actions/transaction";
+import CardPayment from "../components/CardPayment";
+import EmptyCart from "../components/EmptyCart";
+import VaPayment from "../components/VaPayment";
+import { useEffect } from "react";
+import { createTransaction } from "../utils/transaction";
+import { toast } from "react-toastify";
+// import CloseIcon from "@mui/icons-material/Close";
+// import { useEffect } from "react";
 
-class Payment extends Component {
-  render() {
-    TabTitle("Payment");
-    return (
-      <>
-        <Header />
-        <main>
-          <div className={`container-fluid ${styles["background-payment"]}`}>
-            <div className={`container ${styles["title-payment"]}`}>
-              <h3>
-                Checkout your <br></br> item now!
-              </h3>
+export default function Payment() {
+  TabTitle("Payment");
+  const cart = useSelector((state) => state.transaction.cart);
+  const transaction = useSelector((state) => state.transaction);
+  const auth = useSelector((state) => state.auth);
+  const [body, setBody] = useState(cart);
+  console.log(body);
+  const [modal, setModal] = useState(false);
+  const [va, setVa] = useState("");
+  const [transId, setTransId] = useState();
+  const [bank, setBank] = useState("Permata Bank");
+  const [price, setPrice] = useState(0);
+  const [productItems, setProductItem] = useState([]);
+  const dispatch = useDispatch();
+  let total = 0;
+  const paymentHandler = async () => {
+    const result = await createTransaction(body, auth.token);
+    setVa(`${result.data.data.midTrans.permata_va_number}`);
+    console.log(result);
+    setTransId(result.data.data.results.id);
+    setModal(true);
+  };
+  useEffect(() => {
+    setPrice(price + total);
+  }, []);
+  return (
+    <>
+      <Header />
+      <main>
+        <div className={`container-fluid ${styles["background-payment"]}`}>
+          <div className={`container ${styles["title-payment"]}`}>
+            <h3>
+              Checkout your <br></br> item now!
+            </h3>
+            {cart.product_item.length === 0 ? (
+              <EmptyCart />
+            ) : (
               <div className="row d-flex justify-content-between">
                 <div
                   className={`${styles["content-left-payment"]} col-md-5 col-sm-12 bg-white rounded-5`}
                 >
                   <div className={styles["box-left"]}>
                     <p>Order Summary</p>
-                    <div className={styles["payment-content"]}>
-                      <img
-                        src={payment_image_1}
-                        alt="Payment1"
-                        width="100px"
-                        height="100px"
-                      ></img>
-                      <div className={styles["payment-center"]}>
-                        <p>Hazelnut Latte</p>
-                        <p>x1</p>
-                        <p>Reguler</p>
-                      </div>
-                      <div className={styles["payment-idr"]}>
-                        <p>IDR 24.0</p>
-                      </div>
-                    </div>
-                    <div className={styles["payment-content"]}>
-                      <img
-                        src={payment_image_2}
-                        alt="Payment2"
-                        width="100px"
-                        height="100px"
-                      ></img>
-                      <div className={styles["payment-center"]}>
-                        <p>Chicken Fire Wings</p>
-                        <p>x2</p>
-                        <p></p>
-                      </div>
-                      <div className={styles["payment-idr"]}>
-                        <p>IDR 24.0</p>
-                      </div>
+                    <div className={styles.overflow}>
+                      {cart.product_item?.map((item, idx) => {
+                        total += item.subtotal;
+                        return (
+                          <>
+                            <CardPayment
+                              key={idx}
+                              idx={idx}
+                              menu={item.menu}
+                              image={item.image}
+                              quantity={item.quantity}
+                              size_id={item.size_id}
+                              subtotal={item.subtotal}
+                              trans_id={item.trans_id}
+                            />
+                          </>
+                        );
+                      })}
                     </div>
                     <hr className="mx-5 my-4"></hr>
                     <div className={styles["total-payment"]}>
@@ -73,14 +94,14 @@ class Payment extends Component {
                         <p>SHIPPING</p>
                       </div>
                       <div className={styles["total-payment-right"]}>
-                        <p>IDR: 120.000</p>
-                        <p>IDR: 20.000</p>
+                        <p>IDR: {total}</p>
+                        <p>IDR: {total * 0.11}</p>
                         <p>IDR: 10.000</p>
                       </div>
                     </div>
                     <div className={styles["subtotal-payment"]}>
                       <p>TOTAL</p>
-                      <p>IDR 150.000</p>
+                      <p>IDR {10000 + total + total * 0.11}</p>
                     </div>
                   </div>
                 </div>
@@ -93,13 +114,12 @@ class Payment extends Component {
                       </div>
                       <div className={styles["box-address"]}>
                         <h5>
-                          <b className="me-1">Delivery</b>to Iskandar Street
+                          <b className="me-1">Delivery</b>to
                         </h5>
                         <p className={styles["address-column"]}>
-                          Km 5 refinery road oppsite republic road, effurun,
-                          Jakarta
+                          {cart.delivery_address}
                         </p>
-                        <p>+62 81348287878</p>
+                        <p>{cart.phone}</p>
                       </div>
                     </div>
                     <div className="col-12">
@@ -116,6 +136,13 @@ class Payment extends Component {
                               type="radio"
                               name="flexRadioDefault"
                               id="flexRadioDefault1"
+                              onChange={() => {
+                                setBody({
+                                  ...body,
+                                  payment_method: "Card",
+                                  total_price: 10000 + total + total * 0.11,
+                                });
+                              }}
                             />
                             <label
                               className="form-check-label"
@@ -139,6 +166,13 @@ class Payment extends Component {
                               type="radio"
                               name="flexRadioDefault"
                               id="flexRadioDefault1"
+                              onChange={() => {
+                                setBody({
+                                  ...body,
+                                  payment_method: "Bank",
+                                  total_price: 10000 + total + total * 0.11,
+                                });
+                              }}
                             />
                             <label
                               className="form-check-label"
@@ -162,6 +196,13 @@ class Payment extends Component {
                               type="radio"
                               name="flexRadioDefault"
                               id="flexRadioDefault1"
+                              onChange={() => {
+                                setBody({
+                                  ...body,
+                                  payment_method: "COD",
+                                  total_price: 10000 + total + total * 0.11,
+                                });
+                              }}
                             />
                             <label
                               className="form-check-label"
@@ -181,20 +222,31 @@ class Payment extends Component {
                       </div>
                     </div>
                     <div className={styles["confirm-pay"]}>
-                      <button>
+                      <button
+                        onClick={() => {
+                          if (body.total_price === null)
+                            return toast.error("Choose payment method!");
+                          paymentHandler();
+                        }}
+                      >
                         <span>Confirm and Pay</span>
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
-        </main>
-        <Footer />
-      </>
-    );
-  }
+        </div>
+        <VaPayment
+          open={modal}
+          setOpen={setModal}
+          title={bank}
+          body={va}
+          id={transId}
+        />
+      </main>
+      <Footer />
+    </>
+  );
 }
-
-export default Payment;

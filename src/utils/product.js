@@ -2,7 +2,7 @@ import axios from "axios";
 const baseUrl = `${process.env.REACT_APP_BACKEND_HOST}/api/v1`;
 
 export const getProducts = (params) => {
-  const URL = `${baseUrl}/products?${params}`;
+  const URL = `${baseUrl}/products${params}`;
   return axios.get(URL);
 };
 

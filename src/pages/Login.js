@@ -14,10 +14,12 @@ import { useDispatch, useSelector } from "react-redux";
 import authAction from "../redux/actions/auth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import userAction from "../redux/actions/profile";
 
 const Login = () => {
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [errEmail, setErrEmail] = useState(false);
   const [errPass, setErrPass] = useState(false);
@@ -32,6 +34,7 @@ const Login = () => {
     e.preventDefault();
     const success = () => {
       navigate("/");
+      toast.success("Login success!");
     };
     const failed = (msg) => {
       toast.error(`Login Failed, ${msg}`);
@@ -119,7 +122,7 @@ const Login = () => {
                 onClick={handleSubmit}
                 className={`${styles["choose"]} ${styles["btn"]} ${styles["krem"]}`}
               >
-                {auth.isLoading ? (
+                {auth.isLoading || user.isLoading ? (
                   <div className={styles["lds-ring"]}>
                     <div></div>
                     <div></div>

@@ -25,7 +25,7 @@
   cursor: pointer;
 }
 
-.promos {
+.promo {
   position: absolute;
   background: #ffffff;
   border-radius: 1em;
@@ -35,6 +35,10 @@
   font-style: normal;
   font-weight: 800;
   color: #000000;
+}
+
+.promos {
+  display: none;
 }
 
 .product-bg {

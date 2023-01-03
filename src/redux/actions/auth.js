@@ -148,6 +148,7 @@ const logoutThunk = (token, cbSuccess, cbFailed) => {
 
 const authAction = {
   loginThunk,
+  loginRejected,
   logoutThunk,
   registerThunk,
   forgotThunk,

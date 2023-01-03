@@ -1,4 +1,5 @@
 // import React from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 // props.children => mengakses komponen child
@@ -7,7 +8,7 @@ function PrivateElement({ children, allowedRoles = ["user", "admin"] }) {
   // jika false, maka redirect
   const navigate = useNavigate();
   // kondisi 1 = apakah sudah login
-  const userInfo = JSON.parse(localStorage.getItem["user-info"] || "{}");
+  const userInfo = useSelector((state) => state.auth);
   if (!userInfo.token)
     return navigate("/", {
       replace: true,

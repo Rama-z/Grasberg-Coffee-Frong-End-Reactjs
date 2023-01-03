@@ -12,6 +12,7 @@ import Footer from "../components/Footer";
 import TabTitle from "../utils/WebDinamis";
 import { useDispatch, useSelector } from "react-redux";
 import productActions from "../redux/actions/product";
+import promoAction from "../redux/actions/promo";
 
 export default function Product() {
   TabTitle("Grasberg Menu");
@@ -19,13 +20,17 @@ export default function Product() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const product = useSelector((state) => state.product);
+  const promo = useSelector((state) => state.promo.promo);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [body, setBody] = useState({});
 
   useEffect(() => {
-    const params = `?filter=&page=&search=&limit=12&sort=`;
+    const params = `?filter=&page=&search=&limit=12&sort=popular`;
+    const param = `?codes=`;
     dispatch(productActions.getProductsThunk(params));
+    dispatch(promoAction.getPromoThunk(param));
+    window.scrollTo(0, 0);
   }, [dispatch]);
 
   // const onSortHandler = (sort, cending) => {
@@ -76,32 +81,33 @@ export default function Product() {
       <main>
         <section className="container mb-5">
           <div className="row">
-            <div
-              className={`${styles["border-end"]} col-md-4 col-sm col col-lg-3`}
-            >
-              <div className="col-md text-center">
-                <div
-                  className={`${styles["promo-t"]} col-md mt-3 mb-2`}
-                  onClick={() => {}}
-                >
-                  Promo Today
+            <div className={`col-md-4 col-sm col col-lg-3`}>
+              <div className={`${styles["border-end"]}`}>
+                <div className="col-md text-center">
+                  <div
+                    className={`${styles["promo-t"]} col-md mt-3 mb-2`}
+                    onClick={() => {}}
+                  >
+                    Promo Today
+                  </div>
+                  <div className={`${styles["promo-t2"]} col-md mb-3`}>
+                    Coupons will be updated every weeks. Check them out!
+                  </div>
                 </div>
-                <div className={`${styles["promo-t2"]} col-md mb-3`}>
-                  Coupons will be updated every weeks. Check them out!
+                <div className={`${styles["gapping"]}`}>
+                  {promo.map((item, idx) => {
+                    return (
+                      <CardPromo
+                        code={item.codes}
+                        discount={item.discount}
+                        desc={item.description}
+                        key={idx}
+                        id={item.id}
+                        image={item.image}
+                      />
+                    );
+                  })}
                 </div>
-              </div>
-              <div className={`${styles["gapping"]}`}>
-                {/* {this.props.promo.promo.map((item, idx) => {
-                  return (
-                    <CardPromo
-                      menu={item.codes}
-                      discount={item.discount}
-                      key={idx}
-                      id={item.id}
-                      image={item.image}
-                    />
-                  );
-                })} */}
               </div>
               <button
                 className={`${styles["apply"]} col-md text-center my-5`}
@@ -331,6 +337,7 @@ export default function Product() {
                         key={idx}
                         id={item.id}
                         image={item.image}
+                        discount={item.discount}
                       />
                     );
                   })

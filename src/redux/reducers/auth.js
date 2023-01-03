@@ -56,6 +56,9 @@ const authReducer = (prevState = initialState, { payload, type }) => {
         isError: true,
         isFulfilled: false,
         error: payload.data?.message,
+        id: null,
+        role: null,
+        token: null,
       };
     case authLogin.concat("_", Fulfilled):
       return {

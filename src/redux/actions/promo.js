@@ -1,23 +1,38 @@
-// import actionStrings from "./actionStrings";
-// import { getPromo, addPromo } from "../../utils/promo";
+import { actionStrings } from "./actionStrings";
+import { getPromo, addPromo } from "../../utils/promo";
+import { ActionType } from "redux-promise-middleware";
+const { Pending, Rejected, Fulfilled } = ActionType;
 
-// const getPromoAction = () => {
-//   return {
-//     type: actionStrings.getPromos,
-//     payload: getPromo(),
-//   };
-// };
+const getPromoPending = () => ({
+  type: actionStrings.getPromo.concat("_", Pending),
+});
 
-// const addPromoActions = (token, body) => {
-//   return {
-//     type: actionStrings.addPromo,
-//     payload: addPromo(token, body),
-//   };
-// };
+const getPromoRejected = (error) => ({
+  type: actionStrings.getPromo.concat("_", Rejected),
+  payload: { error },
+});
 
-// const productAction = {
-//   getPromoAction,
-//   addPromoActions,
-// };
+const getPromoFulfilled = (data) => ({
+  type: actionStrings.getPromo.concat("_", Fulfilled),
+  payload: { data },
+});
 
-// export default productAction;
+const getPromoThunk = (params, cbSuccess, cbFailed) => {
+  return async (dispatch) => {
+    try {
+      dispatch(getPromoPending());
+      const result = await getPromo(params);
+      dispatch(getPromoFulfilled(result.data));
+      typeof cbSuccess === "function" && cbSuccess();
+    } catch (error) {
+      dispatch(getPromoRejected(error));
+      typeof cbFailed === "function" && cbFailed(error.response.data.msg);
+    }
+  };
+};
+
+const promoAction = {
+  getPromoThunk,
+};
+
+export default promoAction;

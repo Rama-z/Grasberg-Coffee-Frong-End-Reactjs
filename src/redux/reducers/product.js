@@ -9,7 +9,7 @@ const initialState = {
   isFulfilled: null,
 };
 
-export const productReducer = (prevState = initialState, { payload, type }) => {
+const productReducer = (prevState = initialState, { payload, type }) => {
   const { getProducts, getProductById } = actionStrings;
   const { Pending, Rejected, Fulfilled } = ActionType;
   switch (type) {
@@ -61,3 +61,5 @@ export const productReducer = (prevState = initialState, { payload, type }) => {
       return prevState;
   }
 };
+
+export default productReducer;

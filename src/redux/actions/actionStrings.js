@@ -12,7 +12,7 @@ export const actionStrings = {
   getProductById: "GET_PRODUCT_BY_ID",
   getProducts: "GET_PRODUCTS",
   editProduct: "EDIT_PRODUCT",
-  getPromos: "GET_PROMO",
+  getPromo: "GET_PROMO",
   addPromo: "ADD_PROMO",
   pending: `_${ActionType.Pending}`,
   fulfilled: `_${ActionType.Fulfilled}`,
@@ -21,4 +21,8 @@ export const actionStrings = {
   editPassword: "EDIT_PASSWORD",
   editProfile: "EDIT_PROFILE",
   createProduct: "CREATE_PRODUCT",
+  addToCart: "ADD_TO_CART",
+  deleteCart: "DELETE_CART",
+  deleteSingleCart: "DELETE_SINGLE_CART",
+  createTransaction: "CREATE_TRANSACTION",
 };

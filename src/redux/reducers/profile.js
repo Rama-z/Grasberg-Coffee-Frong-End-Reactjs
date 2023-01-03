@@ -87,6 +87,15 @@ const userReducer = (prevState = initialState, { type, payload }) => {
           isLoading: false,
           isError: true,
           isFulfilled: false,
+          username: null,
+          firstname: null,
+          lastname: null,
+          gender: null,
+          birthday: null,
+          address: null,
+          image: null,
+          phone: null,
+          email: null,
         },
       };
     case editProfile.concat("_", Fulfilled):

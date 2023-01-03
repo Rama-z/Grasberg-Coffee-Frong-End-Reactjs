@@ -3,6 +3,8 @@
 .border-a {
   background: #88b788;
   border-radius: 20px;
+  width: 15em;
+  margin: 0 auto;
 }
 
 .promo-img {

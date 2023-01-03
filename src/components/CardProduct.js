@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/CardProduct.module.css";
 
-export default function CardProduct({ menu, price, id, image }) {
+export default function CardProduct({ menu, price, id, image, discount }) {
   const navigate = useNavigate();
   return (
     <>
@@ -18,9 +18,12 @@ export default function CardProduct({ menu, price, id, image }) {
         <div
           className={`${styles["product-bg"]} col-md-9 col col-sm col-lg-10`}
         >
+          <div className={discount === 0 ? styles.promos : styles.promo}>
+            {discount} %
+          </div>
           <div
             onClick={() => {
-              navigate("/product/:id");
+              navigate(`/product/${id}`);
             }}
             className={`${styles["product-name"]} col-md col col-sm col-lg`}
           >
