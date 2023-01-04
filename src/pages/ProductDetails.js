@@ -46,7 +46,9 @@ export default function ProductDetails() {
   return (
     <>
       <Header />
-      <main className="row d-flex justify-content-center align-content-center flex-column flex-md-row mb-5">
+      <main
+        className={`${styles["main-detail"]} row d-flex justify-content-center align-content-center flex-column flex-md-row mb-5`}
+      >
         {product.isLoading ? (
           <div className={styles["lds-spinner"]}>
             <div></div>

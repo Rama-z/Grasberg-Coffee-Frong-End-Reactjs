@@ -291,6 +291,11 @@
   user-select: none;
 }
 
+.cons {
+  height: 100vh;
+  margin-left: 1%;
+}
+
 .underline {
   display: none;
   border: 0.1em solid #6a4029;
@@ -451,6 +456,8 @@
   color: official;
   display: inline-block;
   position: relative;
+  top: 30%;
+  left: 50%;
   width: 80px;
   height: 80px;
 }

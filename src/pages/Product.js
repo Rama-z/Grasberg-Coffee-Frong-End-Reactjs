@@ -33,7 +33,7 @@ export default function Product() {
     searchParams.get("sort") || ""
   }&filter=${searchParams.get("filter") || ""}&page=${
     searchParams.get("page") | ""
-  }&limit=12`;
+  }&limit=10`;
   useEffect(() => {
     const param = `?codes=`;
     dispatch(promoAction.getPromoThunk(param));
@@ -261,7 +261,7 @@ export default function Product() {
                   </p>
                 </div>
               </div>
-              <div>
+              <div className={styles.cons}>
                 {!product.isLoading ? (
                   <div className={`${styles["card-product"]} ms-5 mt-2`}>
                     {product.product.map((item, idx) => {
