@@ -29,3 +29,8 @@ export const editProduct = (body, token, params) => {
   const URL = `${baseUrl}/products/${params}`;
   return axios.patch(URL, body, config(token));
 };
+
+export const deleteProduct = (body, token, params) => {
+  const URL = `${baseUrl}/products/delete/${params}`;
+  return axios.patch(URL, body, config(token));
+};

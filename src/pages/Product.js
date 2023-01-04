@@ -27,37 +27,25 @@ export default function Product() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [dropdown, setDropdown] = useState(false);
   const [trigger, setTrigger] = useState(false);
+  const [triggers, setTriggers] = useState(false);
   const [click, setClick] = useState("");
-  const params = `?search=${searchParams.get("search")}&sort=${searchParams.get(
-    "sort"
-  )}&filter=${searchParams.get("filter")}&page=${searchParams.get(
-    "page"
-  )}&limit=12`;
+  const params = `?search=${searchParams.get("search") || ""}&sort=${
+    searchParams.get("sort") || ""
+  }&filter=${searchParams.get("filter") || ""}&page=${
+    searchParams.get("page") | ""
+  }&limit=12`;
   useEffect(() => {
     const param = `?codes=`;
-    const success = () => {
-      setSearchParams({
-        search: "",
-        sort: "popular",
-        filter: "",
-        page: "1",
-      });
-    };
     dispatch(promoAction.getPromoThunk(param));
-    dispatch(
-      productActions.getProductsThunk(
-        `?search=&sort=popular&filter=&page=1&limit=12`,
-        success
-      )
-    );
+    dispatch(productActions.getProductsThunk(params));
     window.scrollTo(0, 0);
-  }, [dispatch]);
+  }, [dispatch, triggers, searchParams]);
   useEffect(() => {
     dispatch(productActions.getProductsThunk(params));
   }, [dispatch, trigger]);
   return (
     <>
-      <Header setTrigger={setTrigger} />
+      <Header setTriggers={setTriggers} />
       <main>
         <section className="container mb-5">
           <div className="row">

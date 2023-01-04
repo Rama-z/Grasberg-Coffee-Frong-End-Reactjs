@@ -321,6 +321,7 @@ export default function ProductDetails() {
                       trans_id: Math.floor(Math.random() * 100000000000),
                     },
                   ]);
+                  toast.success("Add to cart success");
                 }}
                 className={`${styles.cart} mb-3 mb-sm-5 mb-md-5 mb-lg-3`}
               >

@@ -8,35 +8,18 @@ import { Fragment } from "react";
 import CardHistory from "../components/CardHistory";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import transactionAction from "../redux/actions/transaction";
 
 export default function History() {
+  const dispatch = useDispatch();
   const [product, setProduct] = useState([]);
   const auth = useSelector((state) => state.auth);
-  const getHistory = () => {
-    let config = {
-      headers: {
-        "x-access-token": auth.token,
-      },
-    };
-    axios
-      .get(
-        `http://localhost:8080/api/v1/transactions/history?page=1&limit=10`,
-        config
-      )
-      .then((res) => {
-        console.log(res.data.data);
-        const product = res.data.data;
-        this.setState({ product });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const history = useSelector((state) => state.transaction.history);
 
   useEffect(() => {
-    getHistory();
-  }, []);
+    dispatch(transactionAction.getHistoryThunk(auth.token));
+  }, [dispatch]);
   TabTitle("User History");
   return (
     <Fragment>
@@ -46,18 +29,18 @@ export default function History() {
           <div className={`${styles["title1"]}`}>
             Let`s see what you have bought!
           </div>
-          <div className={`${styles["title2"]}`}>Long press to delete item</div>
+          <div className={`${styles["title2"]}`}>Click to delete item</div>
         </section>
         <section
           className={`${styles["list-product"]} container col col-lg-9 ps-5`}
         >
-          {product.map((item, idx) => {
+          {history.map((item, idx) => {
             return (
               <CardHistory
                 menu={item.menu}
-                discount={item.discount}
                 price={item.total}
                 key={idx}
+                idx={idx}
                 id={item.id}
                 image={item.image}
                 status={item.status}

@@ -42,7 +42,6 @@ export default function Payment() {
   const paymentHandler = async () => {
     const result = await createTransaction(body, auth.token);
     setVa(`${result.data.data.midTrans.permata_va_number}`);
-    console.log(result);
     setTransId(result.data.data.results.id);
     setModal(true);
   };

@@ -9,6 +9,7 @@
 .hist-bck {
   background-image: url("../assets/background-history.png");
   background-size: cover;
+  height: 80vh;
 }
 
 .title1 {

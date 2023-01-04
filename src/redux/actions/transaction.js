@@ -1,5 +1,9 @@
 import { actionStrings } from "./actionStrings";
-import { createTransaction } from "../../utils/transaction";
+import {
+  createTransaction,
+  getHistory,
+  deleteHistory,
+} from "../../utils/transaction";
 import { ActionType } from "redux-promise-middleware";
 
 const { Pending, Rejected, Fulfilled } = ActionType;
@@ -32,6 +36,50 @@ const createTransactionFulfilled = (data) => ({
   payload: { data },
 });
 
+const getHistoryPending = () => ({
+  type: actionStrings.getHistory.concat("_", Pending),
+});
+
+const getHistoryRejected = (error) => ({
+  type: actionStrings.getHistory.concat("_", Rejected),
+  payload: { error },
+});
+
+const getHistoryFulfilled = (data) => ({
+  type: actionStrings.getHistory.concat("_", Fulfilled),
+  payload: { data },
+});
+
+const deleteHistoryPending = () => ({
+  type: actionStrings.deleteHistory.concat("_", Pending),
+});
+
+const deleteHistoryRejected = (error) => ({
+  type: actionStrings.deleteHistory.concat("_", Rejected),
+  payload: { error },
+});
+
+const deleteHistoryFulfilled = (data) => ({
+  type: actionStrings.deleteHistory.concat("_", Fulfilled),
+  payload: { data },
+});
+
+const getHistoryThunk = (token, cbSuccess, cbFailed) => {
+  return async (dispatch) => {
+    try {
+      dispatch(getHistoryPending());
+      const result = await getHistory(token);
+      dispatch(getHistoryFulfilled(result.data, cbSuccess));
+      console.log(result);
+      typeof cbSuccess === "function" && cbSuccess();
+    } catch (error) {
+      // console.log(error.response.data.msg);
+      dispatch(getHistoryRejected(error));
+      typeof cbFailed === "function" && cbFailed(error.response.data.msg);
+    }
+  };
+};
+
 const createTransactionThunk = (body, token, cbSuccess, cbFailed) => {
   return async (dispatch) => {
     try {
@@ -48,8 +96,26 @@ const createTransactionThunk = (body, token, cbSuccess, cbFailed) => {
   };
 };
 
+const deleteHistoryThunk = (token, cbSuccess, cbFailed) => {
+  return async (dispatch) => {
+    try {
+      dispatch(deleteHistoryPending());
+      const result = await deleteHistory(token);
+      dispatch(deleteHistoryFulfilled(result.data, cbSuccess));
+      console.log(result);
+      typeof cbSuccess === "function" && cbSuccess();
+    } catch (error) {
+      // console.log(error.response.data.msg);
+      dispatch(deleteHistoryRejected(error));
+      typeof cbFailed === "function" && cbFailed(error.response.data.msg);
+    }
+  };
+};
+
 const transactionAction = {
   createTransactionThunk,
+  getHistoryThunk,
+  deleteHistoryThunk,
   addToCart,
   deleteCart,
   deleteSingleCart,

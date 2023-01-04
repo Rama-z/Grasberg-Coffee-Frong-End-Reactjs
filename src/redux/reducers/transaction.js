@@ -15,11 +15,18 @@ const initialState = {
     promo_id: null,
     payment_method: null,
   },
+  history: [],
 };
 
 const transactionReducer = (prevState = initialState, { payload, type }) => {
-  const { createTransaction, addToCart, deleteCart, deleteSingleCart } =
-    actionStrings;
+  const {
+    createTransaction,
+    addToCart,
+    deleteCart,
+    deleteSingleCart,
+    getHistory,
+    deleteHistory,
+  } = actionStrings;
   const { Pending, Rejected, Fulfilled } = ActionType;
   console.log(payload);
   switch (type) {
@@ -57,6 +64,28 @@ const transactionReducer = (prevState = initialState, { payload, type }) => {
           }),
         },
       };
+    case getHistory.concat("_", Pending):
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case getHistory.concat("_", Rejected):
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: true,
+        isFulfilled: false,
+      };
+    case getHistory.concat("_", Fulfilled):
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: false,
+        isFulfilled: true,
+        history: payload.data.data,
+      };
     case createTransaction.concat("_", Pending):
       return {
         ...prevState,
@@ -79,6 +108,28 @@ const transactionReducer = (prevState = initialState, { payload, type }) => {
         isFulfilled: true,
         midTrans: payload.data.data.midTrans,
         results: payload.data.data.results,
+      };
+    case deleteHistory.concat("_", Pending):
+      return {
+        ...prevState,
+        isLoading: true,
+        isError: false,
+        isFulfilled: false,
+      };
+    case deleteHistory.concat("_", Rejected):
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: true,
+        isFulfilled: false,
+      };
+    case deleteHistory.concat("_", Fulfilled):
+      return {
+        ...prevState,
+        isLoading: false,
+        isError: false,
+        isFulfilled: true,
+        history: payload.data.data,
       };
     default:
       return prevState;

@@ -8,11 +8,14 @@ import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import productActions from "../redux/actions/product";
+import { deleteProduct } from "../utils/product";
+import { useNavigate } from "react-router-dom";
 
 function AddProduct() {
   const promo = useSelector((state) => state.promo.promo);
   const product = useSelector((state) => state.product.productDetail);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [body, setBody] = useState(product);
   const [imgPrev, setImgPrev] = useState(null);
   const [isActive, setIsActive] = useState(false);
@@ -238,6 +241,21 @@ function AddProduct() {
                 className={`${styles["btn"]} ${styles["btn-save"]}`}
               >
                 Save Product
+              </button>
+              <button
+                onClick={async () => {
+                  const result = await deleteProduct(
+                    { deleted_at: "now()" },
+                    token,
+                    product.id
+                  );
+                  console.log(result);
+                  console.log("result");
+                  navigate("/products");
+                }}
+                className={`${styles["btn"]} ${styles["btn-cancel"]}`}
+              >
+                Delete Product
               </button>
               <button className={`${styles["btn"]} ${styles["btn-cancel"]}`}>
                 Cancel

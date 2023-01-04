@@ -7,7 +7,7 @@ import NavGuest from "./NavGuest";
 import { useDispatch, useSelector } from "react-redux";
 import productActions from "../redux/actions/product";
 
-export default function Header({ setTrigger }) {
+export default function Header({ setTriggers }) {
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -44,19 +44,25 @@ export default function Header({ setTrigger }) {
             className={`${styles["visited"]}`}
             onClick={() => {
               if (window.location.pathname === "/products") {
+                console.log("disini");
                 setSearchParams({
                   search: "",
                   sort: "popular",
                   filter: "",
                   page: "1",
                 });
-                dispatch(
-                  productActions.getProductsThunk(
-                    `?search=&sort=popular&filter=&page=1&limit=12`
-                  )
-                );
+                // dispatch(
+                //   productActions.getProductsThunk(
+                //     `?search=&sort=popular&filter=&page=1&limit=12`
+                //   )
+                // );
+                setTriggers(true);
               }
-              navigate("/products");
+              navigate(
+                `/products?search=${
+                  searchParams.get("search") || ""
+                }&sort=popular&filter=&page=1`
+              );
             }}
           >
             Product
@@ -103,7 +109,7 @@ export default function Header({ setTrigger }) {
             ""
           )}
         </nav>
-        {token ? <NavLogin /> : <NavGuest />}
+        {token ? <NavLogin setTriggers={setTriggers} /> : <NavGuest />}
       </header>
     </>
   );

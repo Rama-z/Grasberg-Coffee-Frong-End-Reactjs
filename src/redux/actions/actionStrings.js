@@ -25,4 +25,6 @@ export const actionStrings = {
   deleteCart: "DELETE_CART",
   deleteSingleCart: "DELETE_SINGLE_CART",
   createTransaction: "CREATE_TRANSACTION",
+  getHistory: "GET_HISTORY",
+  deleteHistory: "DELETE_HISTORY",
 };
