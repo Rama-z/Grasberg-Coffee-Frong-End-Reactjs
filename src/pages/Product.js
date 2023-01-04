@@ -293,7 +293,7 @@ export default function Product() {
                         PREV
                       </button>
                       <button
-                        disabled={meta.totalPage == searchParams.get("page")}
+                        disabled={meta?.totalPage == searchParams.get("page")}
                         className={styles.wrapped}
                         onClick={() => {
                           setTrigger(!trigger);
