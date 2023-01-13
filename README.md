@@ -1,6 +1,5 @@
 <a id="readme-top"></a>
 
-<!-- PROJECT LOGO -->
 <br />
 <div align="center">
 
@@ -25,7 +24,6 @@
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- ABOUT THE PROJECT -->
 # About The Project 
 
 ## Contents
@@ -72,14 +70,6 @@
     - Edit Product
 - Transaction
 
-
-<!-- GETTING STARTED -->
-<!-- # Getting Started -->
-
-<!-- 
- ## Prerequisites 
--->
-
 ## How to Run the Application
 <!-- ## Installation -->
 
@@ -123,44 +113,6 @@ You may also see any lint errors in the console.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-<!-- USAGE -->
-<!--
-# Usage
-
-## npm start
-
-Runs the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes. You may also see any lint errors in the console.
-
-## npm test
-
-Launches the test runner in the interactive watch mode. See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-## npm run eject
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
--->
-
-<!-- ROADMAP -->
-<!-- # Roadmap
-<!--
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish -->
-
-<!-- <p align="right">(<a href="#readme-top">back to top</a>)</p> -->
-
-
-
-<!-- CONTRIBUTING -->
 ## Contributing
 
 ![GitHub contributors](https://img.shields.io/github/contributors/Rama-z/Grasberg-Coffee-Front-End-Reactjs?style=flat-square) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/Rama-z/Grasberg-Coffee-Front-End-Reactjs?style=flat-square)
@@ -177,13 +129,13 @@ If you aren't satisfied with the build tool and configuration choices, you can `
 
 ## Deployment
 
-[Vercel deploy link](https://grasbergcoffee.vercel.app/)
+[Vercel Deployment Link](https://grasbergcoffee.vercel.app/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Related Projects
 
-[dream furniture backend](https://grasberg-coffee-be.vercel.app/)
+[Grasberg Coffee Backend](https://grasberg-coffee-be.vercel.app/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -201,23 +153,12 @@ If you aren't satisfied with the build tool and configuration choices, you can `
     <tr>
       <td align="center">
         <a href="https://github.com/Rama-z">
-          <img width="100" ; src="/home/pratama/monlight-wallet/src/assets/gue.jpg" alt=""><br/>
+          <img width="100" ; src="./src/assets/Home/myprofile.jpg" alt=""><br/>
           <sub><b>Zanuar Bagus</b></sub>
         </a>
       </td>
     </tr>
   </table>
 </center>
-
-<!-- <p align="right">(<a href="#readme-top">back to top</a>)</p> -->
-
-<!-- CONTACT -->
-<!-- # Contact
-
-Your Name - []() -->
-
-<!-- <p align="right">(<a href="#readme-top">back to top</a>)</p> -->
-
-
 
 <p align="center"> <samp><i>&copy; 2022 Grasberg Coffee</i></samp> </p>
