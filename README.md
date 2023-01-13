@@ -149,10 +149,10 @@ You may also see any lint errors in the console.
 
 ## Documentation
 
-<img width="500" src="https://raw.githubusercontent.com/Rama-z/Grasberg-Coffee-Front-End-Reactjs/main/src/assets/Home/grasberg-react.png" alt="Landing page">
-<img width="500" src="https://raw.githubusercontent.com/Rama-z/Grasberg-Coffee-Front-End-Reactjs/main/src/assets/Home/grasberg-react-2.png" alt="Landing page">
-<img width="500" src="https://raw.githubusercontent.com/Rama-z/Grasberg-Coffee-Front-End-Reactjs/main/src/assets/Home/grasberg-react-3.png" alt="Landing page">
-<img width="500" src="https://raw.githubusercontent.com/Rama-z/Grasberg-Coffee-Front-End-Reactjs/main/src/assets/Home/grasberg-react-4.png" alt="Landing page">
+<img width="500" src="./src/assets/Home/grasberg-react.png" alt="Landing page">
+<img width="500" src="./src/assets/Home/grasberg-react-2.png" alt="Landing page">
+<img width="500" src="./src/assets/Home/grasberg-react-3.png" alt="Landing page">
+<img width="500" src="./src/assets/Home/grasberg-react-4.png" alt="Landing page">
 
 ## Contributors
 
