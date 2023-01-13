@@ -4,7 +4,7 @@
 <br />
 <div align="center">
 
-  <h2 align="center">Dream Team</h2>
+  <h2 align="center">Grasberg Coffee</h2>
 
   <p align="center">
     <a href="#">View Demo</a>
@@ -39,7 +39,7 @@
 
 ## Features
 
-### Customer
+### User
 
 - Auth
     - Login
@@ -47,11 +47,18 @@
 - User
     - Register
     - Forgot Password
+    - Reset Password
     - Edit Profile
 - Product
+    - Search Product
+    - FIlter Product
+    - Sort Product
 - Transaction
+    - Create Transaction
+    - Get History
+    - Delete History
 
-### Seller
+### Admin
 
 - Auth
     - Login
@@ -76,18 +83,12 @@
 ## How to Run the Application
 <!-- ## Installation -->
 
-<!-- 1. Clone the repo
-   ```sh
-   git clone https://github.com/Rama-z/Dream_Team_Project_1.git
-   ```
- -->
- 
  ### 1. Clone this repository
 
 Clone this repository by run the following code:
 
 ```
-$ git clone <this-repo-url>
+$ git clone https://github.com/Rama-z/Grasberg-Coffee-Front-End-Reactjs
 ```
 
 ### 2. Install dependency packages
@@ -103,7 +104,7 @@ $ npm install
 Configure .env file by create file named .env inside project folder and add this line to the file:
 
 ```
-NEXT_PUBLIC_BACKEND_URL = "https://dream-team-project-be.vercel.app/"
+NEXT_PUBLIC_BACKEND_URL = "https://grasberg-coffee-be.vercel.app/"
 ```
 
 ### 4. Run projects
@@ -162,7 +163,7 @@ If you aren't satisfied with the build tool and configuration choices, you can `
 <!-- CONTRIBUTING -->
 ## Contributing
 
-![GitHub contributors](https://img.shields.io/github/contributors/Rama-z/Dream_Team_Project_1?style=flat-square) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/Rama-z/Dream_Team_Project_1?style=flat-square)
+![GitHub contributors](https://img.shields.io/github/contributors/Rama-z/Grasberg-Coffee-Front-End-Reactjs?style=flat-square) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/Rama-z/Grasberg-Coffee-Front-End-Reactjs?style=flat-square)
 
 
 1. Fork the Project
@@ -176,13 +177,13 @@ If you aren't satisfied with the build tool and configuration choices, you can `
 
 ## Deployment
 
-[Vercel deploy link](https://dreamfurniture.vercel.app/)
+[Vercel deploy link](https://grasbergcoffee.vercel.app/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Related Projects
 
-[dream furniture backend](https://dream-team-project-be.vercel.app/)
+[dream furniture backend](https://grasberg-coffee-be.vercel.app/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -203,31 +204,8 @@ If you aren't satisfied with the build tool and configuration choices, you can `
           <img width="100" ; src="/home/pratama/monlight-wallet/src/assets/gue.jpg" alt=""><br/>
           <sub><b>Zanuar Bagus</b></sub>
         </a>
-        </td>
-        <td align="center">
-        <a href="https://github.com/rsad100">
-          <img width="100" ; src="/home/pratama/monlight-wallet/src/assets/gue.jpg" alt=""><br/>
-          <sub><b>Arsyad Budiman</b></sub>
-        </a>
-        </td>
-        <td align="center">
-        <a href="https://github.com/rzkiyprtm">
-          <img width="100" ; src="/home/pratama/monlight-wallet/src/assets/gue.jpg" alt=""><br/>
-          <sub><b>Dian Kartika Ratna Sari</b></sub>
-        </a>
-        </td>
-        <td align="center">
-        <a href="https://github.com/muhahsanarifin">
-          <img width="100" ; src="/home/pratama/monlight-wallet/src/assets/gue.jpg" alt=""><br/>
-          <sub><b>Muhammad Ahsan</b></sub>
-        </a>
-        </td>
-        <td align="center">
-        <a href="https://github.com/rofiq999">
-          <img width="100" ; src="/home/pratama/monlight-wallet/src/assets/gue.jpg" alt=""><br/>
-          <sub><b>Rofiq Hidayat</b></sub>
-        </a>
-        </td>
+      </td>
+    </tr>
   </table>
 </center>
 
@@ -242,4 +220,4 @@ Your Name - []() -->
 
 
 
-<p align="center"> <samp><i>&copy; 2022 dreamteam</i></samp> </p>
+<p align="center"> <samp><i>&copy; 2022 Grasberg Coffee</i></samp> </p>
