@@ -24,56 +24,66 @@
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-# About The Project 
+# About The Project
 
 ## Contents
 
-- [Features](#features)
-- [Run Application](#how-to-run-the-application)
-- [Contributing](#contributing)
-- [Deployment](#deployment)
-- [Related Projects](#related-projects)
-- [Contributors](#authors)
+- [About The Project](#about-the-project)
+  - [Contents](#contents)
+  - [Features](#features)
+    - [User](#user)
+    - [Admin](#admin)
+  - [How to Run the Application](#how-to-run-the-application)
+    - [1. Clone this repository](#1-clone-this-repository)
+    - [2. Install dependency packages](#2-install-dependency-packages)
+    - [3. Configure .env file](#3-configure-env-file)
+    - [4. Run projects](#4-run-projects)
+  - [Contributing](#contributing)
+  - [Deployment](#deployment)
+  - [Related Projects](#related-projects)
+  - [Documentation](#documentation)
+  - [Contributors](#contributors)
 
 ## Features
 
 ### User
 
 - Auth
-    - Login
-    - Logout
+  - Login
+  - Logout
 - User
-    - Register
-    - Forgot Password
-    - Reset Password
-    - Edit Profile
+  - Register
+  - Forgot Password
+  - Reset Password
+  - Edit Profile
 - Product
-    - Search Product
-    - FIlter Product
-    - Sort Product
+  - Search Product
+  - FIlter Product
+  - Sort Product
 - Transaction
-    - Create Transaction
-    - Get History
-    - Delete History
+  - Create Transaction
+  - Get History
+  - Delete History
 
 ### Admin
 
 - Auth
-    - Login
-    - Logout
+  - Login
+  - Logout
 - User
-    - Register
-    - Forgot Password
-    - Edit Profile
+  - Register
+  - Forgot Password
+  - Edit Profile
 - Product
-    - Add Product
-    - Edit Product
+  - Add Product
+  - Edit Product
 - Transaction
 
 ## How to Run the Application
+
 <!-- ## Installation -->
 
- ### 1. Clone this repository
+### 1. Clone this repository
 
 Clone this repository by run the following code:
 
@@ -117,13 +127,11 @@ You may also see any lint errors in the console.
 
 ![GitHub contributors](https://img.shields.io/github/contributors/Rama-z/Grasberg-Coffee-Front-End-Reactjs?style=flat-square) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/Rama-z/Grasberg-Coffee-Front-End-Reactjs?style=flat-square)
 
-
 1. Fork the Project
 2. Create your new Branch ( `git checkout -b ...` )
 3. Commit your Changes ( `git commit -m '...'` )
 4. Push to the Branch ( `git push origin ...` )
 5. Open a Pull Request
-
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -153,7 +161,7 @@ You may also see any lint errors in the console.
     <tr>
       <td align="center">
         <a href="https://github.com/Rama-z">
-          <img width="100" ; src="./src/assets/Home/myprofile.jpg" alt=""><br/>
+          <img width="100" ; src="src/assets/Home/myprofile.jpg" alt=""><br/>
           <sub><b>Zanuar Bagus</b></sub>
         </a>
       </td>
