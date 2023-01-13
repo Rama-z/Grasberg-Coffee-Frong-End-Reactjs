@@ -3,9 +3,6 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="#">
-    <img src="./src/assets/dream-team-logo-white.png" alt="Logo" width="80" height="80">
-  </a>
 
   <h2 align="center">Dream Team</h2>
 
